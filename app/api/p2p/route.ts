@@ -4,6 +4,7 @@
 
 import fs from "node:fs";
 import path from "node:path";
+import { getCase } from "@/src/pipeline/cases";
 import { runP2p } from "@/src/pipeline/p2p";
 import type { AssembledLetter, DenialRecord, QaReport } from "@/src/pipeline/types";
 
@@ -21,7 +22,9 @@ export async function POST(req: Request): Promise<Response> {
     cached?: boolean;
     caseId?: string;
   };
-  const cache = cachePath(body.caseId ?? "rivera");
+  const caseId = body.caseId ?? "rivera";
+  getCase(caseId);
+  const cache = cachePath(caseId);
 
   if (body.cached && fs.existsSync(cache)) {
     return Response.json(JSON.parse(fs.readFileSync(cache, "utf8")));

@@ -134,15 +134,15 @@ async function replayRun(send: Send, caseId: string, options: RunOptions): Promi
     }
     : cachedQa;
 
+  // Replay never gates on coordinator input: the cached denial/letter/qa
+  // already reflect a policy having been attached and a deadline confirmed
+  // (that's what generating the cache *is*), so replaying it re-plays a
+  // completed run rather than re-asking a question that's already answered.
   if (!options.stage || options.stage === "intake") {
     send({ type: "stage_start", stage: "intake" });
     await sleep(2200);
     send({ type: "denial", data: denial });
     send({ type: "stage_done", stage: "intake" });
-    if (channel === "era_835") {
-      send({ type: "gate", gate: "policy" });
-      return;
-    }
     if (options.stage === "intake") {
       send({ type: "done" });
       return;
@@ -151,9 +151,6 @@ async function replayRun(send: Send, caseId: string, options: RunOptions): Promi
 
   if (options.stage !== "qa") {
     send({ type: "stage_start", stage: "draft" });
-    if (channel === "era_835" && !options.policyPdfOverride) {
-      throw new Error("835 cases require a coordinator-attached policy PDF before drafting");
-    }
     const plain = letter.text.replace(/\[\d+\]/g, "");
     const words = plain.split(/(?<=\s)/);
     for (let i = 0; i < words.length; i += 5) {
@@ -162,17 +159,10 @@ async function replayRun(send: Send, caseId: string, options: RunOptions): Promi
     }
     send({ type: "letter", data: letter });
     send({ type: "stage_done", stage: "draft" });
-    if (channel === "era_835") {
-      send({ type: "gate", gate: "deadline", paidDate: denial.denial.paid_date });
-      return;
-    }
     if (options.stage === "draft") {
       send({ type: "done" });
       return;
     }
-  }
-  if (channel === "era_835" && !denial.denial.appeal_deadline) {
-    throw new Error("835 cases require coordinator-confirmed appeal deadline before QA");
   }
 
   send({ type: "stage_start", stage: "qa" });

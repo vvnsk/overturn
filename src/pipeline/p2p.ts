@@ -73,9 +73,11 @@ Write for a physician with 90 seconds before the call:
 - headline: one sentence — the single strongest framing of why this should be approved.
 - patient_line: member, service, diagnosis in one compact line.
 - key_points: 4-6 punchy talking points, each with its source ("Chart — discharge note",
-  "Policy §2.3", etc.). Lead with the two independent grounds.
+  "Policy §2.3", etc.). Lead with the two independent grounds. When a source maps
+  to the evidence list, include its exact citation marker(s), such as "Policy §2.3 [9]".
 - anticipated_objections: 2-3 things the medical director may raise, each with a
-  one-sentence evidence-based response.
+  one-sentence evidence-based response. Add the exact evidence marker(s) [n] to the
+  response wherever it relies on the evidence list.
 - ask: the exact closing ask for the call.`;
 
   const response = await client.messages.create({

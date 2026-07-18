@@ -116,6 +116,8 @@ button.ghost {
   padding: 0 2px; vertical-align: super; line-height: 1;
   font-family: -apple-system, "Segoe UI", sans-serif;
 }
+.cite-policy { color: var(--amber); }
+.cite-chart { color: var(--accent); }
 .cite:hover { background: var(--accent-soft); border-radius: 3px; }
 .cite .pop {
   display: none; position: absolute; z-index: 30; bottom: 130%; left: 50%;
@@ -128,6 +130,13 @@ button.ghost {
 .cite:hover .pop { display: block; }
 .cite .pop .src { color: #8fd0cc; font-weight: 700; font-size: 11px; margin-bottom: 5px; }
 .cite .pop .quote { font-style: italic; }
+.cite .pop .pop-kind {
+  display: inline-block; font-size: 9px; letter-spacing: 0.09em; font-weight: 800;
+  color: #fff; border-radius: 3px; padding: 2px 5px; margin-bottom: 7px;
+}
+.cite .pop .pop-kind-policy { background: #b87822; }
+.cite .pop .pop-kind-chart { background: #287f7b; }
+.cite .pop .pop-kind-other { background: #6b6b66; }
 
 /* ---------- QA / right rail ---------- */
 .confbar { height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; margin: 6px 0 4px; }
@@ -169,7 +178,7 @@ button.ghost {
 .brief {
   background: var(--sheet); border: 1px solid var(--line); border-radius: 4px;
   box-shadow: 0 2px 14px rgba(30, 30, 25, 0.07);
-  padding: 40px 46px; min-height: 70vh;
+  padding: 40px 46px;
 }
 .brief-tag {
   font-size: 11px; font-weight: 800; letter-spacing: 0.12em; color: var(--amber);
@@ -196,6 +205,7 @@ button.ghost {
   flex: none; font-size: 11px; font-weight: 700; color: var(--accent);
   background: var(--accent-soft); border-radius: 5px; padding: 2px 8px;
 }
+.brief-src .cite { font-size: 10px; }
 .brief-obj { padding: 6px 0; font-size: 13.5px; }
 .brief-obj .obj { color: var(--ink-soft); font-style: italic; }
 .brief-obj .resp { font-weight: 550; }

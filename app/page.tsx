@@ -113,7 +113,10 @@ export default function Page() {
     suppliedDenial?: DenialRecord,
   ) => {
     const meta = CASES.find((c) => c.id === id);
-    const eraStage = stage ?? (meta?.channel === "era_835" ? "intake" : undefined);
+    // Live 835 intake pauses after parsing for coordinator policy/deadline
+    // confirmation. Cached replay has already passed those gates, so it
+    // should flow through draft and QA just like a fax replay.
+    const eraStage = stage ?? (meta?.channel === "era_835" && !replay ? "intake" : undefined);
     if (!eraStage || eraStage === "intake") patch(id, { ...freshRun(), phase: "running" });
     else patch(id, { phase: "running", gate: null, error: null });
     try {
@@ -223,7 +226,7 @@ export default function Page() {
         <button className="ghost settings-btn" onClick={() => setShowSettings(true)}
           title="Autonomy policy">⚙ {modeLabel(settings.mode)}</button>
         <button className="primary fax-btn" onClick={() => simulateFax(1)}>📠 Simulate incoming fax</button>
-        <button className="ghost" onClick={() => simulateFax(4)}>📠 ×{Math.max(CASE_ORDER.length - arrived.length, 0)} all</button>
+        <button className="ghost" onClick={() => simulateFax(CASE_ORDER.length)}>📠 ×{Math.max(CASE_ORDER.length - arrived.length, 0)} all</button>
       </header>
 
       {showSettings && (
@@ -529,12 +532,15 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch, onAttachPolicy,
           <div className="decision-banner">
             <span>{d.reason}</span>
             <div className="decision-actions">
-              <button className="primary" onClick={() => onPatch({ submitted: { by: "human", at: new Date().toISOString() }, held: false })}>
-                Approve &amp; submit
-              </button>
+              {d.action !== "hold" && (
+                <button className="primary" onClick={() => onPatch({ submitted: { by: "human", at: new Date().toISOString() }, held: false })}>
+                  Approve &amp; submit
+                </button>
+              )}
               {!run.held && (
                 <button className="ghost" onClick={() => onPatch({ held: true })}>Hold</button>
               )}
+              {d.action === "hold" && run.held && <span className="confirm-status">Held for clinic review</span>}
             </div>
           </div>
         )}
@@ -670,8 +676,8 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch, onAttachPolicy,
             <div className="revising-note">Agent revising per your instruction — citations re-enforced…</div>
             {run.reviseText}<span className="caret" />
           </div>
-        ) : run.showBrief && run.p2p ? (
-          <BriefView brief={run.p2p} onBack={() => onPatch({ showBrief: false })} />
+        ) : run.showBrief && run.p2p && run.letter ? (
+          <BriefView brief={run.p2p} letter={run.letter} onBack={() => onPatch({ showBrief: false })} />
         ) : run.letter ? (
           <div className="sheet"><LetterView letter={run.letter} /></div>
         ) : run.draftText ? (
@@ -695,7 +701,7 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch, onAttachPolicy,
   );
 }
 
-function BriefView({ brief, onBack }: { brief: P2pBrief; onBack: () => void }) {
+function BriefView({ brief, letter, onBack }: { brief: P2pBrief; letter: AssembledLetter; onBack: () => void }) {
   return (
     <div className="brief">
       <div className="brief-tag">PEER-TO-PEER BRIEF — for the ordering physician</div>
@@ -704,44 +710,68 @@ function BriefView({ brief, onBack }: { brief: P2pBrief; onBack: () => void }) {
       <h4>Key points</h4>
       {brief.key_points.map((k, i) => (
         <div key={i} className="brief-point">
-          <span>{k.point}</span>
-          <span className="brief-src">{k.source}</span>
+          <EvidenceText text={k.point} refs={letter.refs} />
+          <EvidenceText text={k.source} refs={letter.refs} className="brief-src" />
         </div>
       ))}
       <h4>If the medical director pushes back</h4>
       {brief.anticipated_objections.map((o, i) => (
         <div key={i} className="brief-obj">
-          <div className="obj">“{o.objection}”</div>
-          <div className="resp">→ {o.response}</div>
+          <div className="obj">“<EvidenceText text={o.objection} refs={letter.refs} />”</div>
+          <div className="resp">→ <EvidenceText text={o.response} refs={letter.refs} /></div>
         </div>
       ))}
       <h4>The ask</h4>
-      <div className="brief-ask">{brief.ask}</div>
+      <div className="brief-ask"><EvidenceText text={brief.ask} refs={letter.refs} /></div>
       <button className="ghost" style={{ marginTop: 18 }} onClick={onBack}>← Back to the appeal letter</button>
     </div>
   );
 }
 
 function LetterView({ letter }: { letter: AssembledLetter }) {
-  const refMap = new Map(letter.refs.map((r) => [r.n, r]));
-  const parts = letter.text.split(/(\[\d+\])/g);
+  return <EvidenceText text={letter.text} refs={letter.refs} />;
+}
+
+type CitationKind = "policy" | "chart" | "other";
+
+function citationKind(ref: AssembledLetter["refs"][number]): CitationKind {
+  const title = ref.doc_title.toLowerCase();
+  if (title.includes("policy")) return "policy";
+  if (title.includes("chart") || title.includes("record")) return "chart";
+  return "other";
+}
+
+function EvidenceText({
+  text,
+  refs,
+  className,
+}: {
+  text: string;
+  refs: AssembledLetter["refs"];
+  className?: string;
+}) {
+  const refMap = new Map(refs.map((r) => [r.n, r]));
+  const parts = text.split(/(\[\d+\])/g);
   return (
-    <>
+    <span className={className}>
       {parts.map((part, i) => {
         const m = part.match(/^\[(\d+)\]$/);
         if (!m) return <span key={i}>{part}</span>;
         const ref = refMap.get(Number(m[1]));
         if (!ref) return <span key={i}>{part}</span>;
+        const kind = citationKind(ref);
+        const label = kind === "policy" ? "POLICY" : kind === "chart" ? "PATIENT CHART" : "SOURCE";
         return (
-          <span key={i} className="cite">
+          <span key={i} className={`cite cite-${kind}`} aria-label={`${label}: ${ref.doc_title}, ${ref.location}`}>
             [{ref.n}]
             <span className="pop">
+              <span className={`pop-kind pop-kind-${kind}`}>{label}</span>
               <span className="src">{ref.doc_title} — {ref.location}</span>
               <span className="quote">&ldquo;{ref.cited_text}&rdquo;</span>
             </span>
           </span>
         );
       })}
-    </>
+    </span>
   );
 }
