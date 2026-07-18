@@ -35,6 +35,7 @@ interface CaseRun {
   activeVersion: number; // index into versions
   resolutions: Record<number, Resolution>;
   revising: boolean;
+  revisingIdx: number | null;
   reviseText: string;
   qa: QaReport | null;
   error: string | null;
@@ -49,7 +50,7 @@ const freshRun = (): CaseRun => ({
   phase: "arriving",
   stages: { intake: "pending", draft: "pending", qa: "pending" },
   denial: null, draftText: "", letter: null,
-  versions: [], activeVersion: 0, resolutions: {}, revising: false, reviseText: "",
+  versions: [], activeVersion: 0, resolutions: {}, revising: false, revisingIdx: null, reviseText: "",
   qa: null, error: null,
   submitted: null, held: false, p2p: null, showBrief: false, p2pLoading: false,
 });
@@ -331,9 +332,13 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) 
     if (!run.denial || !run.letter || !instruction.trim()) return;
     const issue = idx != null && run.qa ? [run.qa.needs_human[idx].issue] : [];
     const note = instruction.trim();
-    onPatch({ revising: true, reviseText: "", error: null });
+    onPatch({ revising: true, revisingIdx: idx, reviseText: "", error: null });
     setResolvingIdx(null);
     setInstruction("");
+    // bring the letter into view so the rewrite is visible as it streams
+    setTimeout(() => {
+      document.querySelector(".drawer .sheet")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 150);
     try {
       const res = await fetch("/api/revise", {
         method: "POST",
@@ -368,7 +373,7 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) 
       if (!newLetter) throw new Error("revision stream ended without a letter");
       const vn = run.versions.length + 1;
       onPatch({
-        revising: false, reviseText: "",
+        revising: false, revisingIdx: null, reviseText: "",
         versions: [...run.versions, { n: vn, letter: newLetter, note }],
         activeVersion: run.versions.length,
         letter: newLetter,
@@ -377,7 +382,7 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) 
           : run.resolutions,
       });
     } catch (err) {
-      onPatch({ revising: false, error: err instanceof Error ? err.message : String(err) });
+      onPatch({ revising: false, revisingIdx: null, error: err instanceof Error ? err.message : String(err) });
     }
   };
 
@@ -471,7 +476,11 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) 
                     <span className={`sev ${h.severity}`}>{h.severity}</span>
                     <span className="confirm-issue">{h.issue}</span>
                   </div>
-                  {r ? (
+                  {run.revisingIdx === i ? (
+                    <div className="confirm-status working">
+                      <span className="workdot" /> agent working on this — redrafting the letter with your answer…
+                    </div>
+                  ) : r ? (
                     <div className="confirm-status">
                       {r.kind === "revised" ? `✓ resolved — letter revised to v${r.v}` : "dismissed — not applicable"}
                     </div>
