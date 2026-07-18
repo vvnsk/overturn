@@ -1,10 +1,10 @@
-import { client, MODEL } from "./client.js";
+import { client, MODEL } from "./client";
 import {
   QA_SCHEMA,
   type AssembledLetter,
   type DenialRecord,
   type QaReport,
-} from "./types.js";
+} from "./types";
 
 function qaPrompt(denial: DenialRecord, letter: AssembledLetter, today: string): string {
   const refList = letter.refs

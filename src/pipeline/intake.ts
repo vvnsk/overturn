@@ -1,6 +1,6 @@
 import fs from "node:fs";
-import { client, MODEL } from "./client.js";
-import { DENIAL_SCHEMA, type DenialRecord } from "./types.js";
+import { client, MODEL } from "./client";
+import { DENIAL_SCHEMA, type DenialRecord } from "./types";
 
 const INTAKE_PROMPT = `You are the intake stage of Overturn, an appeals engine for
 clinic patient-access teams. The attached document is a scanned prior-authorization

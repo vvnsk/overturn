@@ -6,11 +6,11 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { runIntake } from "./pipeline/intake.js";
-import { runDraft } from "./pipeline/draft.js";
-import { runQa } from "./pipeline/qa.js";
-import { assembleLetter, letterWithSources } from "./pipeline/render.js";
-import type { DenialRecord } from "./pipeline/types.js";
+import { runIntake } from "./pipeline/intake";
+import { runDraft } from "./pipeline/draft";
+import { runQa } from "./pipeline/qa";
+import { assembleLetter, letterWithSources } from "./pipeline/render";
+import type { DenialRecord } from "./pipeline/types";
 
 const CASE = {
   name: "gold",

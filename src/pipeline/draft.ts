@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import type Anthropic from "@anthropic-ai/sdk";
-import { client, MODEL } from "./client.js";
-import type { DenialRecord } from "./types.js";
+import { client, MODEL } from "./client";
+import type { DenialRecord } from "./types";
 
 // The centerpiece stage. The payer's own policy and the patient chart are
 // attached as citation-enabled documents; the API binds every claim in the
@@ -50,6 +50,7 @@ export async function runDraft(
   policyPdfPath: string,
   chartPath: string,
   today: string,
+  onText?: (delta: string) => void,
 ): Promise<Anthropic.Message> {
   const policyPdf = fs.readFileSync(policyPdfPath).toString("base64");
   const chart = fs.readFileSync(chartPath, "utf8");
@@ -80,5 +81,6 @@ export async function runDraft(
     ],
   } as never);
 
+  if (onText) stream.on("text", onText);
   return (await stream.finalMessage()) as Anthropic.Message;
 }

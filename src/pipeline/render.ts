@@ -1,4 +1,4 @@
-import type { AssembledLetter, CitationRef } from "./types.js";
+import type { AssembledLetter, CitationRef } from "./types";
 
 interface CitationLike {
   cited_text: string;
