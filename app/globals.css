@@ -314,6 +314,15 @@ button.ghost {
 }
 .vpill.on { background: var(--accent); border-color: var(--accent); color: #fff; }
 .vnote { font-size: 12px; color: var(--ink-soft); font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.resolve-all {
+  background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 10px;
+  padding: 10px 12px; margin-bottom: 10px;
+}
+.resolve-all .confirm-actions.all { margin: 0; align-items: center; flex-wrap: wrap; }
+.resolve-all-label { font-size: 12.5px; font-weight: 700; color: var(--accent); }
+.resolve-all .confirm-thread { margin: 0; }
+button.ghost.strong { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
 .confirm-status.working { color: var(--amber); display: flex; align-items: center; gap: 7px; }
 .workdot {
   width: 9px; height: 9px; border-radius: 50%; background: var(--amber);

@@ -323,15 +323,26 @@ interface DrawerProps {
   onPatch: (p: Partial<CaseRun>) => void;
 }
 
+// What "Let the agent fix it" sends: resolve from the record, never invent.
+const AUTO_FIX =
+  "Resolve the flagged item(s) as you judge best, using ONLY information already documented in the attached record. Where required information is genuinely missing (phone/fax numbers, DOB, signature details), insert a clearly marked [CONFIRM: what is needed] placeholder so clinic staff can fill it before transmission. Do not weaken any ground of the appeal.";
+
 function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) {
   const d = run.qa && run.phase === "complete" ? decide(run.qa, settings) : null;
+  // resolvingIdx: which composer is open; -1 = the resolve-all composer
   const [resolvingIdx, setResolvingIdx] = useState<number | null>(null);
   const [instruction, setInstruction] = useState("");
 
-  const sendRevision = async (idx: number | null) => {
-    if (!run.denial || !run.letter || !instruction.trim()) return;
-    const issue = idx != null && run.qa ? [run.qa.needs_human[idx].issue] : [];
-    const note = instruction.trim();
+  const unresolved = run.qa
+    ? run.qa.needs_human.map((_, i) => i).filter((i) => !run.resolutions[i])
+    : [];
+
+  // idx >= 0 targets one flag; idx === -1 targets every unresolved flag.
+  const sendRevision = async (idx: number, text: string) => {
+    if (!run.denial || !run.letter || !run.qa || !text.trim()) return;
+    const targets = idx === -1 ? unresolved : [idx];
+    const issue = targets.map((i) => run.qa!.needs_human[i].issue);
+    const note = text.trim();
     onPatch({ revising: true, revisingIdx: idx, reviseText: "", error: null });
     setResolvingIdx(null);
     setInstruction("");
@@ -377,9 +388,10 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) 
         versions: [...run.versions, { n: vn, letter: newLetter, note }],
         activeVersion: run.versions.length,
         letter: newLetter,
-        resolutions: idx != null
-          ? { ...run.resolutions, [idx]: { kind: "revised", v: vn } }
-          : run.resolutions,
+        resolutions: {
+          ...run.resolutions,
+          ...Object.fromEntries(targets.map((i) => [i, { kind: "revised", v: vn }])),
+        },
       });
     } catch (err) {
       onPatch({ revising: false, revisingIdx: null, error: err instanceof Error ? err.message : String(err) });
@@ -468,17 +480,50 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) 
         {run.qa && run.qa.needs_human.length > 0 && (
           <div className="card">
             <h3>Confirmations — lead the agent</h3>
+
+            {unresolved.length >= 2 && !run.revising && (
+              <div className="resolve-all">
+                {resolvingIdx === -1 ? (
+                  <div className="confirm-thread">
+                    <textarea
+                      autoFocus rows={3} value={instruction}
+                      placeholder={`One message covering all ${unresolved.length} open flags — e.g. "Sign as Dr. Okafor, fax 415-555-0198; DOB 1979-03-22; this is a first-level appeal; drop the muscle-relaxant point."`}
+                      onChange={(e) => setInstruction(e.target.value)}
+                    />
+                    <div className="confirm-actions">
+                      <button className="primary" disabled={!instruction.trim()}
+                        onClick={() => void sendRevision(-1, instruction)}>
+                        Send → one revision fixes all {unresolved.length}
+                      </button>
+                      <button className="ghost" onClick={() => { setResolvingIdx(null); setInstruction(""); }}>Cancel</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="confirm-actions all">
+                    <span className="resolve-all-label">{unresolved.length} open flags:</span>
+                    <button className="primary" onClick={() => void sendRevision(-1, AUTO_FIX)}>
+                      Let the agent fix all {unresolved.length}
+                    </button>
+                    <button className="ghost" onClick={() => { setResolvingIdx(-1); setInstruction(""); }}>
+                      Fix all with my notes…
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
             {run.qa.needs_human.map((h, i) => {
               const r = run.resolutions[i];
+              const working = run.revisingIdx === i || (run.revisingIdx === -1 && !r);
               return (
                 <div key={i} className={`confirm-item${r ? " resolved" : ""}`}>
                   <div className="confirm-row">
                     <span className={`sev ${h.severity}`}>{h.severity}</span>
                     <span className="confirm-issue">{h.issue}</span>
                   </div>
-                  {run.revisingIdx === i ? (
+                  {working && run.revising ? (
                     <div className="confirm-status working">
-                      <span className="workdot" /> agent working on this — redrafting the letter with your answer…
+                      <span className="workdot" /> agent working on this — redrafting the letter…
                     </div>
                   ) : r ? (
                     <div className="confirm-status">
@@ -488,12 +533,12 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) 
                     <div className="confirm-thread">
                       <textarea
                         autoFocus rows={2} value={instruction}
-                        placeholder='Answer or instruct the agent — e.g. "Sign as Dana Okafor, MD; direct fax 415-555-0198" or "drop that argument"'
+                        placeholder='Answer or instruct — e.g. "Sign as Dana Okafor, MD; direct fax 415-555-0198" or "drop that argument"'
                         onChange={(e) => setInstruction(e.target.value)}
                       />
                       <div className="confirm-actions">
                         <button className="primary" disabled={run.revising || !instruction.trim()}
-                          onClick={() => void sendRevision(i)}>
+                          onClick={() => void sendRevision(i, instruction)}>
                           Send to agent → revise letter
                         </button>
                         <button className="ghost" onClick={() => { setResolvingIdx(null); setInstruction(""); }}>Cancel</button>
@@ -501,9 +546,13 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) 
                     </div>
                   ) : (
                     <div className="confirm-actions">
+                      <button className="ghost strong" disabled={run.revising}
+                        onClick={() => void sendRevision(i, `${AUTO_FIX}\n\nThe flag to resolve: "${h.issue}"`)}>
+                        Let the agent fix it
+                      </button>
                       <button className="ghost" disabled={run.revising}
                         onClick={() => { setResolvingIdx(i); setInstruction(""); }}>
-                        Resolve with agent…
+                        Give details…
                       </button>
                       <button className="ghost" disabled={run.revising}
                         onClick={() => onPatch({ resolutions: { ...run.resolutions, [i]: { kind: "dismissed" } } })}>
