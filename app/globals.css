@@ -357,3 +357,7 @@ button.ghost.strong { border-color: var(--accent); color: var(--accent); font-we
   background: #fbeae7; border: 1px solid var(--red); color: var(--red);
   border-radius: 8px; padding: 10px 14px; font-size: 13.5px; margin-bottom: 12px;
 }
+.coordinator-gate { display: flex; flex-direction: column; gap: 10px; border-color: var(--amber); background: var(--amber-soft); }
+.coordinator-gate p { color: var(--ink-soft); font-size: 13px; }
+.coordinator-gate input[type="file"], .coordinator-gate input[type="date"] { font: inherit; font-size: 13px; }
+.coordinator-gate button { align-self: flex-start; }
