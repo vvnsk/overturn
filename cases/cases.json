@@ -1,0 +1,47 @@
+[
+  {
+    "id": "rivera",
+    "patient": "Marisol Rivera",
+    "service": "MRI Lumbar Spine w/o contrast",
+    "cpt": "72148",
+    "denialPdf": "fixtures/denial-notice.pdf",
+    "chart": "fixtures/chart-rivera.txt",
+    "policyPdf": "fixtures/policy-mp-rad-014.pdf",
+    "policyTitle": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+    "chartTitle": "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+    "star": true
+  },
+  {
+    "id": "dara",
+    "patient": "Cherly Jacobi",
+    "service": "MRI Lumbar Spine without contrast",
+    "cpt": "72148",
+    "denialPdf": "cases/dara/denial.pdf",
+    "chart": "cases/dara/chart.txt",
+    "policyPdf": "fixtures/policy-mp-rad-014.pdf",
+    "policyTitle": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+    "chartTitle": "Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine"
+  },
+  {
+    "id": "haag",
+    "patient": "Antione Haag",
+    "service": "MRI Lumbar Spine without contrast",
+    "cpt": "72148",
+    "denialPdf": "cases/haag/denial.pdf",
+    "chart": "cases/haag/chart.txt",
+    "policyPdf": "fixtures/policy-mp-rad-014.pdf",
+    "policyTitle": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+    "chartTitle": "Patient Chart — Antione Haag, Cedar Grove Family Medicine"
+  },
+  {
+    "id": "johnston",
+    "patient": "Darron Johnston",
+    "service": "MRI Lumbar Spine without contrast",
+    "cpt": "72148",
+    "denialPdf": "cases/johnston/denial.pdf",
+    "chart": "cases/johnston/chart.txt",
+    "policyPdf": "fixtures/policy-mp-rad-014.pdf",
+    "policyTitle": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+    "chartTitle": "Patient Chart — Darron Johnston, Cedar Grove Family Medicine"
+  }
+]

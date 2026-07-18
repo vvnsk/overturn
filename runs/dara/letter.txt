@@ -1,0 +1,81 @@
+July 18, 2026
+
+Meridian Health Plan
+Appeals Department
+Attn: Prior Authorization Appeals
+[Payer Address]
+
+RE: First-Level Prior Authorization Appeal
+Member: JACOBI, CHERLY
+Member ID: MHP-ADC25003
+Date of Birth: 05/29/1925
+Authorization Reference: PA-2026-0708-91277
+Service: MRI Lumbar Spine without contrast (CPT 72148)
+Diagnosis: M54.50
+Ordering Physician: Priya Natarajan, MD, Cedar Grove Family Medicine
+Denial Date: 07/08/2026 | Reason Code: MN-02 | Cited Policy: MP-RAD-014, Section 2.1
+
+Dear Appeals Reviewer:
+
+On behalf of Priya Natarajan, MD, and our patient Ms. Cherly Jacobi, Cedar Grove Family Medicine respectfully requests that Meridian Health Plan overturn the above denial and approve the requested lumbar spine MRI (CPT 72148). The denial states that the record "does not establish that the member has completed a documented six (6) week trial of conservative therapy" under Medical Policy MP-RAD-014, Section 2.1. As demonstrated below, the medical record in fact documents that trial in full, and the member clearly satisfies the cited criterion.
+
+Ground 1 — The Denial Is Factually Incorrect on Its Own Cited Criterion (Section 2.1)
+
+The policy provides that lumbar spine MRI is medically necessary when low back pain persisting six (6) weeks or longer has failed a documented trial of conservative therapy, where conservative therapy includes at least one of: physical therapy, NSAID or analgesic pharmacotherapy, or a supervised home exercise program.[1] The record satisfies every element of this criterion.
+
+First, as to duration of symptoms: Ms. Jacobi carries a longstanding diagnosis of chronic low back pain with an onset date of 2014-02-02, far exceeding the six-week threshold.
+
+Second, as to a documented, failed trial of conservative therapy: the faxed Physical Therapy Discharge Summary from Riverbend Rehabilitation documents supervised physical therapy for chronic low back pain, 14 visits over 7 weeks (2026-05-12 through 2026-07-01).[2] This course exceeds the six-week requirement by a full week. Adherence was excellent, documented at 13/14 visits.[3]
+
+Notably, the member satisfies not one but all three of the qualifying conservative-therapy modalities named in Section 2.1, where the policy requires only one. The physical therapy course itself encompassed lumbar stabilization, graded activity, and a supervised home exercise program,[4] and concurrent NSAID pharmacotherapy was in place, as naproxen 500mg BID was maintained throughout the course per PCP.[5]
+
+Third, as to failure of that trial: the discharge note records that the patient completed the course with minimal symptomatic improvement, with low back pain persisting with functional limitation.[6] The treating therapist accordingly referred the patient back to the ordering physician for advanced imaging evaluation.[7]
+
+The single fact the denial identifies as missing — a documented six-week conservative therapy trial — is present in the record, is longer than six weeks, is supervised, and has failed. The denial is factually erroneous on the very criterion it cites, and Section 2.1 is met.
+
+Ground 2 — The Documentation Requirements of Section 4 Are Satisfied
+
+The policy requires that the record document duration of symptoms; the specific conservative therapy modalities attempted and their duration; objective physical examination findings; and the clinical question the imaging is expected to answer.[8] The attached chart supplies the symptom duration (chronic low back pain since 2014), the specific modalities and their duration (14 PT visits over 7 weeks with lumbar stabilization, graded activity, and home exercise, plus maintained naproxen therapy), and the clinical question (evaluation of persistent low back pain that has failed conservative management, per the therapist's referral for advanced imaging). The documentation standard of Section 4 is met.
+
+Timeliness
+
+This appeal is submitted on July 18, 2026, well within the appeal window; the denial notice states an appeal deadline of January 4, 2027.
+
+Conclusion
+
+Because the member independently satisfies Section 2.1 — the sole basis of the denial — with a documented, supervised, failed conservative therapy trial exceeding six weeks in a patient with chronic low back pain since 2014, we respectfully request that Meridian Health Plan overturn the denial and approve CPT 72148. We welcome the opportunity for a peer-to-peer discussion between the ordering physician, Dr. Priya Natarajan, and a plan medical director, which the denial notice indicates is available. Please contact our office to schedule.
+
+Respectfully submitted,
+
+Patient Access Team
+Cedar Grove Family Medicine
+On behalf of Priya Natarajan, MD, Ordering Physician
+Enclosures: PT Discharge Summary (Riverbend Rehabilitation, 2026-07-02); Patient Chart Excerpts; Medication History
+
+========================================================================
+EVIDENCE CHAIN (API-enforced citations)
+========================================================================
+
+[1] Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine) (p.1):
+    "Criteria — Medically Necessary Lumbar spine MRI is considered medically necessary when ANY ONE of the following criteria (2.1 through 2.4) is met and documented in the medical record: 2.1 Low back pain persisting six (6)"
+
+[2] Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine (chars 142-3475):
+    "DOB: 1925-05-29 | Sex: female === ACTIVE PROBLEM LIST === - Chronic sinusitis (disorder) (onset 1946-04-24) - Past pregnancy history of miscarriage (situation) (onset 1947-12-30) - Has a criminal record (finding) (onset "
+
+[3] Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine (chars 3560-3598):
+    "Adherence documented at 13/14 visits."
+
+[4] Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine (chars 3475-3560):
+    "Modalities: lumbar stabilization, graded activity, supervised home exercise program."
+
+[5] Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine (chars 3720-3781):
+    "Naproxen 500mg BID maintained throughout the course per PCP."
+
+[6] Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine (chars 3598-3720):
+    "DISCHARGE NOTE: Completed course with minimal symptomatic improvement; low back pain persists with functional limitation."
+
+[7] Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine (chars 3781-3850):
+    "Referred back to ordering physician for advanced imaging evaluation."
+
+[8] Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine) (p.1):
+    "Documentation Requirements The medical record must document: duration of symptoms; the specific conservative therapy modalities attempted and their duration; objective physical examination findings; and the clinical ques"

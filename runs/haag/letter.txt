@@ -1,0 +1,70 @@
+Cedar Grove Family Medicine
+Patient Access Team
+
+July 18, 2026
+
+Meridian Health Plan
+Appeals Department
+[Appeals Address on File]
+
+RE: First-Level Prior-Authorization Appeal
+Member: HAAG, ANTIONE
+Member ID: MHP-89EDED81
+Authorization Reference: PA-2026-0710-91903
+Service: MRI Lumbar Spine without contrast
+CPT Code: 72148
+ICD-10 Code: M54.50
+Cited Policy: MP-RAD-014, Section 2.1
+Denial Date: 2026-07-10
+
+Dear Appeals Reviewer:
+
+On behalf of Priya Natarajan, MD, and our patient Antione Haag, we respectfully request that Meridian Health Plan overturn the denial referenced above and approve the requested lumbar spine MRI (CPT 72148). The denial was issued under reason code MN-03 ("Conservative Therapy Requirement Not Met"), citing MP-RAD-014, Section 2.1, on the basis that "the record as submitted does not document a completed conservative therapy trial." As set out below, the medical record does document a qualifying conservative therapy trial under the policy's own text, and the denial is therefore factually incorrect on the single criterion it invokes.
+
+GROUND 1 — THE DENIAL IS FACTUALLY INCORRECT ON ITS OWN CITED CRITERION (SECTION 2.1)
+
+The policy states that lumbar spine MRI is medically necessary when there is low back pain persisting six (6) weeks or longer that has failed a documented trial of conservative therapy, where conservative therapy includes at least one of: physical therapy, NSAID or analgesic pharmacotherapy, or a supervised home exercise program.[1] By the policy's plain language, only one of the listed modalities is required, and analgesic pharmacotherapy expressly qualifies.
+
+Both elements of Section 2.1 are documented in the chart:
+
+Duration. The patient carries an active problem-list diagnosis of chronic low back pain (finding), onset 2014-02-04,[2] alongside a corresponding chronic pain diagnosis of the same onset date. This establishes low back pain persisting far in excess of the six-week threshold — a duration measured in years, not weeks.
+
+Conservative therapy. The medication record documents an active order for Acetaminophen 325 MG Oral Tablet [Tylenol], ordered 2025-08-03 and marked active.[2] Acetaminophen is analgesic pharmacotherapy, which is one of the three qualifying modalities named in Section 2.1. This trial has been ongoing since at least August 2025 — nearly a year — and the low back pain nonetheless remains an active, chronic diagnosis, which satisfies the policy's requirement that the conservative trial have "failed."
+
+We note further that the record explains why analgesic pharmacotherapy, rather than an NSAID, is the appropriate conservative modality for this patient: the chart documents a history of renal transplant (situation, onset 2021-08-01) and disorder of kidney due to diabetes mellitus (onset 2002-03-24),[2] a clinical context in which NSAIDs are generally avoided. The policy accommodates exactly this by listing "NSAID or analgesic pharmacotherapy" in the alternative; the patient has completed the qualifying analgesic arm.
+
+Because the record documents both (a) low back pain persisting well beyond six weeks and (b) a failed trial of a qualifying conservative modality (analgesic pharmacotherapy), the Section 2.1 criterion the denial relies upon is met, and the stated basis for denial does not hold.
+
+TIMELINESS
+
+This appeal is submitted on 2026-07-18, well within the appeal window. The denial notice sets an appeal deadline of 2027-01-06, and the policy provides that a denial under this policy may be appealed in writing within one hundred eighty (180) days of the denial notice.[3] This submission is timely.
+
+CONCLUSION AND REQUEST FOR PEER-TO-PEER
+
+For the reasons above, we ask that Meridian Health Plan reverse the MN-03 denial and approve MRI of the lumbar spine (CPT 72148) as medically necessary under MP-RAD-014, Section 2.1. Should any question remain after review of the enclosed record, we request a peer-to-peer discussion with the ordering physician, Dr. Priya Natarajan, which the denial notice indicates is available and which the policy permits by requesting a peer-to-peer review with a plan medical director within fourteen (14) days.[4] We would welcome that conversation and can be reached through the contact information below to schedule.
+
+Thank you for your prompt reconsideration of this request.
+
+Respectfully submitted,
+
+Patient Access Team
+Cedar Grove Family Medicine
+On behalf of Priya Natarajan, MD (Ordering Physician)
+
+Enclosures: Patient chart (Antione Haag, MHP-89EDED81); Meridian Health Plan Medical Policy MP-RAD-014
+
+========================================================================
+EVIDENCE CHAIN (API-enforced citations)
+========================================================================
+
+[1] Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine) (p.1):
+    "Criteria — Medically Necessary Lumbar spine MRI is considered medically necessary when ANY ONE of the following criteria (2.1 through 2.4) is met and documented in the medical record: 2.1 Low back pain persisting six (6)"
+
+[2] Patient Chart — Antione Haag, Cedar Grove Family Medicine (chars 141-3919):
+    "DOB: 1957-02-17 | Sex: male === ACTIVE PROBLEM LIST === - Prediabetes (finding) (onset 1988-05-01) - Anemia (disorder) (onset 1988-05-01) - Essential hypertension (disorder) (onset 1997-02-23) - Body mass index 30+ - obe"
+
+[3] Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine) (p.1):
+    "Appeals A denial under this policy may be appealed in writing within one hundred eighty (180) days of the denial notice."
+
+[4] Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine) (p.1):
+    "A peer-to-peer review with a plan medical director may be requested within fourteen (14) days."

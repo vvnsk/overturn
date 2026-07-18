@@ -1,0 +1,102 @@
+{
+  "timeliness": {
+    "denial_date": "2026-07-14",
+    "appeal_deadline": "2027-01-10",
+    "filed_date": "2026-07-18",
+    "within_deadline": true,
+    "days_remaining": 176
+  },
+  "claims": [
+    {
+      "claim": "The denial is administrative (AD-01, documentation not received) rather than a merits denial and is curable by supplying the record.",
+      "evidence_strength": "moderate",
+      "sources": []
+    },
+    {
+      "claim": "Section 4 of MP-RAD-014 requires documentation of symptom duration, conservative therapy modalities and duration, objective exam findings, and the clinical question.",
+      "evidence_strength": "strong",
+      "sources": [
+        "1"
+      ]
+    },
+    {
+      "claim": "The chart documents symptom duration of >6 years (chronic LBP onset 2019-10-30).",
+      "evidence_strength": "uncited",
+      "sources": []
+    },
+    {
+      "claim": "The chart documents a supervised movement therapy course of nine sessions (2019-11-05 to 2019-12-13) as conservative therapy.",
+      "evidence_strength": "uncited",
+      "sources": []
+    },
+    {
+      "claim": "The missing documentation is now supplied and the administrative gap is closed.",
+      "evidence_strength": "weak",
+      "sources": [
+        "1"
+      ]
+    },
+    {
+      "claim": "Policy Section 2.1 deems lumbar MRI medically necessary for LBP ≥6 weeks that failed a documented trial of conservative therapy (PT, NSAID/analgesic, or supervised home exercise).",
+      "evidence_strength": "strong",
+      "sources": [
+        "2"
+      ]
+    },
+    {
+      "claim": "The member satisfies all elements of Section 2.1 (duration, documented conservative trial, and failure of that trial).",
+      "evidence_strength": "weak",
+      "sources": [
+        "2"
+      ]
+    },
+    {
+      "claim": "Failure of conservative therapy is established because LBP remains an active chronic problem years later.",
+      "evidence_strength": "uncited",
+      "sources": []
+    },
+    {
+      "claim": "Section 2.1 does not require objective neurologic findings (those belong to criterion 2.3).",
+      "evidence_strength": "weak",
+      "sources": [
+        "2"
+      ]
+    },
+    {
+      "claim": "The appeal is timely, filed well within the 2027-01-10 deadline.",
+      "evidence_strength": "moderate",
+      "sources": []
+    }
+  ],
+  "missing_elements": [
+    "Member date of birth is null/absent — a common identifier payers require for matching.",
+    "No citation/attachment reference for the actual chart records; all patient-specific facts (onset date, therapy sessions) are asserted without an evidence exhibit in the citation list.",
+    "Appeal level is stated as 'First-Level' but denial's appeal_level is null — unconfirmed.",
+    "Letter is signed by 'Patient Access Team,' not by or with an explicit signature/attestation from the ordering physician; payer may require provider signature or member authorization for representation."
+  ],
+  "needs_human": [
+    {
+      "issue": "Conservative therapy and symptom-onset evidence is from 2019 (6+ years old). A payer will likely reject Section 2.1 satisfaction because there is no recent/current conservative therapy trial documented — this is a substantive merits vulnerability, not merely administrative.",
+      "severity": "high"
+    },
+    {
+      "issue": "The letter itself concedes two of four Section 4 items (objective exam findings and the clinical question) are NOT documented/supplied, so the 'administrative cure' is incomplete and the payer can deny again for the same reason.",
+      "severity": "high"
+    },
+    {
+      "issue": "'Movement therapy' is characterized as qualifying supervised conservative therapy / PT-equivalent under 2.1 — verify the chart actually supports this classification and duration.",
+      "severity": "medium"
+    },
+    {
+      "issue": "Confirm the patient chart is actually attached and that specific quoted entries match the record, since none are backed by a citation.",
+      "severity": "high"
+    },
+    {
+      "issue": "Add member DOB and confirm correct appeal level and required signature/authorization before sending.",
+      "severity": "medium"
+    }
+  ],
+  "overall_confidence": 0.3,
+  "recommendation": "review_recommended",
+  "summary": "The appeal is timely (176 days before the 2027-01-10 deadline) and correctly frames the AD-01 denial as a curable documentation issue with accurate policy citations. However, it has serious substantive weaknesses: the conservative therapy and symptom-onset evidence is over six years old with no current trial, the letter openly concedes that two of the four required Section 4 items are still missing, and all patient-specific facts are asserted without any chart citation or confirmed attachment. A human must verify the chart attachment, address the stale/incomplete clinical evidence, and add missing identifiers/signature before this can go out."
+}

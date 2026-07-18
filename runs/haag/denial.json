@@ -1,0 +1,35 @@
+{
+  "payer_name": "Meridian Health Plan",
+  "member": {
+    "name": "HAAG, ANTIONE",
+    "member_id": "MHP-89EDED81",
+    "dob": null
+  },
+  "provider": {
+    "ordering_physician": "Priya Natarajan, MD",
+    "facility": "Cedar Grove Family Medicine"
+  },
+  "service": {
+    "description": "MRI Lumbar Spine without contrast",
+    "cpt_codes": [
+      "72148"
+    ],
+    "icd10_codes": [
+      "M54.50"
+    ]
+  },
+  "denial": {
+    "denial_date": "2026-07-10",
+    "auth_reference": "PA-2026-0710-91903",
+    "reason_code": "MN-03",
+    "reason_text": "Conservative Therapy Requirement Not Met",
+    "cited_policy_id": "MP-RAD-014",
+    "cited_policy_section": "2.1",
+    "appeal_deadline": "2027-01-06",
+    "appeal_level": null,
+    "peer_to_peer_offered": true
+  },
+  "root_cause": "medical_necessity",
+  "root_cause_rationale": "The notice states the request is \"denied as not medically necessary\" because \"The record as submitted does not document a completed conservative therapy trial,\" citing clinical criteria under MP-RAD-014, Section 2.1.",
+  "confidence": 0.9
+}

@@ -1,0 +1,92 @@
+{
+  "timeliness": {
+    "denial_date": "2026-07-10",
+    "appeal_deadline": "2027-01-06",
+    "filed_date": "2026-07-18",
+    "within_deadline": true,
+    "days_remaining": 172
+  },
+  "claims": [
+    {
+      "claim": "Section 2.1 requires only ONE qualifying conservative modality, and analgesic pharmacotherapy is expressly listed as a qualifier.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[1]"
+      ]
+    },
+    {
+      "claim": "The patient's low back pain persists well beyond the six-week threshold (chronic low back pain, onset 2014-02-04).",
+      "evidence_strength": "strong",
+      "sources": [
+        "[2]"
+      ]
+    },
+    {
+      "claim": "The patient has an active acetaminophen (Tylenol) order dated 2025-08-03, constituting analgesic pharmacotherapy.",
+      "evidence_strength": "moderate",
+      "sources": [
+        "[2]"
+      ]
+    },
+    {
+      "claim": "The acetaminophen order was a conservative therapy trial specifically for low back pain that has 'failed.'",
+      "evidence_strength": "weak",
+      "sources": [
+        "[2]"
+      ]
+    },
+    {
+      "claim": "NSAIDs are appropriately avoided because of renal transplant history and diabetic kidney disease, so analgesic pharmacotherapy is the correct arm.",
+      "evidence_strength": "weak",
+      "sources": [
+        "[2]"
+      ]
+    },
+    {
+      "claim": "The appeal is timely, filed within the 180-day written appeal window.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[3]"
+      ]
+    },
+    {
+      "claim": "A peer-to-peer review with a plan medical director is available and may be requested within 14 days.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[4]"
+      ]
+    }
+  ],
+  "missing_elements": [
+    "Patient date of birth is omitted from the letter header even though it appears in the chart (1957-02-17); payers often require it for identity matching.",
+    "No genuine provider signature — the letter is signed by 'Patient Access Team' on behalf of Dr. Natarajan rather than being signed by the ordering physician, which many plans require for a medical-necessity appeal.",
+    "No documentation that the acetaminophen was prescribed for or directed at the low back pain, nor any note evidencing a physician-supervised trial or an assessed treatment failure.",
+    "No contact phone/fax/address is actually filled in despite the letter referring to 'contact information below.'",
+    "Appeal level is asserted as 'first-level' but the denial's appeal_level field is null — this should be confirmed against the plan's process."
+  ],
+  "needs_human": [
+    {
+      "issue": "The entire medical-necessity argument rests on an active low-dose OTC acetaminophen order being treated as a documented, failed conservative-therapy trial for LBP. The chart shows only an active medication order — no linkage to the back pain, no duration of trial as therapy, and no documented failure/reassessment. A payer can readily reject this as not a 'documented trial that failed.' Coordinator should obtain PT records, a physician note describing the conservative trial and its failure, or strengthen this before sending.",
+      "severity": "high"
+    },
+    {
+      "issue": "The claim that the conservative trial 'failed' is inferred solely from the continued chronic diagnosis; there is no citation documenting a failed response. This inferential leap should be supported by a clinical note or removed.",
+      "severity": "high"
+    },
+    {
+      "issue": "The NSAID-avoidance clinical rationale (renal transplant/diabetic kidney disease) is a medical assertion not backed by any policy or explicit chart contraindication note; a physician should confirm and ideally document it.",
+      "severity": "medium"
+    },
+    {
+      "issue": "Physician signature/attestation needed — send should be reviewed and signed by Dr. Natarajan given it is a medical-necessity appeal.",
+      "severity": "medium"
+    },
+    {
+      "issue": "Add patient DOB and complete contact block before filing.",
+      "severity": "low"
+    }
+  ],
+  "overall_confidence": 0.42,
+  "recommendation": "review_recommended",
+  "summary": "The appeal is timely (172 days before the 2027-01-06 deadline) and cites the policy text and chart verbatim, with strong support on duration and on the single-modality reading of Section 2.1. However, its core argument — that an active OTC acetaminophen order constitutes a documented, failed conservative-therapy trial for low back pain — is thinly supported: nothing links the Tylenol to the LBP or documents treatment failure, which a skeptical reviewer can easily reject. A human should strengthen the conservative-therapy/failure evidence, secure physician signature, and add the DOB and contact details before submission."
+}

@@ -1,0 +1,58 @@
+SYNTHETIC PATIENT CHART — Darron Johnston (MHP-93EE1E59)
+Source: Synthea synthetic FHIR bundle, flattened for review. No real patient depicted.
+DOB: 2001-09-24 | Sex: male
+
+=== ACTIVE PROBLEM LIST ===
+- Chronic pain (finding) (onset 2019-10-30)
+- Chronic low back pain (finding) (onset 2019-10-30)
+- Educated to high school level (finding) (onset 2019-11-18)
+- Misuses drugs (finding) (onset 2020-11-23)
+- Body mass index 30+ - obesity (finding) (onset 2023-11-27)
+- Not in labor force (finding) (onset 2023-11-27)
+- Victim of intimate partner abuse (finding) (onset 2023-11-27)
+
+=== RESOLVED / RECENT CONDITIONS ===
+- Child attention deficit disorder (disorder) (onset 2015-04-24)
+- Risk activity involvement (finding) (onset 2015-10-26)
+- Acute viral pharyngitis (disorder) (onset 2018-08-11)
+- Gingivitis (disorder) (onset 2018-11-12)
+- Gingival disease (disorder) (onset 2018-11-26)
+- Social isolation (finding) (onset 2020-11-23)
+- Leaking dental filling (finding) (onset 2023-12-11)
+
+=== MEDICATIONS (most recent order per drug) ===
+- Methylphenidate Hydrochloride 20 MG Oral Tablet (2015-04-24) [completed]
+
+=== THERAPY-RELATED PROCEDURES ===
+- Movement therapy (regime/therapy) (2019-11-05)
+- Movement therapy (regime/therapy) (2019-11-08)
+- Movement therapy (regime/therapy) (2019-11-25)
+- Movement therapy (regime/therapy) (2019-11-28)
+- Movement therapy (regime/therapy) (2019-12-01)
+- Movement therapy (regime/therapy) (2019-12-04)
+- Movement therapy (regime/therapy) (2019-12-07)
+- Movement therapy (regime/therapy) (2019-12-10)
+- Movement therapy (regime/therapy) (2019-12-13)
+- Dental care (regime/therapy) (2023-12-11)
+
+=== RECENT PROCEDURES ===
+- Assessment of substance use (procedure) (2020-11-23)
+- Assessment of substance use (procedure) (2023-11-27)
+- Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure) (2023-11-27)
+- Dental consultation and report (procedure) (2023-12-11)
+- Dental care (regime/therapy) (2023-12-11)
+- Removal of supragingival plaque and calculus from all teeth using dental instrument (procedure) (2023-12-11)
+- Removal of subgingival plaque and calculus from all teeth using dental instrument (procedure) (2023-12-11)
+- Examination of gingivae (procedure) (2023-12-11)
+- Restoration of tooth with coverage of all cusps using dental filling material (procedure) (2023-12-11)
+- Oral health education (procedure) (2023-12-11)
+
+=== RECENT ENCOUNTERS ===
+- Patient encounter procedure (procedure) (2019-12-07)
+- Patient encounter procedure (procedure) (2019-12-10)
+- Patient encounter procedure (procedure) (2019-12-13)
+- General examination of patient (procedure) (2020-11-23)
+- Administration of vaccine to produce active immunity (procedure) (2021-11-08)
+- Administration of vaccine to produce active immunity (procedure) (2021-11-29)
+- General examination of patient (procedure) (2023-11-27)
+- Encounter for check up (procedure) (2023-12-11)

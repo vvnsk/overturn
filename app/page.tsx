@@ -1,8 +1,9 @@
 "use client";
 
-// Overturn approval surface. Opens on the denial being dropped in — never on a
-// queue. One case at a time: denial in → agent works visibly → letter with an
-// enforced evidence chain → human approves the send.
+// Overturn pipeline surface. Denials arrive (fax webhook, simulated), each one
+// flows through a visible pipeline — Domino's-tracker style — and the autonomy
+// policy decides when a human is interrupted vs when the agent runs the show.
+// Analysis always runs (no side effects); the policy gates only the SEND.
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type {
@@ -11,74 +12,81 @@ import type {
   QaReport,
 } from "@/src/pipeline/types";
 import type { P2pBrief } from "@/src/pipeline/p2p";
+import CASES from "@/cases/cases.json";
 
 type StageId = "intake" | "draft" | "qa";
 type StageState = "pending" | "active" | "done";
-type Phase = "idle" | "running" | "complete" | "approved";
 
-const STAGES: { id: StageId; name: string; detail: string }[] = [
-  { id: "intake", name: "Intake & root cause", detail: "Vision parse of the scanned denial; classify why it happened" },
-  { id: "draft", name: "Evidence & draft", detail: "Reads the payer's own policy + chart; every claim carries an enforced citation" },
-  { id: "qa", name: "Compliance QA", detail: "Adversarial payer-side review: deadlines, evidence strength, confidence" },
-];
+interface CaseRun {
+  phase: "arriving" | "running" | "complete" | "error";
+  stages: Record<StageId, StageState>;
+  denial: DenialRecord | null;
+  draftText: string;
+  letter: AssembledLetter | null;
+  qa: QaReport | null;
+  error: string | null;
+  submitted: null | { by: "agent" | "human"; at: string };
+  held: boolean;
+  handled: Record<number, boolean>;
+  p2p: P2pBrief | null;
+  showBrief: boolean;
+  p2pLoading: boolean;
+}
+
+const freshRun = (): CaseRun => ({
+  phase: "arriving",
+  stages: { intake: "pending", draft: "pending", qa: "pending" },
+  denial: null, draftText: "", letter: null, qa: null, error: null,
+  submitted: null, held: false, handled: {}, p2p: null, showBrief: false, p2pLoading: false,
+});
+
+type Mode = "human" | "confident" | "auto";
+interface Settings { mode: Mode; threshold: number; holdHighSev: boolean }
+
+interface Decision { action: "auto" | "human" | "hold"; reason: string }
+
+function decide(qa: QaReport, s: Settings): Decision {
+  const conf = Math.round(qa.overall_confidence * 100);
+  const bar = Math.round(s.threshold * 100);
+  const highFlags = qa.needs_human.some((h) => h.severity === "high");
+  if (qa.recommendation === "do_not_submit")
+    return { action: "hold", reason: "QA: evidence does not support submitting — held for the clinic" };
+  if (s.mode === "human")
+    return { action: "human", reason: "policy: a human approves every send" };
+  if (s.holdHighSev && highFlags)
+    return { action: "human", reason: "high-severity flag — policy interrupts a human" };
+  if (s.mode === "auto")
+    return { action: "auto", reason: "policy: agent runs the show (QA did not block)" };
+  if (qa.overall_confidence >= s.threshold)
+    return { action: "auto", reason: `confidence ${conf}% clears the ${bar}% bar, no blocking flags` };
+  return { action: "human", reason: `confidence ${conf}% below the ${bar}% bar — routed to coordinator` };
+}
+
+const CASE_ORDER = ["rivera", "dara", "haag", "johnston"];
 
 export default function Page() {
-  const [phase, setPhase] = useState<Phase>("idle");
-  const [stages, setStages] = useState<Record<StageId, StageState>>({
-    intake: "pending", draft: "pending", qa: "pending",
-  });
-  const [denial, setDenial] = useState<DenialRecord | null>(null);
-  const [draftText, setDraftText] = useState("");
-  const [letter, setLetter] = useState<AssembledLetter | null>(null);
-  const [qa, setQa] = useState<QaReport | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [drag, setDrag] = useState(false);
-  const [replayed, setReplayed] = useState(false);
-  const [p2p, setP2p] = useState<P2pBrief | null>(null);
-  const [p2pLoading, setP2pLoading] = useState(false);
-  const [showBrief, setShowBrief] = useState(false);
-  const fileInput = useRef<HTMLInputElement>(null);
+  const [settings, setSettings] = useState<Settings>({ mode: "confident", threshold: 0.8, holdHighSev: true });
+  const [replay, setReplay] = useState(true);
+  const [arrived, setArrived] = useState<string[]>([]);
+  const [runs, setRuns] = useState<Record<string, CaseRun>>({});
+  const [drawer, setDrawer] = useState<string | null>(null);
+  const [faxToast, setFaxToast] = useState<string | null>(null);
+  const arrivedRef = useRef<string[]>([]);
+  arrivedRef.current = arrived;
 
-  // Keep the streaming caret in view while the letter is drafting — the typing
-  // effect is the demo; it shouldn't disappear below the fold. The near-bottom
-  // guard lets the presenter scroll up to point at other panels without the
-  // page yanking back down.
-  useEffect(() => {
-    if (phase === "running" && draftText && !letter) {
-      const nearBottom =
-        window.innerHeight + window.scrollY > document.body.scrollHeight - 400;
-      if (nearBottom) window.scrollTo({ top: document.body.scrollHeight });
-    }
-  }, [phase, draftText, letter]);
+  const patch = useCallback((id: string, p: Partial<CaseRun> | ((r: CaseRun) => Partial<CaseRun>)) => {
+    setRuns((all) => {
+      const cur = all[id] ?? freshRun();
+      const delta = typeof p === "function" ? p(cur) : p;
+      return { ...all, [id]: { ...cur, ...delta } };
+    });
+  }, []);
 
-  // Jump to the top of the brief when it opens.
-  useEffect(() => {
-    if (showBrief) window.scrollTo({ top: 0 });
-  }, [showBrief]);
-
-  // Once the cited letter lands, return to the top of the sheet.
-  useEffect(() => {
-    if (letter) window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [letter]);
-
-  const run = useCallback(async (opts: { file?: File; replay?: boolean }) => {
-    setPhase("running");
-    setError(null);
-    setDenial(null); setDraftText(""); setLetter(null); setQa(null);
-    setP2p(null); setShowBrief(false);
-    setStages({ intake: "pending", draft: "pending", qa: "pending" });
-    setReplayed(!!opts.replay);
-
+  const runCase = useCallback(async (id: string) => {
+    patch(id, { ...freshRun(), phase: "running" });
     try {
-      const url = opts.replay ? "/api/run?mode=replay" : "/api/run";
-      let body: FormData | undefined;
-      if (opts.file) {
-        body = new FormData();
-        body.append("denial", opts.file);
-      }
-      const res = await fetch(url, { method: "POST", body });
+      const res = await fetch(`/api/run?case=${id}${replay ? "&mode=replay" : ""}`, { method: "POST" });
       if (!res.ok || !res.body) throw new Error(`pipeline request failed (${res.status})`);
-
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buf = "";
@@ -88,17 +96,19 @@ export default function Page() {
         const ev = JSON.parse(line);
         switch (ev.type) {
           case "stage_start":
-            setStages((s) => ({ ...s, [ev.stage as StageId]: "active" }));
+            patch(id, (r) => ({ stages: { ...r.stages, [ev.stage as StageId]: "active" } }));
             break;
           case "stage_done":
-            setStages((s) => ({ ...s, [ev.stage as StageId]: "done" }));
+            patch(id, (r) => ({ stages: { ...r.stages, [ev.stage as StageId]: "done" } }));
             break;
-          case "denial": setDenial(ev.data); break;
-          case "draft_delta": setDraftText((t) => t + ev.text); break;
-          case "letter": setLetter(ev.data); break;
-          case "qa": setQa(ev.data); break;
+          case "denial": patch(id, { denial: ev.data }); break;
+          case "draft_delta":
+            patch(id, (r) => ({ draftText: r.draftText + ev.text }));
+            break;
+          case "letter": patch(id, { letter: ev.data }); break;
+          case "qa": patch(id, { qa: ev.data }); break;
           case "error": throw new Error(ev.message);
-          case "done": setPhase("complete"); finished = true; break;
+          case "done": patch(id, { phase: "complete" }); finished = true; break;
         }
       };
       for (;;) {
@@ -109,238 +119,308 @@ export default function Page() {
         buf = lines.pop() ?? "";
         for (const line of lines) handleLine(line);
       }
-      handleLine(buf); // trailing line if the server closed without a final newline
+      handleLine(buf);
       if (!finished) throw new Error("stream ended before the pipeline finished");
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-      setPhase("idle");
+      patch(id, { phase: "error", error: err instanceof Error ? err.message : String(err) });
     }
-  }, []);
+  }, [patch, replay]);
 
-  const onDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      setDrag(false);
-      const file = e.dataTransfer.files?.[0];
-      if (file) void run({ file });
-    },
-    [run],
-  );
+  const simulateFax = useCallback((count = 1) => {
+    const pending = CASE_ORDER.filter((c) => !arrivedRef.current.includes(c));
+    const batch = pending.slice(0, count);
+    batch.forEach((id, i) => {
+      setTimeout(() => {
+        const label = CASES.find((c) => c.id === id)?.patient ?? id;
+        setFaxToast(`Incoming fax — Notice of Adverse Benefit Determination re: ${label}…`);
+        setTimeout(() => {
+          setFaxToast(null);
+          setArrived((a) => (a.includes(id) ? a : [...a, id]));
+          void runCase(id);
+        }, 1400);
+      }, i * 2200);
+    });
+  }, [runCase]);
 
-  const renderP2p = useCallback(async () => {
-    if (!denial || !letter || !qa) return;
-    if (p2p) { setShowBrief(true); return; }
-    setError(null);
-    setP2pLoading(true);
-    try {
-      const res = await fetch("/api/p2p", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ denial, letter, qa, cached: replayed }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "p2p render failed");
-      setP2p(data);
-      setShowBrief(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
-    } finally {
-      setP2pLoading(false);
+  // Autonomy engine: when QA lands (or the policy changes), auto-submit
+  // anything the policy clears that hasn't been decided yet.
+  useEffect(() => {
+    for (const id of arrived) {
+      const r = runs[id];
+      if (!r?.qa || r.submitted || r.held || r.phase !== "complete") continue;
+      const d = decide(r.qa, settings);
+      if (d.action === "auto") {
+        patch(id, { submitted: { by: "agent", at: new Date().toISOString() } });
+      } else if (d.action === "hold") {
+        patch(id, { held: true });
+      }
     }
-  }, [denial, letter, qa, p2p, replayed]);
+  }, [arrived, runs, settings, patch]);
 
-  const downloadLetter = useCallback(() => {
-    if (!letter) return;
-    const blob = new Blob([letter.text.replace(/\[\d+\]/g, "")], { type: "text/plain" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "appeal-letter-rivera.txt";
-    a.click();
-  }, [letter]);
+  const drawerCase = drawer ? CASES.find((c) => c.id === drawer) : null;
+  const drawerRun = drawer ? runs[drawer] : null;
 
   return (
     <>
       <header className="topbar">
         <div className="wordmark">OVER<em>TURN</em></div>
-        <div className="case-label">
-          {denial
-            ? `${denial.member.name} — ${denial.service.description} (CPT ${denial.service.cpt_codes.join(", ")})`
-            : "appeals engine for patient-access teams"}
-        </div>
+        <div className="case-label">appeals pipeline — Cedar Grove Family Medicine</div>
         <div className="spacer" />
-        {phase === "running" && <span className="status-pill">agent working{replayed ? " (replay)" : ""}…</span>}
-        {phase === "complete" && <span className="status-pill">awaiting human approval</span>}
-        {phase === "approved" && <span className="status-pill">appeal submitted</span>}
+        <label className="replay-toggle">
+          <input type="checkbox" checked={replay} onChange={(e) => setReplay(e.target.checked)} />
+          cached replay
+        </label>
+        <button className="primary fax-btn" onClick={() => simulateFax(1)}>📠 Simulate incoming fax</button>
+        <button className="ghost" onClick={() => simulateFax(4)}>📠 ×{Math.max(CASE_ORDER.length - arrived.length, 0)} all</button>
       </header>
 
-      {error && phase !== "idle" && (
-        <div className="error-banner" style={{ margin: "12px 22px 0" }}>
-          Error: {error}
+      <div className="policy-bar">
+        <span className="policy-label">AUTONOMY POLICY</span>
+        <div className="segmented">
+          {([
+            ["human", "Human approves all"],
+            ["confident", "Auto-submit when confident"],
+            ["auto", "Agent runs the show"],
+          ] as [Mode, string][]).map(([m, label]) => (
+            <button key={m} className={settings.mode === m ? "on" : ""}
+              onClick={() => setSettings((s) => ({ ...s, mode: m }))}>{label}</button>
+          ))}
         </div>
-      )}
+        <label className={`policy-item${settings.mode === "human" ? " dim" : ""}`}>
+          confidence ≥ <b>{Math.round(settings.threshold * 100)}%</b>
+          <input type="range" min={50} max={95} step={5} value={settings.threshold * 100}
+            disabled={settings.mode === "human"}
+            onChange={(e) => setSettings((s) => ({ ...s, threshold: Number(e.target.value) / 100 }))} />
+        </label>
+        <label className="policy-item">
+          <input type="checkbox" checked={settings.holdHighSev}
+            onChange={(e) => setSettings((s) => ({ ...s, holdHighSev: e.target.checked }))} />
+          interrupt a human on high-severity flags
+        </label>
+      </div>
 
-      {phase === "idle" ? (
-        <main className="intake-screen">
-          {error && <div className="error-banner">Pipeline error: {error} — retry, or use the cached replay.</div>}
-          <h1>The gate said no. Start the appeal.</h1>
-          <p className="sub">
-            Drop in the scanned prior-authorization denial. Overturn parses it, reads the
-            payer&apos;s own policy against the chart, and drafts a submission-ready appeal —
-            every sentence carrying an evidence citation the model cannot fabricate.
-          </p>
-          <div
-            className={`dropzone${drag ? " drag" : ""}`}
-            onDragOver={(e) => { e.preventDefault(); setDrag(true); }}
-            onDragLeave={() => setDrag(false)}
-            onDrop={onDrop}
-            onClick={() => fileInput.current?.click()}
-          >
-            <div className="big">Drop the denial letter here</div>
-            <div className="hint">PDF scan — or click to choose a file</div>
-            <input
-              ref={fileInput} type="file" accept="application/pdf" hidden
-              onChange={(e) => { const f = e.target.files?.[0]; if (f) void run({ file: f }); }}
-            />
+      {faxToast && <div className="fax-toast">📠 {faxToast}</div>}
+
+      <main className="pipeline">
+        {arrived.length === 0 && !faxToast && (
+          <div className="empty-pipeline">
+            <h1>The fax line is quiet.</h1>
+            <p>
+              Denials arrive here the way they arrive at every clinic — by fax. Simulate one
+              and watch the agent take it from scan to submission-ready appeal. The autonomy
+              policy above decides when a human gets interrupted.
+            </p>
           </div>
-          <div className="intake-actions">
-            <button className="primary" onClick={() => void run({})}>Run the Rivera case live</button>
-            <button className="ghost" onClick={() => void run({ replay: true })}>Replay cached run</button>
-          </div>
-        </main>
-      ) : (
-        <main className="surface">
-          {/* left rail — agent progress + parsed denial */}
-          <div className="rail">
-            <div className="card">
-              <h3>Agent</h3>
-              {STAGES.map((s) => (
-                <div key={s.id} className={`stage ${stages[s.id]}`}>
-                  <div className="dot" />
-                  <div>
-                    <div className="name">{s.name}</div>
-                    <div className="detail">{s.detail}</div>
-                  </div>
-                </div>
-              ))}
+        )}
+
+        {arrived.map((id) => {
+          const meta = CASES.find((c) => c.id === id)!;
+          const r = runs[id] ?? freshRun();
+          const d = r.qa && r.phase === "complete" ? decide(r.qa, settings) : null;
+          return (
+            <div key={id} className={`case-row${drawer === id ? " open" : ""}`} onClick={() => setDrawer(id)}>
+              <div className="case-head">
+                <span className="pt-name">{meta.star ? "★ " : ""}{meta.patient}</span>
+                <span className="pt-svc">{meta.service} · CPT {meta.cpt}</span>
+                <span className="pt-src">📠 fax intake</span>
+                <span className="spacer" />
+                {r.qa && <span className="conf-badge">{Math.round(r.qa.overall_confidence * 100)}%</span>}
+                <DecisionChip run={r} decision={d} />
+              </div>
+              <Tracker run={r} />
+              <div className="case-sub">
+                {r.phase === "error" ? `error: ${r.error}` :
+                 r.stages.qa === "done" && d ? d.reason :
+                 r.stages.qa === "active" ? "adversarial payer-side review…" :
+                 r.stages.draft === "active" ? `drafting against the payer's own policy — ${r.draftText.length.toLocaleString()} chars, citations enforced…` :
+                 r.stages.intake === "active" ? "vision-parsing the scanned denial…" :
+                 r.phase === "arriving" ? "received — queued" : ""}
+              </div>
             </div>
+          );
+        })}
+      </main>
 
-            {denial && (
-              <div className="card">
-                <h3>Parsed denial</h3>
-                <div className="fact"><span className="k">Payer</span><span className="v">{denial.payer_name}</span></div>
-                <div className="fact"><span className="k">Member</span><span className="v">{denial.member.name}</span></div>
-                <div className="fact"><span className="k">ID</span><span className="v">{denial.member.member_id}</span></div>
-                <div className="fact"><span className="k">Service</span><span className="v">CPT {denial.service.cpt_codes.join(", ")}</span></div>
-                <div className="fact"><span className="k">Reason</span><span className="v">{denial.denial.reason_code ?? "—"}</span></div>
-                <div className="fact"><span className="k">Policy</span><span className="v">{denial.denial.cited_policy_id} §{denial.denial.cited_policy_section}</span></div>
-                <div className="fact"><span className="k">Deadline</span><span className="v">{denial.denial.appeal_deadline ?? "—"}</span></div>
-                <div className="fact" style={{ marginTop: 6 }}>
-                  <span className="k">Root cause</span>
-                  <span className="tag">{denial.root_cause.replace(/_/g, " ")}</span>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* center — the letter (or the P2P brief, third rendering of the bundle) */}
-          <div>
-            {showBrief && p2p ? (
-              <BriefView brief={p2p} onBack={() => setShowBrief(false)} />
-            ) : letter ? (
-              <div className="sheet"><LetterView letter={letter} /></div>
-            ) : draftText ? (
-              <div className="sheet">{draftText}<span className="caret" /></div>
-            ) : (
-              <div className="sheet empty">
-                {stages.intake === "active" ? "Reading the denial notice…" : "Waiting for the agent…"}
-              </div>
-            )}
-          </div>
-
-          {/* right rail — QA verdict + approval */}
-          <div className="rail">
-            {qa && (
-              <div className="card">
-                <h3>Compliance review</h3>
-                <div className={`rec ${qa.recommendation === "ready_to_submit" ? "ready" : qa.recommendation === "review_recommended" ? "review" : "stop"}`}>
-                  {qa.recommendation.replace(/_/g, " ")}
-                </div>
-                <div className="confbar"><div style={{ width: `${Math.round(qa.overall_confidence * 100)}%` }} /></div>
-                <div className="fact"><span className="k">Overturn confidence</span><span className="v">{Math.round(qa.overall_confidence * 100)}%</span></div>
-                <div className="fact"><span className="k">Within deadline</span><span className="v">{qa.timeliness.within_deadline ? `yes — ${qa.timeliness.days_remaining}d left` : "NO"}</span></div>
-              </div>
-            )}
-
-            {qa && qa.needs_human.length > 0 && (
-              <div className="card">
-                <h3>Needs a human</h3>
-                {qa.needs_human.map((h, i) => (
-                  <div key={i} className="human-item">
-                    <span className={`sev ${h.severity}`}>{h.severity}</span>
-                    <span>{h.issue}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {qa && (
-              <div className="card">
-                <h3>Evidence audit ({qa.claims.length} claims)</h3>
-                {qa.claims.map((c, i) => (
-                  <div key={i} className="claim">
-                    <span className={`strength ${c.evidence_strength}`}>{c.evidence_strength}</span>
-                    <span>{c.claim}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {phase === "complete" && (
-              <div className="card approve-box">
-                <button className="primary" onClick={() => setPhase("approved")}>
-                  Approve &amp; submit appeal
-                </button>
-                <button className="ghost" onClick={downloadLetter}>Download letter (.txt)</button>
-              </div>
-            )}
-
-            {phase === "approved" && denial && (
-              <>
-                <div className="packet-ok">
-                  <div className="headline">Appeal packet submitted ✓</div>
-                  Faxed to {denial.payer_name} appeals department with chart excerpts and
-                  policy citations attached. Confirmation logged. <em>(submission mocked)</em>
-                </div>
-                <div className="sms">
-                  <div className="from">SMS → patient (mocked)</div>
-                  {`Hi ${firstName(denial.member.name)} — good news: ${denial.provider.facility ?? "your clinic"} appealed your insurance denial today. Most appeals like yours succeed. We expect the plan's answer within 30 days and will text you the moment we hear back.`}
-                </div>
-                <div className="card approve-box">
-                  <div style={{ fontSize: 12.5, color: "var(--ink-soft)" }}>
-                    Payer requested a peer-to-peer? One click renders the physician&apos;s
-                    brief from the same evidence bundle.
-                  </div>
-                  <button className="primary" onClick={() => void renderP2p()} disabled={p2pLoading}>
-                    {p2pLoading ? "Rendering brief…" : showBrief ? "Brief rendered ✓" : "Render P2P brief"}
-                  </button>
-                  <button className="ghost" onClick={downloadLetter}>Download letter (.txt)</button>
-                </div>
-              </>
-            )}
-          </div>
-        </main>
+      {drawerCase && drawerRun && (
+        <Drawer
+          meta={drawerCase} run={drawerRun} settings={settings} replay={replay}
+          onClose={() => setDrawer(null)}
+          onPatch={(p) => patch(drawerCase.id, p)}
+        />
       )}
     </>
   );
 }
 
+function Tracker({ run }: { run: CaseRun }) {
+  const steps: { label: string; state: StageState }[] = [
+    { label: "Received", state: "done" },
+    { label: "Parse & classify", state: run.stages.intake },
+    { label: "Evidence & draft", state: run.stages.draft },
+    { label: "Compliance QA", state: run.stages.qa },
+    {
+      label: run.submitted ? (run.submitted.by === "agent" ? "Auto-submitted" : "Submitted") : run.held ? "Held" : "Decision",
+      state: run.submitted || run.held ? "done" : run.stages.qa === "done" ? "active" : "pending",
+    },
+  ];
+  return (
+    <div className="tracker">
+      {steps.map((s, i) => (
+        <div key={i} className={`seg ${s.state}`}>
+          <div className="seg-bar" />
+          <div className="seg-label">{s.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function DecisionChip({ run, decision }: { run: CaseRun; decision: Decision | null }) {
+  if (run.submitted)
+    return <span className="chip green">✓ {run.submitted.by === "agent" ? "auto-submitted → payer fax (mocked)" : "submitted by coordinator"}</span>;
+  if (run.held) return <span className="chip red">✋ held — not worth submitting as-is</span>;
+  if (decision?.action === "human") return <span className="chip amber">👤 needs a human</span>;
+  if (run.phase === "running" || run.phase === "arriving") return <span className="chip gray">agent working…</span>;
+  if (run.phase === "error") return <span className="chip red">error</span>;
+  return null;
+}
+
 function firstName(name: string): string {
-  // handles "RIVERA, MARISOL" and "Marisol Rivera"
   if (name.includes(",")) {
     const part = name.split(",")[1]?.trim() ?? name;
     return part.charAt(0) + part.slice(1).toLowerCase();
   }
   return name.split(" ")[0];
+}
+
+interface DrawerProps {
+  meta: (typeof CASES)[number];
+  run: CaseRun;
+  settings: Settings;
+  replay: boolean;
+  onClose: () => void;
+  onPatch: (p: Partial<CaseRun>) => void;
+}
+
+function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) {
+  const d = run.qa && run.phase === "complete" ? decide(run.qa, settings) : null;
+
+  const renderP2p = async () => {
+    if (run.p2p) { onPatch({ showBrief: true }); return; }
+    if (!run.denial || !run.letter || !run.qa) return;
+    onPatch({ p2pLoading: true });
+    try {
+      const res = await fetch("/api/p2p", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ denial: run.denial, letter: run.letter, qa: run.qa, cached: replay, caseId: meta.id }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "p2p render failed");
+      onPatch({ p2p: data, showBrief: true, p2pLoading: false });
+    } catch (err) {
+      onPatch({ error: err instanceof Error ? err.message : String(err), p2pLoading: false });
+    }
+  };
+
+  const downloadLetter = () => {
+    if (!run.letter) return;
+    const blob = new Blob([run.letter.text.replace(/\[\d+\]/g, "")], { type: "text/plain" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `appeal-letter-${meta.id}.txt`;
+    a.click();
+  };
+
+  return (
+    <div className="drawer-scrim" onClick={onClose}>
+      <aside className="drawer" onClick={(e) => e.stopPropagation()}>
+        <div className="drawer-head">
+          <div>
+            <div className="pt-name">{meta.patient}</div>
+            <div className="pt-svc">{meta.service} · CPT {meta.cpt}</div>
+          </div>
+          <div className="spacer" />
+          <DecisionChip run={run} decision={d} />
+          <button className="ghost close" onClick={onClose}>×</button>
+        </div>
+
+        {run.error && <div className="error-banner">Error: {run.error}</div>}
+
+        {d && !run.submitted && (
+          <div className="decision-banner">
+            <span>{d.reason}</span>
+            <div className="decision-actions">
+              <button className="primary" onClick={() => onPatch({ submitted: { by: "human", at: new Date().toISOString() }, held: false })}>
+                Approve &amp; submit
+              </button>
+              {!run.held && (
+                <button className="ghost" onClick={() => onPatch({ held: true })}>Hold</button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {run.submitted && run.denial && (
+          <div className="packet-ok">
+            <div className="headline">Appeal packet {run.submitted.by === "agent" ? "auto-submitted by the agent" : "submitted"} ✓</div>
+            Faxed to {run.denial.payer_name} appeals department with chart excerpts and policy
+            citations attached. <em>(fax transmission mocked)</em>
+            <div className="sms">
+              <div className="from">SMS → patient (mocked)</div>
+              {`Hi ${firstName(run.denial.member.name)} — good news: your clinic appealed your insurance denial today. Most appeals like yours succeed. We'll text you the moment we hear back.`}
+            </div>
+          </div>
+        )}
+
+        {run.qa && (
+          <div className="card">
+            <h3>Compliance review</h3>
+            <div className={`rec ${run.qa.recommendation === "ready_to_submit" ? "ready" : run.qa.recommendation === "review_recommended" ? "review" : "stop"}`}>
+              {run.qa.recommendation.replace(/_/g, " ")} — {Math.round(run.qa.overall_confidence * 100)}%
+            </div>
+            <div className="confbar"><div style={{ width: `${Math.round(run.qa.overall_confidence * 100)}%` }} /></div>
+            <div className="fact"><span className="k">Within deadline</span><span className="v">{run.qa.timeliness.within_deadline ? `yes — ${run.qa.timeliness.days_remaining}d left` : "NO"}</span></div>
+          </div>
+        )}
+
+        {run.qa && run.qa.needs_human.length > 0 && (
+          <div className="card">
+            <h3>Confirmations — needs a human</h3>
+            {run.qa.needs_human.map((h, i) => (
+              <label key={i} className={`human-item actionable${run.handled[i] ? " handled" : ""}`}>
+                <input type="checkbox" checked={!!run.handled[i]}
+                  onChange={() => onPatch({ handled: { ...run.handled, [i]: !run.handled[i] } })} />
+                <span className={`sev ${h.severity}`}>{h.severity}</span>
+                <span>{h.issue}</span>
+              </label>
+            ))}
+          </div>
+        )}
+
+        {run.showBrief && run.p2p ? (
+          <BriefView brief={run.p2p} onBack={() => onPatch({ showBrief: false })} />
+        ) : run.letter ? (
+          <div className="sheet"><LetterView letter={run.letter} /></div>
+        ) : run.draftText ? (
+          <div className="sheet">{run.draftText}<span className="caret" /></div>
+        ) : (
+          <div className="sheet empty">
+            {run.stages.intake === "active" ? "Reading the denial notice…" : "Waiting for the agent…"}
+          </div>
+        )}
+
+        {run.letter && !run.showBrief && run.qa && (
+          <div className="card approve-box">
+            <button className="primary" onClick={() => void renderP2p()} disabled={run.p2pLoading}>
+              {run.p2pLoading ? "Rendering brief…" : run.p2p ? "View P2P brief" : "Render P2P brief"}
+            </button>
+            <button className="ghost" onClick={downloadLetter}>Download letter (.txt)</button>
+          </div>
+        )}
+      </aside>
+    </div>
+  );
 }
 
 function BriefView({ brief, onBack }: { brief: P2pBrief; onBack: () => void }) {
@@ -349,7 +429,6 @@ function BriefView({ brief, onBack }: { brief: P2pBrief; onBack: () => void }) {
       <div className="brief-tag">PEER-TO-PEER BRIEF — for the ordering physician</div>
       <h2>{brief.headline}</h2>
       <div className="brief-patient">{brief.patient_line}</div>
-
       <h4>Key points</h4>
       {brief.key_points.map((k, i) => (
         <div key={i} className="brief-point">
@@ -357,7 +436,6 @@ function BriefView({ brief, onBack }: { brief: P2pBrief; onBack: () => void }) {
           <span className="brief-src">{k.source}</span>
         </div>
       ))}
-
       <h4>If the medical director pushes back</h4>
       {brief.anticipated_objections.map((o, i) => (
         <div key={i} className="brief-obj">
@@ -365,13 +443,9 @@ function BriefView({ brief, onBack }: { brief: P2pBrief; onBack: () => void }) {
           <div className="resp">→ {o.response}</div>
         </div>
       ))}
-
       <h4>The ask</h4>
       <div className="brief-ask">{brief.ask}</div>
-
-      <button className="ghost" style={{ marginTop: 18 }} onClick={onBack}>
-        ← Back to the appeal letter
-      </button>
+      <button className="ghost" style={{ marginTop: 18 }} onClick={onBack}>← Back to the appeal letter</button>
     </div>
   );
 }

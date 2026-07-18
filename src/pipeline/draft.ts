@@ -25,13 +25,17 @@ Attached documents:
 
 Write the complete appeal letter, ready to submit. Requirements:
 
-- GROUND 1 — the denial is factually wrong on its own cited criterion: check the
-  denial's stated reason against the chart. If the chart documents what the payer
-  says is missing, say so precisely (durations, visit counts, dates).
-- GROUND 2 — the payer's own policy contains alternative qualifying criteria the
-  denial never evaluated: read the FULL policy, find any section this patient
-  independently satisfies, and argue it from the policy's own text and the chart's
-  own findings.
+- Check the denial's stated reason against the chart. If the chart documents what
+  the payer says is missing, say so precisely (durations, visit counts, dates) —
+  a denial that is factually wrong on its own cited criterion is your strongest
+  ground; label it clearly.
+- Read the FULL policy for alternative qualifying criteria the denial never
+  evaluated. If the patient independently satisfies another section, argue it as a
+  separate ground from the policy's own text and the chart's own findings.
+- Argue every ground the record genuinely supports — and ONLY those. If the
+  record is thin, argue what exists honestly and precisely; do NOT overstate weak
+  evidence or invent support. The QA stage and a human coordinator rely on this
+  letter being exactly as strong as the record allows.
 - Every clinical fact must come from the chart. Every policy statement must come
   from the policy document. Do not assert anything the attached documents do not
   support. Cite as you write.
@@ -51,9 +55,13 @@ export async function runDraft(
   chartPath: string,
   today: string,
   onText?: (delta: string) => void,
+  titles?: { policyTitle: string; chartTitle: string },
 ): Promise<Anthropic.Message> {
   const policyPdf = fs.readFileSync(policyPdfPath).toString("base64");
   const chart = fs.readFileSync(chartPath, "utf8");
+  const policyTitle =
+    titles?.policyTitle ?? "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)";
+  const chartTitle = titles?.chartTitle ?? "Patient Chart";
 
   const stream = client.messages.stream({
     model: MODEL,
@@ -66,13 +74,13 @@ export async function runDraft(
           {
             type: "document",
             source: { type: "base64", media_type: "application/pdf", data: policyPdf },
-            title: "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+            title: policyTitle,
             citations: { enabled: true },
           },
           {
             type: "document",
             source: { type: "text", media_type: "text/plain", data: chart },
-            title: "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+            title: chartTitle,
             citations: { enabled: true },
           },
           { type: "text", text: draftPrompt(denial, today) },

@@ -10,7 +10,8 @@ import type { AssembledLetter, DenialRecord, QaReport } from "@/src/pipeline/typ
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const CACHE = path.join(process.cwd(), "runs/gold/p2p.json");
+const cachePath = (caseId: string) =>
+  path.join(process.cwd(), "runs", caseId === "rivera" ? "gold" : caseId, "p2p.json");
 
 export async function POST(req: Request): Promise<Response> {
   const body = (await req.json()) as {
@@ -18,15 +19,17 @@ export async function POST(req: Request): Promise<Response> {
     letter: AssembledLetter;
     qa: QaReport;
     cached?: boolean;
+    caseId?: string;
   };
+  const cache = cachePath(body.caseId ?? "rivera");
 
-  if (body.cached && fs.existsSync(CACHE)) {
-    return Response.json(JSON.parse(fs.readFileSync(CACHE, "utf8")));
+  if (body.cached && fs.existsSync(cache)) {
+    return Response.json(JSON.parse(fs.readFileSync(cache, "utf8")));
   }
 
   try {
     const brief = await runP2p(body.denial, body.letter, body.qa);
-    if (body.cached) fs.writeFileSync(CACHE, JSON.stringify(brief, null, 2));
+    if (body.cached) fs.writeFileSync(cache, JSON.stringify(brief, null, 2));
     return Response.json(brief);
   } catch (err) {
     return Response.json(

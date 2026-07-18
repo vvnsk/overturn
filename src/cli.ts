@@ -10,13 +10,17 @@ import { runIntake } from "./pipeline/intake";
 import { runDraft } from "./pipeline/draft";
 import { runQa } from "./pipeline/qa";
 import { assembleLetter, letterWithSources } from "./pipeline/render";
+import { getCase } from "./pipeline/cases";
 import type { DenialRecord } from "./pipeline/types";
 
+const caseArg = process.argv.find((a) => a.startsWith("--case="))?.split("=")[1] ?? "rivera";
+const entry = getCase(caseArg);
 const CASE = {
-  name: "gold",
-  denialPdf: "fixtures/denial-notice.pdf",
-  policyPdf: "fixtures/policy-mp-rad-014.pdf",
-  chart: "fixtures/chart-rivera.txt",
+  // "rivera" keeps its historical runs/gold cache dir; new cases use runs/<id>
+  name: caseArg === "rivera" ? "gold" : caseArg,
+  denialPdf: entry.denialPdf,
+  policyPdf: entry.policyPdf,
+  chart: entry.chart,
 };
 
 const OUT_DIR = path.join("runs", CASE.name);
@@ -69,7 +73,10 @@ async function main(): Promise<void> {
   let letter;
   if (!stageArg || stageArg === "draft") {
     const message = await timed("Draft: writing appeal against the payer's own policy", () =>
-      runDraft(denial, CASE.policyPdf, CASE.chart, TODAY),
+      runDraft(denial, CASE.policyPdf, CASE.chart, TODAY, undefined, {
+        policyTitle: entry.policyTitle,
+        chartTitle: entry.chartTitle,
+      }),
     );
     save("draft-message.json", message);
     letter = assembleLetter(message.content as never);

@@ -1,0 +1,108 @@
+{
+  "timeliness": {
+    "denial_date": "2026-07-08",
+    "appeal_deadline": "2027-01-04",
+    "filed_date": "2026-07-18",
+    "within_deadline": true,
+    "days_remaining": 170
+  },
+  "claims": [
+    {
+      "claim": "Policy Section 2.1 makes lumbar MRI medically necessary when LBP persisting 6+ weeks has failed a documented conservative therapy trial (needing at least one qualifying modality).",
+      "evidence_strength": "strong",
+      "sources": [
+        "[1]"
+      ]
+    },
+    {
+      "claim": "Member has chronic low back pain with onset 2014, far exceeding the six-week duration threshold.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[2]"
+      ]
+    },
+    {
+      "claim": "Member completed a supervised PT trial of 14 visits over 7 weeks (2026-05-12 to 2026-07-01), exceeding the six-week requirement.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[2]"
+      ]
+    },
+    {
+      "claim": "Adherence was excellent, documented at 13/14 visits.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[3]"
+      ]
+    },
+    {
+      "claim": "The PT course encompassed lumbar stabilization, graded activity, and a supervised home exercise program (satisfying the PT and home-exercise modalities).",
+      "evidence_strength": "strong",
+      "sources": [
+        "[4]"
+      ]
+    },
+    {
+      "claim": "Concurrent NSAID pharmacotherapy (naproxen 500mg BID) was maintained throughout the course, satisfying a second/third qualifying modality.",
+      "evidence_strength": "weak",
+      "sources": [
+        "[5]"
+      ]
+    },
+    {
+      "claim": "The conservative therapy trial failed: minimal symptomatic improvement with persistent LBP and functional limitation.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[6]"
+      ]
+    },
+    {
+      "claim": "The treating therapist referred the patient back for advanced imaging evaluation.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[7]"
+      ]
+    },
+    {
+      "claim": "Section 4 documentation requirements are fully satisfied (duration, modalities/duration, objective physical exam findings, and clinical question).",
+      "evidence_strength": "weak",
+      "sources": [
+        "[8]",
+        "[2]",
+        "[4]"
+      ]
+    }
+  ],
+  "missing_elements": [
+    "No objective physical examination findings are provided, though Section 4 (cited by the letter itself as [8]) explicitly requires them — the letter asserts Section 4 is met without supplying this element.",
+    "Letter is signed by 'Patient Access Team' rather than the ordering physician; no physician attestation/signature block, which some payers require for a clinical-necessity appeal.",
+    "Appeal level is labeled 'First-Level' but the denial's appeal_level was null — this designation is assumed and unverified.",
+    "Member DOB (05/29/1925) added to letter was null in the parsed denial; sourced from chart but not from the denial notice itself.",
+    "Payer mailing address is a placeholder ([Payer Address])."
+  ],
+  "needs_human": [
+    {
+      "issue": "Naproxen inconsistency: citation [5] (PT addendum) states 'Naproxen 500mg BID maintained throughout the course,' but the chart medication list shows 'Naproxen sodium 220 MG [completed]' last ordered 1979-07-27 and lists only acetaminophen as an active analgesic. A skeptical reviewer could seize on this contradiction. Verify the active NSAID claim or drop/soften the concurrent-NSAID argument (PT alone satisfies 2.1).",
+      "severity": "high"
+    },
+    {
+      "issue": "Letter claims Section 4 documentation is fully met, but no objective physical examination findings are cited or enclosed. Either supply PE findings or temper this assertion to avoid handing the payer a procedural rejection ground.",
+      "severity": "high"
+    },
+    {
+      "issue": "Letter is signed by administrative staff, not the ordering physician; confirm whether Dr. Natarajan's signature/attestation is required and add if so.",
+      "severity": "medium"
+    },
+    {
+      "issue": "Confirm this is genuinely a first-level appeal (denial appeal_level was null) and that peer-to-peer/appeal sequencing is correct.",
+      "severity": "low"
+    },
+    {
+      "issue": "Verify patient age plausibility/identity (DOB 1925 = ~101 years old) and confirm DOB against payer records since denial omitted it.",
+      "severity": "low"
+    }
+  ],
+  "overall_confidence": 0.65,
+  "recommendation": "review_recommended",
+  "summary": "The appeal is comfortably timely (170 days remaining) and lands a strong core argument: the sole denial basis (Section 2.1's six-week conservative-therapy trial) is directly rebutted by a well-cited, supervised, failed 7-week PT course with documented adherence and failure. However, two items need human attention before sending: the concurrent-NSAID claim ([5]) contradicts the chart's medication list (naproxen shown as completed/220mg), and the letter asserts Section 4 is fully met while omitting the required objective physical-exam findings. Fix or soften those overstatements, confirm signature/appeal-level, then it is a strong submission."
+}

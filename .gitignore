@@ -4,6 +4,7 @@
 node_modules/
 notes/
 .DS_Store
+fixtures/synthea_sample_data_fhir_latest/
 .next/
 dist/
 *.log

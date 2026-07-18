@@ -1,0 +1,74 @@
+SYNTHETIC PATIENT CHART — Cherly Jacobi (MHP-ADC25003)
+Source: Synthea synthetic FHIR bundle, flattened for review. No real patient depicted.
+DOB: 1925-05-29 | Sex: female
+
+=== ACTIVE PROBLEM LIST ===
+- Chronic sinusitis (disorder) (onset 1946-04-24)
+- Past pregnancy history of miscarriage (situation) (onset 1947-12-30)
+- Has a criminal record (finding) (onset 1950-08-04)
+- Prediabetes (finding) (onset 1959-08-14)
+- Anemia (disorder) (onset 1959-08-14)
+- Body mass index 30+ - obesity (finding) (onset 1961-07-21)
+- Osteoarthritis of knee (disorder) (onset 1979-07-27)
+- Ischemic heart disease (disorder) (onset 2005-11-25)
+- Abnormal findings diagnostic imaging heart+coronary circulat (finding) (onset 2005-12-16)
+- Chronic pain (finding) (onset 2014-02-02)
+- Chronic low back pain (finding) (onset 2014-02-02)
+- Social isolation (finding) (onset 2025-03-14)
+
+=== RESOLVED / RECENT CONDITIONS ===
+- Social isolation (finding) (onset 2018-02-02)
+- Gingivitis (disorder) (onset 2020-02-14)
+- Reports of violence in the environment (finding) (onset 2021-02-19)
+- Infection of tooth (disorder) (onset 2023-03-17)
+- Fracture of bone (disorder) (onset 2024-10-18)
+- Fracture subluxation of wrist (disorder) (onset 2024-10-18)
+- Gingivitis (disorder) (onset 2025-03-14)
+- Viral sinusitis (disorder) (onset 2025-11-01)
+
+=== MEDICATIONS (most recent order per drug) ===
+- Acetaminophen 325 MG Oral Tablet [Tylenol] (2026-03-20) [active]
+- Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray (2005-12-02) [active]
+- 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet (2005-12-02) [active]
+- Simvastatin 20 MG Oral Tablet (2005-12-02) [active]
+- Clopidogrel 75 MG Oral Tablet (2005-12-02) [active]
+- Naproxen sodium 220 MG Oral Tablet (1979-07-27) [completed]
+- Hydrocortisone 10 MG/ML Topical Cream (1947-04-26) [active]
+
+=== THERAPY-RELATED PROCEDURES ===
+- Dental care (regime/therapy) (2017-02-10)
+- Dental care (regime/therapy) (2020-02-28)
+- Dental care (regime/therapy) (2023-03-17)
+- Postoperative care for dental procedure (regime/therapy) (2023-03-18)
+- Dental care (regime/therapy) (2024-03-22)
+- Dental care (regime/therapy) (2025-03-28)
+
+=== RECENT PROCEDURES ===
+- Dental consultation and report (procedure) (2025-03-28)
+- Dental care (regime/therapy) (2025-03-28)
+- Removal of supragingival plaque and calculus from all teeth using dental instrument (procedure) (2025-03-28)
+- Removal of subgingival plaque and calculus from all teeth using dental instrument (procedure) (2025-03-28)
+- Examination of gingivae (procedure) (2025-03-28)
+- Dental fluoride treatment (procedure) (2025-03-28)
+- Oral health education (procedure) (2025-03-28)
+- Medication reconciliation (procedure) (2026-03-20)
+- Assessment of anxiety (procedure) (2026-03-20)
+- Assessment of substance use (procedure) (2026-03-20)
+
+=== RECENT ENCOUNTERS ===
+- General examination of patient (procedure) (2024-03-08)
+- Encounter for check up (procedure) (2024-03-22)
+- Emergency room admission (procedure) (2024-10-18)
+- Encounter for check up (procedure) (2025-01-06)
+- General examination of patient (procedure) (2025-03-14)
+- Encounter for check up (procedure) (2025-03-28)
+- Encounter for symptom (procedure) (2025-11-01)
+- General examination of patient (procedure) (2026-03-20)
+
+=== CLINIC ADDENDUM — PT DISCHARGE SUMMARY (faxed from Riverbend Rehabilitation, 2026-07-02) ===
+Course: Supervised physical therapy for chronic low back pain, 14 visits over 7 weeks
+(2026-05-12 through 2026-07-01). Modalities: lumbar stabilization, graded activity,
+supervised home exercise program. Adherence documented at 13/14 visits.
+DISCHARGE NOTE: Completed course with minimal symptomatic improvement; low back pain
+persists with functional limitation. Naproxen 500mg BID maintained throughout the course
+per PCP. Referred back to ordering physician for advanced imaging evaluation.

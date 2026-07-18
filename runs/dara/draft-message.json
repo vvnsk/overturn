@@ -1,0 +1,177 @@
+{
+  "model": "claude-opus-4-8",
+  "id": "msg_011CdA8SNdV1xdGAxjSG67tG",
+  "type": "message",
+  "role": "assistant",
+  "content": [
+    {
+      "type": "thinking",
+      "thinking": "",
+      "signature": "EqoXCokBCA8YAipArxDZS4OghygakUSVCsGXSruOZ2Paux0Bh+NaKsSVnNVWhRvLThbm1fp9EOTjBHfvgWTz6Kv+AWx+eXuEqoV0ETIPY2xhdWRlLW9wdXMtNC04OABCCHRoaW5raW5nWiRjODhmZDNmNy1hYTA5LTRhOTktODZjMi02ZWQ0NWEzODIwZGUSDLE+tQaBnWlDupB+GRoMuuEFHJcbQsmWK5pZIjCiOu+WvCdkGYUU5FIYWp2rOM1QZyz1nK7wHQ+H/sYfDjsZ1wPSzq7Zr7dM5etGuVQqzRWk9PmgONOzW2QW4YLehhu1hJSI1nPONDwLnnZEr9KNdA0Zpk1wA50lXFKuCdxPoAzjcsEad/zklpnFJxnIQlFhW8kW8jhV+WMuPEmazNAwsNmAujb3Xfmr+MYkEKuIAawbLkghY+aNR3uwY37kfDCVRrPx/1XYCyVjK/vk0Uf/wA6p/AYznymNCbBLzA7j+yk/r8/tB7k3uoF4Qkr1EBlvw7KNyfKr81OTHAtat5jUUP+vCYQBMqXWS/5biNJxXvJBRCVtrrT881476bj8DYQ+Vvjafobe77FbrDDFhwAr5XdnydYwSdv3oLFKTIY4Q6wnau4emStRtByGR9Pd5FaQoAftaf2b0n+OUEMVuK1W7yHoV1RwxO8OYnfh/Rne+l+v6xPwujgGHuElBD7ELAvpaVEk6F6hlkmO5PmlASMdAWpCk98IID/PH2RRfIC95cba6qxvOz6h0TZDPDYFuERiBqp2P0bKMASi4JLpqQLyf3JFq428O2dxaj4amgn7hrzqs3AwVjCOpaftGKvpIEd63sUgodaOu/tKyxc2LumjDHKtAX9/UN+Vbl2esGVZ48qC2b/paD/faMbw+d1AE7ougitzPsgKDNi7WpD4m0Q4JdqEapzqV7+ME5LMijUSBtFoahddlcGuNy9Fo7+QYftwEu76royu8rJAl/pQD3dUM/Dj6ZtiXqXcUvhTRyfB3NiRNfUZ7neHUxfZ+ME2V/vMu7hc1Dm1HV8+/dhYiT2W19LPffq0Wx3ji7lG2qjASqw7RrN+q0V5Kf9lEMm1eyplmx9cv6A7E2Yk3nQrp9JvwJm65Di6vUMBKi++Mlzdk4aLM50u8r7vlQADrh7CBa4acd6HgnulmiSwh6ho3RDjcE4JlqBMRL9RGXytzqk683qKVJR0slMEjU1/fUHAN+9b7P19xu5R885ZpuyrQmktD1QBaiTky8G7vr4KHwb/molSWPURenKmlJMPbnyk6AmRZbdmX0Ne9BgER/z+ufAu6IO3yBVayWL8pa5i6xbpMLHF4WVdVdQQ6sjGP+rrNc3Q52mViOT1B2jBIspiJAcG2obEACviItp21vIb7Wc09SvI85/18AZwQR7CVWHKy8kbuZwutsfNJ3TYckmBIgRrPfyxVPzrDljM4L1y0SZsH0d+WiDAoMPAmnPDjHFk69vDFe3tM0jSJVPDQ/9caiXY+3a1jgz+nWY51DabsrWWmtiy7kQH44aTZq5MU1X5zfBQ/gu8rePyYN0HTrGHWg96sqIF3h4PwHeWXnD12lz0Mrf0mA6tMVvM5p8nEcxK4QKptQFgXrg1riq5QHIEtv2Ys15gmT9ryweWkIvUqKpAcUdbMHOf/kJTPgehCVDjJ1qPm37LL9tIs/KXCoBDo/m+W1gKpVwYeDltQXJfZ34VETV5OZGGc7dAuHCEq/XytWhkbLTzzZUPyFJCff/uCW9CCBSaGIuwcZLWuFeSykN+4z4X4e4ebz8cG2ORSQZE6TBjnbOQW9mlBg3N/6azYhVFUVyZ1ywz6k7SSYPzeu/gEU97+8HZ/K7OUfG7Kxa6I8eW6b798+ATXtkqbPVaFev6FJNqu2tsUS5dhY/iFLc3aMH5uG04yILz6bWZP/9zJCe6bQvU9z9WnNQv8XYJg2Sxrzr9dB9/2H0wmjcPU858L2ZPzpvPQ3ej0eU+gXlnTKHnzv52f0c1XE/LKHQ2K7GVOfv4GAG8UUv9r+U0FoE/zHvdBNY/0oDJGzjaBY0OWTJm39NrI/rmvQ+WyWzRYRq0hvVbeG1b3bxbokZZjs7trMJRpvPQ1AorPCumvbi0lOrUDTNL+qQnLNKwrAR+ll1aeaLcm/zr2M65rUzxQzbFbSrBFejvEEd0ffDvo2AdBara4PgvlRt2BcjRzqmyIXmXrZ77lVOm15eymtXe2jQwgflZmVDWLyw2UKM8ELQIT/7IecVAF8LexNJzH4ybQcmUOKHC3O5IqqU3/WHWv4ncCL1Zd0MK7Aq0NYycao2hck+ad+esUxXJYoJkGG4Js/0t5ACvD8u/visQMpektVGDuH34H0MK3sa8HnmvfLo2snLa3jgDJkHY/yBO8Jva+yBHQmGpK9GWbXfn7qZentx/mJzkkPN5nVJO/5tAMbTHLjRLCkvD9goq4NuBx+f4I+jeuqqeQEYcN/Y69reIjnOV/IW7JCXxg8KA1lpG1+vtI1SuHtSU3KcSz4tLDutr4zvwE19Fb8ywYP9jDiEV8Zu3tqMLiVn+LCugLG6xUm6YzNvXhbjjlPQqLIWpv7x3Qc8Y6TC0bhVi6VGmti/IXEeJtMlrt5UUrTBmqX/JNruAC8wcUG6iN00ztG8aFuVy4V8Qp7sHNe7LAzHCfNAgMSR620dRXKlUTlJNn2Pad2eX69EWXTN75qZLvGrXPs5F2wBMz1YWbT3VWys2Qu8jnnh/SXUcLxK1IO8TH9RtsF2hc50qt5xZdGJCtZrXjY5hiCmEuod2YnmFdI8OArGr9BZEfMysD8whuIY5tPF+hEg7/O99V+tmmRuhC/uvfQpBdFsEqIpyLNW2HSrCPOfsjrB8D/hfjgd50Q7zhRaF2bnoc41dGXwFe5yTIEPihs56Qf21q0omrCaan5GNQfEoY2RJz1PYUXBaHpVMf9g+k9DCqc7tv2D+hAE8673nxIRRz7hMXdGHrDtXsst0pKqkbPZ1S02SRpjk/k6EhPzvlRUSGugZHc5X+1QGq0AfYf60KSVrJn7kownqF7DZU/7haGnSF/6SovtfrOAEZQJpfs9StAFIYHuHUgvxwPmX7qZbEWrzimkA0vX+uLpkK3pU5eCdbUbBYM89WXz0Lw/jhR/dEbyFqmb6ndF7MRghsyLWP26qfMdpMV4r2RdhIWA+l1ZLpWCIwIIhsssiVk9KXpR1jfy1A/vWTprkY6I9+ojkt0RYWHFvo36+vJXx6UA+sugr+2TvPs09eX+I1s84iJe44RK72oy/Ktz6U4mLzHgEZ+BlGQnrdThLMMqFnRgvcre7xY7pF04UcVk+T2CegDqMvRLgkUYzEpIL7hP+/FcfGl8Rea7B/GNVF2lF0H18R5e+J+sRJqFpGyMxVf7d0F72pxQ/j2kTrtS9HNEJ58V8liWTKS4+jMBlYXKfbzaM3qw9HwUR2H0PBeR0E2U+Z0YqCykh7BKxvWxQRy2v6ZAfdVJKggHyBr9Wjn0vDQnRelPpMIaQTzBV1qruhY9yr6nl6fyj5F4HOGgOK8l+fJdreppGNU/h4/GZ1K3Y/CjOBZ00G8kS4+VepdUF/31kQpdcDlEFRmhdT2zoWgFSnpMTkABv8TOmD+HWwW4ljJd5SKRFtnh/i9HjLnfibdxNmoPMQKWwaBLwojPtYCUUfqq7QH/iPOUQzTS7se3/g3cErLBjddAuldx/bDPPpjpBR0blJ4lHRnbJRrxMkOYaayyqeyEBf+ziC7HeHOaxkOW9a909dGncv2+tQqTvrVz6DNVVGsD4toe/+HxU+Ishl9j7CfRz9Z+OryMc6e+cby8cUNcuoJL3XuoCWNpXR6VRbVty5zO2HcnFujAbQZmo9pUXTKZO2Koz69MWT8MGHJMjsE1Sv7DSgJpKRwoLBRa/EGuA2TgkTR7Lqjv3exAz3Ggc/a2a8aQSXWSKgleu5g6KwjNAma4+GInSNGHoQnRHOG1xepHjulgqEsZbJTP4I4+pxBgB"
+    },
+    {
+      "type": "text",
+      "text": "July 18, 2026\n\nMeridian Health Plan\nAppeals Department\nAttn: Prior Authorization Appeals\n[Payer Address]\n\nRE: First-Level Prior Authorization Appeal\nMember: JACOBI, CHERLY\nMember ID: MHP-ADC25003\nDate of Birth: 05/29/1925\nAuthorization Reference: PA-2026-0708-91277\nService: MRI Lumbar Spine without contrast (CPT 72148)\nDiagnosis: M54.50\nOrdering Physician: Priya Natarajan, MD, Cedar Grove Family Medicine\nDenial Date: 07/08/2026 | Reason Code: MN-02 | Cited Policy: MP-RAD-014, Section 2.1\n\nDear Appeals Reviewer:\n\nOn behalf of Priya Natarajan, MD, and our patient Ms. Cherly Jacobi, Cedar Grove Family Medicine respectfully requests that Meridian Health Plan overturn the above denial and approve the requested lumbar spine MRI (CPT 72148). The denial states that the record \"does not establish that the member has completed a documented six (6) week trial of conservative therapy\" under Medical Policy MP-RAD-014, Section 2.1. As demonstrated below, the medical record in fact documents that trial in full, and the member clearly satisfies the cited criterion.\n\nGround 1 — The Denial Is Factually Incorrect on Its Own Cited Criterion (Section 2.1)\n\nThe policy provides that lumbar spine MRI is medically necessary when "
+    },
+    {
+      "citations": [
+        {
+          "type": "page_location",
+          "cited_text": "Criteria — Medically Necessary\r\nLumbar spine MRI is considered medically necessary when ANY ONE of the following criteria\r\n(2.1 through 2.4) is met and documented in the medical record:\r\n2.1 Low back pain persisting six (6) weeks or longer that has failed a documented trial of\r\nconservative therapy, where conservative therapy includes at least one of: physical therapy,\r\nNSAID or analgesic pharmacotherapy, or a supervised home exercise program.\r\n",
+          "document_index": 0,
+          "document_title": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+          "start_page_number": 1,
+          "end_page_number": 2
+        }
+      ],
+      "type": "text",
+      "text": "low back pain persisting six (6) weeks or longer has failed a documented trial of conservative therapy, where conservative therapy includes at least one of: physical therapy, NSAID or analgesic pharmacotherapy, or a supervised home exercise program."
+    },
+    {
+      "type": "text",
+      "text": " The record satisfies every element of this criterion.\n\nFirst, as to duration of symptoms: Ms. Jacobi carries a longstanding diagnosis of chronic low back pain with an onset date of 2014-02-02, far exceeding the six-week threshold.\n\nSecond, as to a documented, failed trial of conservative therapy: the faxed Physical Therapy Discharge Summary from Riverbend Rehabilitation documents "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "DOB: 1925-05-29 | Sex: female\n\n=== ACTIVE PROBLEM LIST ===\n- Chronic sinusitis (disorder) (onset 1946-04-24)\n- Past pregnancy history of miscarriage (situation) (onset 1947-12-30)\n- Has a criminal record (finding) (onset 1950-08-04)\n- Prediabetes (finding) (onset 1959-08-14)\n- Anemia (disorder) (onset 1959-08-14)\n- Body mass index 30+ - obesity (finding) (onset 1961-07-21)\n- Osteoarthritis of knee (disorder) (onset 1979-07-27)\n- Ischemic heart disease (disorder) (onset 2005-11-25)\n- Abnormal findings diagnostic imaging heart+coronary circulat (finding) (onset 2005-12-16)\n- Chronic pain (finding) (onset 2014-02-02)\n- Chronic low back pain (finding) (onset 2014-02-02)\n- Social isolation (finding) (onset 2025-03-14)\n\n=== RESOLVED / RECENT CONDITIONS ===\n- Social isolation (finding) (onset 2018-02-02)\n- Gingivitis (disorder) (onset 2020-02-14)\n- Reports of violence in the environment (finding) (onset 2021-02-19)\n- Infection of tooth (disorder) (onset 2023-03-17)\n- Fracture of bone (disorder) (onset 2024-10-18)\n- Fracture subluxation of wrist (disorder) (onset 2024-10-18)\n- Gingivitis (disorder) (onset 2025-03-14)\n- Viral sinusitis (disorder) (onset 2025-11-01)\n\n=== MEDICATIONS (most recent order per drug) ===\n- Acetaminophen 325 MG Oral Tablet [Tylenol] (2026-03-20) [active]\n- Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray (2005-12-02) [active]\n- 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet (2005-12-02) [active]\n- Simvastatin 20 MG Oral Tablet (2005-12-02) [active]\n- Clopidogrel 75 MG Oral Tablet (2005-12-02) [active]\n- Naproxen sodium 220 MG Oral Tablet (1979-07-27) [completed]\n- Hydrocortisone 10 MG/ML Topical Cream (1947-04-26) [active]\n\n=== THERAPY-RELATED PROCEDURES ===\n- Dental care (regime/therapy) (2017-02-10)\n- Dental care (regime/therapy) (2020-02-28)\n- Dental care (regime/therapy) (2023-03-17)\n- Postoperative care for dental procedure (regime/therapy) (2023-03-18)\n- Dental care (regime/therapy) (2024-03-22)\n- Dental care (regime/therapy) (2025-03-28)\n\n=== RECENT PROCEDURES ===\n- Dental consultation and report (procedure) (2025-03-28)\n- Dental care (regime/therapy) (2025-03-28)\n- Removal of supragingival plaque and calculus from all teeth using dental instrument (procedure) (2025-03-28)\n- Removal of subgingival plaque and calculus from all teeth using dental instrument (procedure) (2025-03-28)\n- Examination of gingivae (procedure) (2025-03-28)\n- Dental fluoride treatment (procedure) (2025-03-28)\n- Oral health education (procedure) (2025-03-28)\n- Medication reconciliation (procedure) (2026-03-20)\n- Assessment of anxiety (procedure) (2026-03-20)\n- Assessment of substance use (procedure) (2026-03-20)\n\n=== RECENT ENCOUNTERS ===\n- General examination of patient (procedure) (2024-03-08)\n- Encounter for check up (procedure) (2024-03-22)\n- Emergency room admission (procedure) (2024-10-18)\n- Encounter for check up (procedure) (2025-01-06)\n- General examination of patient (procedure) (2025-03-14)\n- Encounter for check up (procedure) (2025-03-28)\n- Encounter for symptom (procedure) (2025-11-01)\n- General examination of patient (procedure) (2026-03-20)\n\n=== CLINIC ADDENDUM — PT DISCHARGE SUMMARY (faxed from Riverbend Rehabilitation, 2026-07-02) ===\nCourse: Supervised physical therapy for chronic low back pain, 14 visits over 7 weeks\n(2026-05-12 through 2026-07-01). ",
+          "document_index": 1,
+          "document_title": "Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine",
+          "start_char_index": 142,
+          "end_char_index": 3475
+        }
+      ],
+      "type": "text",
+      "text": "supervised physical therapy for chronic low back pain, 14 visits over 7 weeks (2026-05-12 through 2026-07-01)."
+    },
+    {
+      "type": "text",
+      "text": " This course exceeds the six-week requirement by a full week. Adherence was excellent, "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "Adherence documented at 13/14 visits.\n",
+          "document_index": 1,
+          "document_title": "Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine",
+          "start_char_index": 3560,
+          "end_char_index": 3598
+        }
+      ],
+      "type": "text",
+      "text": "documented at 13/14 visits."
+    },
+    {
+      "type": "text",
+      "text": "\n\nNotably, the member satisfies not one but all three of the qualifying conservative-therapy modalities named in Section 2.1, where the policy requires only one. The physical therapy course itself encompassed "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "Modalities: lumbar stabilization, graded activity,\nsupervised home exercise program. ",
+          "document_index": 1,
+          "document_title": "Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine",
+          "start_char_index": 3475,
+          "end_char_index": 3560
+        }
+      ],
+      "type": "text",
+      "text": "lumbar stabilization, graded activity, and a supervised home exercise program,"
+    },
+    {
+      "type": "text",
+      "text": " and concurrent NSAID pharmacotherapy was in place, as "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "Naproxen 500mg BID maintained throughout the course\nper PCP. ",
+          "document_index": 1,
+          "document_title": "Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine",
+          "start_char_index": 3720,
+          "end_char_index": 3781
+        }
+      ],
+      "type": "text",
+      "text": "naproxen 500mg BID was maintained throughout the course per PCP."
+    },
+    {
+      "type": "text",
+      "text": "\n\nThird, as to failure of that trial: the discharge note records that the patient "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "DISCHARGE NOTE: Completed course with minimal symptomatic improvement; low back pain\npersists with functional limitation. ",
+          "document_index": 1,
+          "document_title": "Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine",
+          "start_char_index": 3598,
+          "end_char_index": 3720
+        }
+      ],
+      "type": "text",
+      "text": "completed the course with minimal symptomatic improvement, with low back pain persisting with functional limitation."
+    },
+    {
+      "type": "text",
+      "text": " The treating therapist accordingly "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "Referred back to ordering physician for advanced imaging evaluation.\n",
+          "document_index": 1,
+          "document_title": "Patient Chart — Cherly Jacobi, Cedar Grove Family Medicine",
+          "start_char_index": 3781,
+          "end_char_index": 3850
+        }
+      ],
+      "type": "text",
+      "text": "referred the patient back to the ordering physician for advanced imaging evaluation."
+    },
+    {
+      "type": "text",
+      "text": "\n\nThe single fact the denial identifies as missing — a documented six-week conservative therapy trial — is present in the record, is longer than six weeks, is supervised, and has failed. The denial is factually erroneous on the very criterion it cites, and Section 2.1 is met.\n\nGround 2 — The Documentation Requirements of Section 4 Are Satisfied\n\nThe policy requires that the record document "
+    },
+    {
+      "citations": [
+        {
+          "type": "page_location",
+          "cited_text": "Documentation Requirements\r\nThe medical record must document: duration of symptoms; the specific conservative therapy\r\nmodalities attempted and their duration; objective physical examination findings; and the clinical\r\nquestion the imaging is expected to answer.\r\n",
+          "document_index": 0,
+          "document_title": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+          "start_page_number": 1,
+          "end_page_number": 2
+        }
+      ],
+      "type": "text",
+      "text": "duration of symptoms; the specific conservative therapy modalities attempted and their duration; objective physical examination findings; and the clinical question the imaging is expected to answer."
+    },
+    {
+      "type": "text",
+      "text": " The attached chart supplies the symptom duration (chronic low back pain since 2014), the specific modalities and their duration (14 PT visits over 7 weeks with lumbar stabilization, graded activity, and home exercise, plus maintained naproxen therapy), and the clinical question (evaluation of persistent low back pain that has failed conservative management, per the therapist's referral for advanced imaging). The documentation standard of Section 4 is met.\n\nTimeliness\n\nThis appeal is submitted on July 18, 2026, well within the appeal window; the denial notice states an appeal deadline of January 4, 2027.\n\nConclusion\n\nBecause the member independently satisfies Section 2.1 — the sole basis of the denial — with a documented, supervised, failed conservative therapy trial exceeding six weeks in a patient with chronic low back pain since 2014, we respectfully request that Meridian Health Plan overturn the denial and approve CPT 72148. We welcome the opportunity for a peer-to-peer discussion between the ordering physician, Dr. Priya Natarajan, and a plan medical director, which the denial notice indicates is available. Please contact our office to schedule.\n\nRespectfully submitted,\n\nPatient Access Team\nCedar Grove Family Medicine\nOn behalf of Priya Natarajan, MD, Ordering Physician\nEnclosures: PT Discharge Summary (Riverbend Rehabilitation, 2026-07-02); Patient Chart Excerpts; Medication History"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "stop_details": null,
+  "usage": {
+    "input_tokens": 6502,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 2928,
+    "service_tier": "standard",
+    "inference_geo": "global"
+  },
+  "parsed_output": null
+}

@@ -1,0 +1,35 @@
+{
+  "payer_name": "Meridian Health Plan",
+  "member": {
+    "name": "JOHNSTON, DARRON",
+    "member_id": "MHP-93EE1E59",
+    "dob": null
+  },
+  "provider": {
+    "ordering_physician": "Priya Natarajan, MD",
+    "facility": "Cedar Grove Family Medicine"
+  },
+  "service": {
+    "description": "MRI Lumbar Spine without contrast",
+    "cpt_codes": [
+      "72148"
+    ],
+    "icd10_codes": [
+      "M54.50"
+    ]
+  },
+  "denial": {
+    "denial_date": "2026-07-14",
+    "auth_reference": "PA-2026-0714-92416",
+    "reason_code": "AD-01",
+    "reason_text": "Requested Clinical Documentation Not Received",
+    "cited_policy_id": "MP-RAD-014",
+    "cited_policy_section": "Section 4",
+    "appeal_deadline": "2027-01-10",
+    "appeal_level": null,
+    "peer_to_peer_offered": true
+  },
+  "root_cause": "missing_information",
+  "root_cause_rationale": "The notice states the requested clinical documentation \"was not received within the required timeframe\" and \"The request is administratively denied,\" indicating absent documentation (symptom duration, exam findings, conservative therapy).",
+  "confidence": 0.83
+}

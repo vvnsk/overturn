@@ -1,0 +1,76 @@
+SYNTHETIC PATIENT CHART — Antione Haag (MHP-89EDED81)
+Source: Synthea synthetic FHIR bundle, flattened for review. No real patient depicted.
+DOB: 1957-02-17 | Sex: male
+
+=== ACTIVE PROBLEM LIST ===
+- Prediabetes (finding) (onset 1988-05-01)
+- Anemia (disorder) (onset 1988-05-01)
+- Essential hypertension (disorder) (onset 1997-02-23)
+- Body mass index 30+ - obesity (finding) (onset 2000-03-12)
+- Disorder of kidney due to diabetes mellitus (disorder) (onset 2002-03-24)
+- Ischemic heart disease (disorder) (onset 2005-04-10)
+- Abnormal findings diagnostic imaging heart+coronary circulat (finding) (onset 2005-04-19)
+- History of coronary artery bypass grafting (situation) (onset 2005-05-23)
+- Metabolic syndrome X (disorder) (onset 2006-06-11)
+- Microalbuminuria due to type 2 diabetes mellitus (disorder) (onset 2013-03-31)
+- Chronic pain (finding) (onset 2014-02-04)
+- Chronic low back pain (finding) (onset 2014-02-04)
+- Chronic neck pain (finding) (onset 2014-02-04)
+- Proteinuria due to type 2 diabetes mellitus (disorder) (onset 2015-06-14)
+- History of renal transplant (situation) (onset 2021-08-01)
+
+=== RESOLVED / RECENT CONDITIONS ===
+- Gingivitis (disorder) (onset 2021-07-11)
+- Social isolation (finding) (onset 2023-07-23)
+- Victim of intimate partner abuse (finding) (onset 2023-07-23)
+- Gingivitis (disorder) (onset 2023-07-23)
+- Acute viral pharyngitis (disorder) (onset 2024-10-08)
+- Gingivitis (disorder) (onset 2024-10-20)
+- Not in labor force (finding) (onset 2025-06-29)
+- Acute viral pharyngitis (disorder) (onset 2025-07-06)
+
+=== MEDICATIONS (most recent order per drug) ===
+- 24 HR tacrolimus 1 MG Extended Release Oral Tablet [Envarsus] (2025-08-03) [active]
+- lisinopril 10 MG Oral Tablet (2025-08-03) [active]
+- Acetaminophen 325 MG Oral Tablet [Tylenol] (2025-08-03) [active]
+- Hydrochlorothiazide 25 MG Oral Tablet (2025-08-03) [active]
+- insulin isophane, human 70 UNT/ML / insulin, regular, human 30 UNT/ML Injectable Suspension [Humulin] (2025-08-03) [active]
+- Nitroglycerin 0.4 MG/ACTUAT Mucosal Spray (2005-04-17) [active]
+- 24 HR metoprolol succinate 100 MG Extended Release Oral Tablet (2005-04-17) [active]
+- Simvastatin 20 MG Oral Tablet (2005-04-17) [active]
+- Clopidogrel 75 MG Oral Tablet (2005-04-17) [active]
+- Chlorpheniramine Maleate 2 MG/ML Oral Solution (1960-06-18) [active]
+
+=== THERAPY-RELATED PROCEDURES ===
+- Hospice care (regime/therapy) (2022-04-08)
+- Hospice care (regime/therapy) (2022-04-09)
+- Hospice care (regime/therapy) (2022-04-10)
+- Hospice care (regime/therapy) (2022-04-11)
+- Hospice care (regime/therapy) (2022-04-12)
+- Hospice care (regime/therapy) (2022-04-13)
+- Hospice care (regime/therapy) (2022-04-14)
+- Dental care (regime/therapy) (2022-07-31)
+- Dental care (regime/therapy) (2023-08-06)
+- Dental care (regime/therapy) (2024-11-03)
+
+=== RECENT PROCEDURES ===
+- Removal of subgingival plaque and calculus from all teeth using dental instrument (procedure) (2024-11-03)
+- Examination of gingivae (procedure) (2024-11-03)
+- Oral health education (procedure) (2024-11-03)
+- Assessment using Morse Fall Scale (procedure) (2025-06-29)
+- Assessment of substance use (procedure) (2025-06-29)
+- Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure) (2025-06-29)
+- Medication reconciliation (procedure) (2025-08-03)
+- Assessment of anxiety (procedure) (2025-08-03)
+- Assessment using Morse Fall Scale (procedure) (2025-08-03)
+- Assessment of substance use (procedure) (2025-08-03)
+
+=== RECENT ENCOUNTERS ===
+- General examination of patient (procedure) (2024-07-28)
+- Encounter for symptom (procedure) (2024-10-08)
+- Urgent care clinic (environment) (2024-10-20)
+- Urgent care clinic (environment) (2024-10-27)
+- Encounter for check up (procedure) (2024-11-03)
+- Encounter for check up (procedure) (2025-06-29)
+- Encounter for symptom (procedure) (2025-07-06)
+- General examination of patient (procedure) (2025-08-03)
