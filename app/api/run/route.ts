@@ -198,11 +198,21 @@ export async function POST(req: Request): Promise<Response> {
     const form = await req.formData();
     stage = (form.get("stage") as EraStage | null) ?? stage;
     const denialJson = form.get("denialRecord");
-    if (typeof denialJson === "string") suppliedDenial = JSON.parse(denialJson) as DenialRecord;
+    if (typeof denialJson === "string") {
+      try {
+        suppliedDenial = JSON.parse(denialJson) as DenialRecord;
+      } catch {
+        throw new Error("denialRecord form field is not valid JSON");
+      }
+    }
     const writeUpload = async (name: "denial" | "policy") => {
       const file = form.get(name);
       if (!(file instanceof File) || file.size === 0) return null;
-      const tmp = path.join(os.tmpdir(), `overturn-${name}-${Date.now()}-${file.name}`);
+      // Never interpolate the client-supplied filename into a filesystem path
+      // (path traversal / arbitrary write) — the extension is the only part
+      // of it we trust, and only after stripping any path separators.
+      const ext = path.extname(file.name).replace(/[^a-zA-Z0-9.]/g, "") || ".pdf";
+      const tmp = path.join(os.tmpdir(), `overturn-${name}-${Date.now()}${ext}`);
       fs.writeFileSync(tmp, Buffer.from(await file.arrayBuffer()));
       tmpUploads.push(tmp);
       return tmp;
