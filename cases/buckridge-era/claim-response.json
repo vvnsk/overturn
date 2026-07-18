@@ -1,0 +1,18 @@
+{
+  "resourceType": "ClaimResponse",
+  "id": "synthetic-mhp-91be1bd7",
+  "status": "active",
+  "outcome": "error",
+  "created": "2026-07-18",
+  "patient": { "display": "Lincoln Buckridge" },
+  "item": [{
+    "itemSequence": 1,
+    "productOrService": { "coding": [{ "system": "http://www.ama-assn.org/go/cpt", "code": "72148" }] },
+    "adjudication": [
+      { "category": { "coding": [{ "code": "submitted" }] }, "amount": { "value": 500, "currency": "USD" } },
+      { "category": { "coding": [{ "code": "eligible" }] }, "amount": { "value": 75, "currency": "USD" } },
+      { "category": { "coding": [{ "code": "benefit" }] }, "amount": { "value": 0, "currency": "USD" } }
+    ],
+    "processNote": [{ "text": "CARC 50" }]
+  }]
+}

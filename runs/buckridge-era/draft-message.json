@@ -1,0 +1,123 @@
+{
+  "model": "claude-opus-4-8",
+  "id": "msg_011CdAEU8onSeDrU2exDefbT",
+  "type": "message",
+  "role": "assistant",
+  "content": [
+    {
+      "type": "thinking",
+      "thinking": "",
+      "signature": "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"
+    },
+    {
+      "type": "text",
+      "text": "July 18, 2026\n\nCedar Horizon Health Plan\nAppeals Department\n[Claims Appeals Unit]\n\nRE: First-Level Appeal of Post-Service Medical-Necessity Denial\nMember: Lincoln Buckridge\nMember ID: MHP-91BE1BD7\nPrior Authorization / Auth Reference: None on file (post-service claim denial)\nService Date CPT: 72148 (MRI lumbar spine without contrast, modifier 26)\nDenial Reason: CARC CO-50 / RARC M50 — \"Not deemed medically necessary\"\nDenial Date: July 18, 2026\n\nDear Appeals Reviewer:\n\nOn behalf of Dr. Priya Natarajan and Cedar Grove Family Medicine, we respectfully request that Cedar Horizon Health Plan overturn the CO-50 denial of CPT 72148 for the above member. As set out below, the denial is inconsistent with the plan's own published medical policy (MP-RAD-014, Advanced Imaging: Lumbar Spine MRI) and with the documented clinical record. The member both falls outside the policy's sole \"not medically necessary\" provision and independently satisfies an affirmative medical-necessity criterion.\n\nGround 1 — The denial contradicts the policy's own \"not medically necessary\" standard (factually incorrect denial).\n\nThe policy sets out exactly one circumstance in which a lumbar spine MRI is not medically necessary. "
+    },
+    {
+      "citations": [
+        {
+          "type": "page_location",
+          "cited_text": "Criteria — Not Medically Necessary\r\nLumbar spine MRI is considered not medically necessary for acute low back pain of less than\r\nsix (6) weeks duration in the absence of red-flag findings as defined in 2.2.\r\n",
+          "document_index": 0,
+          "document_title": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+          "start_page_number": 1,
+          "end_page_number": 2
+        }
+      ],
+      "type": "text",
+      "text": "Lumbar spine MRI is considered not medically necessary for acute low back pain of less than six (6) weeks duration in the absence of red-flag findings as defined in 2.2."
+    },
+    {
+      "type": "text",
+      "text": "\n\nThat provision does not apply to this member. The chart documents chronic low back pain with an onset of January 1, 2016 — a condition of roughly ten years' standing, not acute pain of less than six weeks. The single exclusion the policy provides is therefore inapplicable on its face, and a CO-50 \"not medically necessary\" determination cannot properly rest on it. This is the strongest ground for overturn: the denial is factually wrong when measured against the only exclusionary criterion in the payer's own policy.\n\nGround 2 — The member independently satisfies affirmative Criterion 2.1.\n\nThe policy states that "
+    },
+    {
+      "citations": [
+        {
+          "type": "page_location",
+          "cited_text": "Criteria — Medically Necessary\r\nLumbar spine MRI is considered medically necessary when ANY ONE of the following criteria\r\n(2.1 through 2.4) is met and documented in the medical record:\r\n2.1 Low back pain persisting six (6) weeks or longer that has failed a documented trial of\r\nconservative therapy, where conservative therapy includes at least one of: physical therapy,\r\nNSAID or analgesic pharmacotherapy, or a supervised home exercise program.\r\n",
+          "document_index": 0,
+          "document_title": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+          "start_page_number": 1,
+          "end_page_number": 2
+        }
+      ],
+      "type": "text",
+      "text": "lumbar spine MRI is considered medically necessary when ANY ONE of the following criteria (2.1 through 2.4) is met and documented in the medical record,"
+    },
+    {
+      "type": "text",
+      "text": " and Criterion 2.1 covers "
+    },
+    {
+      "citations": [
+        {
+          "type": "page_location",
+          "cited_text": "Criteria — Medically Necessary\r\nLumbar spine MRI is considered medically necessary when ANY ONE of the following criteria\r\n(2.1 through 2.4) is met and documented in the medical record:\r\n2.1 Low back pain persisting six (6) weeks or longer that has failed a documented trial of\r\nconservative therapy, where conservative therapy includes at least one of: physical therapy,\r\nNSAID or analgesic pharmacotherapy, or a supervised home exercise program.\r\n",
+          "document_index": 0,
+          "document_title": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+          "start_page_number": 1,
+          "end_page_number": 2
+        }
+      ],
+      "type": "text",
+      "text": "low back pain persisting six (6) weeks or longer that has failed a documented trial of conservative therapy, where conservative therapy includes at least one of: physical therapy, NSAID or analgesic pharmacotherapy, or a supervised home exercise program."
+    },
+    {
+      "type": "text",
+      "text": "\n\nBoth elements are documented:\n\n- Duration: The member's low back pain is not merely six weeks old but chronic since January 1, 2016, far exceeding the six-week threshold.\n\n- Failed conservative therapy: The record documents NSAID pharmacotherapy — Ibuprofen 400 MG oral tablet, ordered March 18, 2026 and listed as active — as well as prior analgesic therapy with Acetaminophen 325 MG. The policy requires only one qualifying conservative modality, and NSAID pharmacotherapy satisfies it. That the low back pain has persisted continuously since 2016 despite this documented analgesic/NSAID management demonstrates that the conservative trial has failed to resolve the condition.\n\nThe member therefore meets Criterion 2.1 in both duration and failed-conservative-therapy elements, which alone is sufficient for the imaging to be deemed medically necessary under the policy.\n\nScope note. We have reviewed the remaining criteria for candor: the record before us does not document red-flag findings under 2.2, does not document objective neurologic findings needed for radicular pain under 2.3, and does not document active surgical planning under 2.4. We do not assert those grounds. Our appeal rests on Grounds 1 and 2 above, which the record fully supports.\n\nTimeliness. This appeal is submitted well within the applicable window. "
+    },
+    {
+      "citations": [
+        {
+          "type": "page_location",
+          "cited_text": "Appeals\r\nA denial under this policy may be appealed in writing within one hundred eighty (180) days of the\r\ndenial notice. ",
+          "document_index": 0,
+          "document_title": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+          "start_page_number": 1,
+          "end_page_number": 2
+        }
+      ],
+      "type": "text",
+      "text": "A denial under this policy may be appealed in writing within one hundred eighty (180) days of the denial notice."
+    },
+    {
+      "type": "text",
+      "text": " With a denial date of July 18, 2026 and an appeal deadline of October 16, 2026, this submission is timely.\n\nFor the reasons above, we ask that the plan reverse the CO-50 denial and adjudicate CPT 72148 as medically necessary and payable. If any element of this request would benefit from further discussion, we request a peer-to-peer review; the policy provides that "
+    },
+    {
+      "citations": [
+        {
+          "type": "page_location",
+          "cited_text": "A peer-to-peer review with a plan medical director may be requested within fourteen\r\n(14) days.",
+          "document_index": 0,
+          "document_title": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+          "start_page_number": 1,
+          "end_page_number": 2
+        }
+      ],
+      "type": "text",
+      "text": "a peer-to-peer review with a plan medical director may be requested within fourteen (14) days."
+    },
+    {
+      "type": "text",
+      "text": " Dr. Priya Natarajan is available to discuss the clinical record directly with a plan medical director at the plan's convenience.\n\nThank you for your prompt reconsideration.\n\nRespectfully submitted,\n\nPatient Access Team\nCedar Grove Family Medicine\nOn behalf of Priya Natarajan, MD (Ordering Physician)"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "stop_details": null,
+  "usage": {
+    "input_tokens": 6153,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 4249,
+    "service_tier": "standard",
+    "inference_geo": "global"
+  },
+  "parsed_output": null
+}

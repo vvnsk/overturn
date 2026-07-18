@@ -1,0 +1,65 @@
+July 18, 2026
+
+Cedar Horizon Health Plan
+Appeals Department
+[Claims Appeals Unit]
+
+RE: First-Level Appeal of Post-Service Medical-Necessity Denial
+Member: Lincoln Buckridge
+Member ID: MHP-91BE1BD7
+Prior Authorization / Auth Reference: None on file (post-service claim denial)
+Service Date CPT: 72148 (MRI lumbar spine without contrast, modifier 26)
+Denial Reason: CARC CO-50 / RARC M50 — "Not deemed medically necessary"
+Denial Date: July 18, 2026
+
+Dear Appeals Reviewer:
+
+On behalf of Dr. Priya Natarajan and Cedar Grove Family Medicine, we respectfully request that Cedar Horizon Health Plan overturn the CO-50 denial of CPT 72148 for the above member. As set out below, the denial is inconsistent with the plan's own published medical policy (MP-RAD-014, Advanced Imaging: Lumbar Spine MRI) and with the documented clinical record. The member both falls outside the policy's sole "not medically necessary" provision and independently satisfies an affirmative medical-necessity criterion.
+
+Ground 1 — The denial contradicts the policy's own "not medically necessary" standard (factually incorrect denial).
+
+The policy sets out exactly one circumstance in which a lumbar spine MRI is not medically necessary. Lumbar spine MRI is considered not medically necessary for acute low back pain of less than six (6) weeks duration in the absence of red-flag findings as defined in 2.2.[1]
+
+That provision does not apply to this member. The chart documents chronic low back pain with an onset of January 1, 2016 — a condition of roughly ten years' standing, not acute pain of less than six weeks. The single exclusion the policy provides is therefore inapplicable on its face, and a CO-50 "not medically necessary" determination cannot properly rest on it. This is the strongest ground for overturn: the denial is factually wrong when measured against the only exclusionary criterion in the payer's own policy.
+
+Ground 2 — The member independently satisfies affirmative Criterion 2.1.
+
+The policy states that lumbar spine MRI is considered medically necessary when ANY ONE of the following criteria (2.1 through 2.4) is met and documented in the medical record,[2] and Criterion 2.1 covers low back pain persisting six (6) weeks or longer that has failed a documented trial of conservative therapy, where conservative therapy includes at least one of: physical therapy, NSAID or analgesic pharmacotherapy, or a supervised home exercise program.[2]
+
+Both elements are documented:
+
+- Duration: The member's low back pain is not merely six weeks old but chronic since January 1, 2016, far exceeding the six-week threshold.
+
+- Failed conservative therapy: The record documents NSAID pharmacotherapy — Ibuprofen 400 MG oral tablet, ordered March 18, 2026 and listed as active — as well as prior analgesic therapy with Acetaminophen 325 MG. The policy requires only one qualifying conservative modality, and NSAID pharmacotherapy satisfies it. That the low back pain has persisted continuously since 2016 despite this documented analgesic/NSAID management demonstrates that the conservative trial has failed to resolve the condition.
+
+The member therefore meets Criterion 2.1 in both duration and failed-conservative-therapy elements, which alone is sufficient for the imaging to be deemed medically necessary under the policy.
+
+Scope note. We have reviewed the remaining criteria for candor: the record before us does not document red-flag findings under 2.2, does not document objective neurologic findings needed for radicular pain under 2.3, and does not document active surgical planning under 2.4. We do not assert those grounds. Our appeal rests on Grounds 1 and 2 above, which the record fully supports.
+
+Timeliness. This appeal is submitted well within the applicable window. A denial under this policy may be appealed in writing within one hundred eighty (180) days of the denial notice.[3] With a denial date of July 18, 2026 and an appeal deadline of October 16, 2026, this submission is timely.
+
+For the reasons above, we ask that the plan reverse the CO-50 denial and adjudicate CPT 72148 as medically necessary and payable. If any element of this request would benefit from further discussion, we request a peer-to-peer review; the policy provides that a peer-to-peer review with a plan medical director may be requested within fourteen (14) days.[4] Dr. Priya Natarajan is available to discuss the clinical record directly with a plan medical director at the plan's convenience.
+
+Thank you for your prompt reconsideration.
+
+Respectfully submitted,
+
+Patient Access Team
+Cedar Grove Family Medicine
+On behalf of Priya Natarajan, MD (Ordering Physician)
+
+========================================================================
+EVIDENCE CHAIN (API-enforced citations)
+========================================================================
+
+[1] Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine) (p.1):
+    "Criteria — Not Medically Necessary Lumbar spine MRI is considered not medically necessary for acute low back pain of less than six (6) weeks duration in the absence of red-flag findings as defined in 2.2."
+
+[2] Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine) (p.1):
+    "Criteria — Medically Necessary Lumbar spine MRI is considered medically necessary when ANY ONE of the following criteria (2.1 through 2.4) is met and documented in the medical record: 2.1 Low back pain persisting six (6)"
+
+[3] Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine) (p.1):
+    "Appeals A denial under this policy may be appealed in writing within one hundred eighty (180) days of the denial notice."
+
+[4] Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine) (p.1):
+    "A peer-to-peer review with a plan medical director may be requested within fourteen (14) days."
