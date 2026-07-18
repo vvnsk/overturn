@@ -10,12 +10,27 @@ export type RootCause =
   | "missing_information";
 
 export interface DenialRecord {
+  channel: "fax_pdf" | "era_835";
   payer_name: string;
   member: { name: string; member_id: string; dob: string | null };
   provider: { ordering_physician: string | null; facility: string | null };
   service: { description: string; cpt_codes: string[]; icd10_codes: string[] };
+  service_lines: {
+    cpt: string;
+    modifiers: string[];
+    carc: string;
+    rarc: string[];
+    denied_reason: string;
+  }[];
+  amounts: {
+    billed: number;
+    allowed: number;
+    paid: number;
+    patient_responsibility: number;
+  } | null;
   denial: {
     denial_date: string | null;
+    paid_date: string | null;
     auth_reference: string | null;
     reason_code: string | null;
     reason_text: string;
@@ -38,16 +53,20 @@ export const DENIAL_SCHEMA = {
   type: "object",
   additionalProperties: false,
   required: [
+    "channel",
     "payer_name",
     "member",
     "provider",
     "service",
+    "service_lines",
+    "amounts",
     "denial",
     "root_cause",
     "root_cause_rationale",
     "confidence",
   ],
   properties: {
+    channel: { type: "string", enum: ["fax_pdf", "era_835"] },
     payer_name: str,
     member: {
       type: "object",
@@ -71,11 +90,38 @@ export const DENIAL_SCHEMA = {
         icd10_codes: { type: "array", items: str },
       },
     },
+    service_lines: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["cpt", "modifiers", "carc", "rarc", "denied_reason"],
+        properties: {
+          cpt: str,
+          modifiers: { type: "array", items: str },
+          carc: str,
+          rarc: { type: "array", items: str },
+          denied_reason: str,
+        },
+      },
+    },
+    amounts: {
+      type: ["object", "null"],
+      additionalProperties: false,
+      required: ["billed", "allowed", "paid", "patient_responsibility"],
+      properties: {
+        billed: { type: "number" },
+        allowed: { type: "number" },
+        paid: { type: "number" },
+        patient_responsibility: { type: "number" },
+      },
+    },
     denial: {
       type: "object",
       additionalProperties: false,
       required: [
         "denial_date",
+        "paid_date",
         "auth_reference",
         "reason_code",
         "reason_text",
@@ -87,6 +133,7 @@ export const DENIAL_SCHEMA = {
       ],
       properties: {
         denial_date: nullableStr,
+        paid_date: nullableStr,
         auth_reference: nullableStr,
         reason_code: nullableStr,
         reason_text: str,

@@ -8,3 +8,4 @@ fixtures/synthea_sample_data_fhir_latest/
 .next/
 dist/
 *.log
+tsconfig.tsbuildinfo

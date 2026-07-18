@@ -56,5 +56,30 @@ export async function runQa(
     output_config: { format: { type: "json_schema", schema: QA_SCHEMA } },
   } as never);
 
-  return parseStructured<QaReport>(response, "qa");
+  const report = parseStructured<QaReport>(response, "qa");
+  const addFlag = (issue: string, severity: "medium" | "high") => {
+    if (!report.needs_human.some((flag) => flag.issue === issue)) {
+      report.needs_human.push({ issue, severity });
+    }
+  };
+
+  if (denial.channel === "era_835" && !denial.denial.appeal_deadline) {
+    addFlag("Confirm the payer-specific post-service appeal deadline before submission.", "high");
+    report.recommendation = "review_recommended";
+  }
+  if ((denial.service_lines ?? []).some((line) => line.carc.endsWith("-197"))) {
+    addFlag(
+      "CARC CO-197 (no auth on file) is ambiguous between a genuine clinical appeal and a pure " +
+        "administrative miss — a coordinator must decide before this can be sent, regardless of " +
+        "the autonomy policy in effect.",
+      "high",
+    );
+    // Hard stop, not just a flag: CO-197 must never auto-submit even if the
+    // coordinator has disabled "interrupt on high-severity flags" or is in
+    // full-autonomy mode — `do_not_submit` is the one recommendation `decide()`
+    // in app/page.tsx honors unconditionally, ahead of any autonomy setting.
+    report.recommendation = "do_not_submit";
+  }
+
+  return report;
 }

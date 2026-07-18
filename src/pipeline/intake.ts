@@ -8,6 +8,9 @@ denial notice from a payer.
 
 Extract every field in the output schema exactly as it appears in the notice.
 Rules:
+- channel: always "fax_pdf" for this adapter.
+- service_lines: use [] because fax notices remain represented by the rolled-up service.
+- amounts and denial.paid_date: use null because this intake rail does not provide them.
 - Dates in ISO format (YYYY-MM-DD). Use null for anything not stated in the notice.
 - cited_policy_id / cited_policy_section: the payer's own medical policy reference
   used to justify the denial (e.g. a policy number and a section like "2.1").
