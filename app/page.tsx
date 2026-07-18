@@ -79,8 +79,16 @@ function decide(qa: QaReport, s: Settings): Decision {
 
 const CASE_ORDER = ["rivera", "dara", "haag", "johnston"];
 
+const MODES: [Mode, string][] = [
+  ["human", "Human approves all"],
+  ["confident", "Auto-submit when confident"],
+  ["auto", "Agent runs the show"],
+];
+const modeLabel = (m: Mode) => MODES.find(([id]) => id === m)![1];
+
 export default function Page() {
   const [settings, setSettings] = useState<Settings>({ mode: "confident", threshold: 0.8, holdHighSev: true });
+  const [showSettings, setShowSettings] = useState(false);
   const [replay, setReplay] = useState(true);
   const [arrived, setArrived] = useState<string[]>([]);
   const [runs, setRuns] = useState<Record<string, CaseRun>>({});
@@ -191,34 +199,52 @@ export default function Page() {
           <input type="checkbox" checked={replay} onChange={(e) => setReplay(e.target.checked)} />
           cached replay
         </label>
+        <button className="ghost settings-btn" onClick={() => setShowSettings(true)}
+          title="Autonomy policy">⚙ {modeLabel(settings.mode)}</button>
         <button className="primary fax-btn" onClick={() => simulateFax(1)}>📠 Simulate incoming fax</button>
         <button className="ghost" onClick={() => simulateFax(4)}>📠 ×{Math.max(CASE_ORDER.length - arrived.length, 0)} all</button>
       </header>
 
-      <div className="policy-bar">
-        <span className="policy-label">AUTONOMY POLICY</span>
-        <div className="segmented">
-          {([
-            ["human", "Human approves all"],
-            ["confident", "Auto-submit when confident"],
-            ["auto", "Agent runs the show"],
-          ] as [Mode, string][]).map(([m, label]) => (
-            <button key={m} className={settings.mode === m ? "on" : ""}
-              onClick={() => setSettings((s) => ({ ...s, mode: m }))}>{label}</button>
-          ))}
+      {showSettings && (
+        <div className="settings-scrim" onClick={() => setShowSettings(false)}>
+          <div className="settings-modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
+            <div className="settings-head">
+              <span className="policy-label">AUTONOMY POLICY</span>
+              <button className="ghost close" onClick={() => setShowSettings(false)} aria-label="Close">✕</button>
+            </div>
+            <p className="settings-sub">
+              Analysis always runs — no side effects. This policy gates only the <b>send</b>:
+              when a human gets interrupted vs. when the agent submits on its own.
+            </p>
+            <div className="settings-field">
+              <span className="field-label">Mode</span>
+              <div className="segmented">
+                {MODES.map(([m, label]) => (
+                  <button key={m} className={settings.mode === m ? "on" : ""}
+                    onClick={() => setSettings((s) => ({ ...s, mode: m }))}>{label}</button>
+                ))}
+              </div>
+            </div>
+            <div className="settings-field">
+              <span className="field-label">Confidence threshold</span>
+              <label className={`policy-item${settings.mode !== "confident" ? " dim" : ""}`}>
+                auto-submit when confidence ≥ <b>{Math.round(settings.threshold * 100)}%</b>
+                <input type="range" min={50} max={95} step={5} value={settings.threshold * 100}
+                  disabled={settings.mode !== "confident"}
+                  onChange={(e) => setSettings((s) => ({ ...s, threshold: Number(e.target.value) / 100 }))} />
+              </label>
+            </div>
+            <div className="settings-field">
+              <span className="field-label">Safety gate</span>
+              <label className="policy-item">
+                <input type="checkbox" checked={settings.holdHighSev}
+                  onChange={(e) => setSettings((s) => ({ ...s, holdHighSev: e.target.checked }))} />
+                interrupt a human on high-severity flags
+              </label>
+            </div>
+          </div>
         </div>
-        <label className={`policy-item${settings.mode === "human" ? " dim" : ""}`}>
-          confidence ≥ <b>{Math.round(settings.threshold * 100)}%</b>
-          <input type="range" min={50} max={95} step={5} value={settings.threshold * 100}
-            disabled={settings.mode === "human"}
-            onChange={(e) => setSettings((s) => ({ ...s, threshold: Number(e.target.value) / 100 }))} />
-        </label>
-        <label className="policy-item">
-          <input type="checkbox" checked={settings.holdHighSev}
-            onChange={(e) => setSettings((s) => ({ ...s, holdHighSev: e.target.checked }))} />
-          interrupt a human on high-severity flags
-        </label>
-      </div>
+      )}
 
       {faxToast && <div className="fax-toast">📠 {faxToast}</div>}
 
@@ -229,7 +255,7 @@ export default function Page() {
             <p>
               Denials arrive here the way they arrive at every clinic — by fax. Simulate one
               and watch the agent take it from scan to submission-ready appeal. The autonomy
-              policy above decides when a human gets interrupted.
+              policy (⚙ in the header) decides when a human gets interrupted.
             </p>
           </div>
         )}
