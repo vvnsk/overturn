@@ -24,6 +24,7 @@ interface LetterVersion {
 }
 
 type Resolution = { kind: "revised"; v: number } | { kind: "dismissed" };
+type DocumentTab = "letter" | "p2p" | "denial";
 
 interface CaseRun {
   phase: "arriving" | "running" | "waiting_policy" | "waiting_deadline" | "complete" | "error";
@@ -393,11 +394,16 @@ const AUTO_FIX =
 
 function Drawer({ meta, run, settings, replay, onClose, onPatch, onAttachPolicy, onConfirmDeadline }: DrawerProps) {
   const d = run.qa && run.phase === "complete" ? decide(run.qa, settings) : null;
+  const [documentTab, setDocumentTab] = useState<DocumentTab>("letter");
   // resolvingIdx: which composer is open; -1 = the resolve-all composer
   const [resolvingIdx, setResolvingIdx] = useState<number | null>(null);
   const [instruction, setInstruction] = useState("");
   const [policyFile, setPolicyFile] = useState<File | null>(null);
   const [deadline, setDeadline] = useState("");
+
+  useEffect(() => {
+    setDocumentTab("letter");
+  }, [meta.id]);
 
   const unresolved = run.qa
     ? run.qa.needs_human.map((_, i) => i).filter((i) => !run.resolutions[i])
@@ -465,8 +471,9 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch, onAttachPolicy,
   };
 
   const renderP2p = async () => {
-    if (run.p2p) { onPatch({ showBrief: true }); return; }
+    if (run.p2p) { setDocumentTab("p2p"); onPatch({ showBrief: true }); return; }
     if (!run.denial || !run.letter || !run.qa) return;
+    setDocumentTab("p2p");
     onPatch({ p2pLoading: true });
     try {
       const res = await fetch("/api/p2p", {
@@ -476,6 +483,7 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch, onAttachPolicy,
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error ?? "p2p render failed");
+      setDocumentTab("p2p");
       onPatch({ p2p: data, showBrief: true, p2pLoading: false });
     } catch (err) {
       onPatch({ error: err instanceof Error ? err.message : String(err), p2pLoading: false });
@@ -657,6 +665,18 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch, onAttachPolicy,
           </div>
         )}
 
+        <DocumentTabs
+          active={documentTab}
+          hasP2p={Boolean(run.p2p)}
+          hasDenialPdf={Boolean(meta.denialPdf)}
+          p2pLoading={run.p2pLoading}
+          onRequestP2p={() => void renderP2p()}
+          onChange={(tab) => {
+            setDocumentTab(tab);
+            onPatch({ showBrief: tab === "p2p" });
+          }}
+        />
+
         {run.versions.length > 0 && (
           <div className="version-bar">
             <span className="policy-label">LETTER</span>
@@ -676,8 +696,16 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch, onAttachPolicy,
             <div className="revising-note">Agent revising per your instruction — citations re-enforced…</div>
             {run.reviseText}<span className="caret" />
           </div>
-        ) : run.showBrief && run.p2p && run.letter ? (
-          <BriefView brief={run.p2p} letter={run.letter} onBack={() => onPatch({ showBrief: false })} />
+        ) : documentTab === "denial" && meta.denialPdf ? (
+          <DenialDocument caseId={meta.id} patient={meta.patient} />
+        ) : documentTab === "p2p" && run.p2p && run.letter ? (
+          <BriefView
+            brief={run.p2p}
+            letter={run.letter}
+            onBack={() => { setDocumentTab("letter"); onPatch({ showBrief: false }); }}
+          />
+        ) : documentTab === "p2p" && run.p2pLoading ? (
+          <div className="sheet empty">Rendering the peer-to-peer brief…</div>
         ) : run.letter ? (
           <div className="sheet"><LetterView letter={run.letter} /></div>
         ) : run.draftText ? (
@@ -688,7 +716,7 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch, onAttachPolicy,
           </div>
         )}
 
-        {run.letter && !run.showBrief && run.qa && (
+        {run.letter && documentTab === "letter" && run.qa && (
           <div className="card approve-box">
             <button className="primary" onClick={() => void renderP2p()} disabled={run.p2pLoading}>
               {run.p2pLoading ? "Rendering brief…" : run.p2p ? "View P2P brief" : "Render P2P brief"}
@@ -697,6 +725,66 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch, onAttachPolicy,
           </div>
         )}
       </aside>
+    </div>
+  );
+}
+
+function DocumentTabs({
+  active,
+  hasP2p,
+  hasDenialPdf,
+  p2pLoading,
+  onRequestP2p,
+  onChange,
+}: {
+  active: DocumentTab;
+  hasP2p: boolean;
+  hasDenialPdf: boolean;
+  p2pLoading: boolean;
+  onRequestP2p: () => void;
+  onChange: (tab: DocumentTab) => void;
+}) {
+  return (
+    <div className="document-tabs" role="tablist" aria-label="Case documents">
+      <button
+        role="tab"
+        aria-selected={active === "letter"}
+        className={active === "letter" ? "active" : ""}
+        onClick={() => onChange("letter")}
+      >
+        Letter
+      </button>
+      <button
+        role="tab"
+        aria-selected={active === "p2p"}
+        className={active === "p2p" ? "active" : ""}
+        disabled={p2pLoading}
+        title={hasP2p ? "View the peer-to-peer brief" : "Render the P2P brief"}
+        onClick={() => hasP2p ? onChange("p2p") : onRequestP2p()}
+      >
+        {p2pLoading ? "Rendering P2P…" : "P2P Brief"}
+      </button>
+      <button
+        role="tab"
+        aria-selected={active === "denial"}
+        className={active === "denial" ? "active" : ""}
+        disabled={!hasDenialPdf}
+        title={hasDenialPdf ? "View the incoming denial fax" : "This case arrived as an 835 ERA and has no PDF attachment"}
+        onClick={() => onChange("denial")}
+      >
+        Denial Letter (PDF)
+      </button>
+    </div>
+  );
+}
+
+function DenialDocument({ caseId, patient }: { caseId: string; patient: string }) {
+  return (
+    <div className="denial-document">
+      <iframe
+        src={`/api/denial?case=${encodeURIComponent(caseId)}`}
+        title={`Incoming denial fax for ${patient}`}
+      />
     </div>
   );
 }
