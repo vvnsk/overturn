@@ -291,9 +291,33 @@ button.ghost {
   padding: 12px 16px; font-size: 13.5px;
 }
 .decision-actions { display: flex; gap: 8px; flex: none; }
-.human-item.actionable { cursor: pointer; align-items: flex-start; }
-.human-item.actionable input { margin-top: 3px; accent-color: var(--accent); }
-.human-item.handled span:last-child { text-decoration: line-through; opacity: 0.55; }
+/* ---------- interactive confirmations + letter versions ---------- */
+.confirm-item { padding: 9px 0; border-top: 1px solid #eeebe2; }
+.confirm-item:first-of-type { border-top: 0; }
+.confirm-row { display: flex; gap: 8px; font-size: 12.5px; align-items: flex-start; }
+.confirm-item.resolved .confirm-issue { opacity: 0.55; }
+.confirm-status { font-size: 12px; color: var(--green); font-weight: 600; margin: 5px 0 0 44px; }
+.confirm-actions { display: flex; gap: 8px; margin: 7px 0 0 44px; }
+.confirm-actions button { font-size: 12px; padding: 5px 10px; }
+.confirm-thread { margin: 7px 0 0 44px; }
+.confirm-thread textarea {
+  width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px;
+  font-family: inherit; font-size: 13px; background: var(--sheet); resize: vertical;
+}
+.confirm-thread textarea:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+.confirm-thread .confirm-actions { margin-left: 0; margin-top: 6px; }
+
+.version-bar { display: flex; align-items: center; gap: 8px; padding: 2px 4px; }
+.vpill {
+  border: 1px solid var(--line); background: var(--sheet); border-radius: 6px;
+  padding: 3px 10px; font-size: 12px; font-weight: 700; cursor: pointer; color: var(--ink-soft);
+}
+.vpill.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.vnote { font-size: 12px; color: var(--ink-soft); font-style: italic; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.revising-note {
+  font-family: -apple-system, "Segoe UI", sans-serif; font-size: 12px; font-weight: 700;
+  color: var(--amber); margin-bottom: 14px; letter-spacing: 0.04em;
+}
 
 .error-banner {
   background: #fbeae7; border: 1px solid var(--red); color: var(--red);

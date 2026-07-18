@@ -17,17 +17,29 @@ import CASES from "@/cases/cases.json";
 type StageId = "intake" | "draft" | "qa";
 type StageState = "pending" | "active" | "done";
 
+interface LetterVersion {
+  n: number;
+  letter: AssembledLetter;
+  note: string;
+}
+
+type Resolution = { kind: "revised"; v: number } | { kind: "dismissed" };
+
 interface CaseRun {
   phase: "arriving" | "running" | "complete" | "error";
   stages: Record<StageId, StageState>;
   denial: DenialRecord | null;
   draftText: string;
-  letter: AssembledLetter | null;
+  letter: AssembledLetter | null; // the ACTIVE version's letter
+  versions: LetterVersion[];
+  activeVersion: number; // index into versions
+  resolutions: Record<number, Resolution>;
+  revising: boolean;
+  reviseText: string;
   qa: QaReport | null;
   error: string | null;
   submitted: null | { by: "agent" | "human"; at: string };
   held: boolean;
-  handled: Record<number, boolean>;
   p2p: P2pBrief | null;
   showBrief: boolean;
   p2pLoading: boolean;
@@ -36,8 +48,10 @@ interface CaseRun {
 const freshRun = (): CaseRun => ({
   phase: "arriving",
   stages: { intake: "pending", draft: "pending", qa: "pending" },
-  denial: null, draftText: "", letter: null, qa: null, error: null,
-  submitted: null, held: false, handled: {}, p2p: null, showBrief: false, p2pLoading: false,
+  denial: null, draftText: "", letter: null,
+  versions: [], activeVersion: 0, resolutions: {}, revising: false, reviseText: "",
+  qa: null, error: null,
+  submitted: null, held: false, p2p: null, showBrief: false, p2pLoading: false,
 });
 
 type Mode = "human" | "confident" | "auto";
@@ -105,7 +119,13 @@ export default function Page() {
           case "draft_delta":
             patch(id, (r) => ({ draftText: r.draftText + ev.text }));
             break;
-          case "letter": patch(id, { letter: ev.data }); break;
+          case "letter":
+            patch(id, {
+              letter: ev.data,
+              versions: [{ n: 1, letter: ev.data, note: "initial draft by the agent" }],
+              activeVersion: 0,
+            });
+            break;
           case "qa": patch(id, { qa: ev.data }); break;
           case "error": throw new Error(ev.message);
           case "done": patch(id, { phase: "complete" }); finished = true; break;
@@ -304,6 +324,62 @@ interface DrawerProps {
 
 function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) {
   const d = run.qa && run.phase === "complete" ? decide(run.qa, settings) : null;
+  const [resolvingIdx, setResolvingIdx] = useState<number | null>(null);
+  const [instruction, setInstruction] = useState("");
+
+  const sendRevision = async (idx: number | null) => {
+    if (!run.denial || !run.letter || !instruction.trim()) return;
+    const issue = idx != null && run.qa ? [run.qa.needs_human[idx].issue] : [];
+    const note = instruction.trim();
+    onPatch({ revising: true, reviseText: "", error: null });
+    setResolvingIdx(null);
+    setInstruction("");
+    try {
+      const res = await fetch("/api/revise", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          caseId: meta.id, denial: run.denial, letter: run.letter,
+          instruction: note, issues: issue,
+        }),
+      });
+      if (!res.ok || !res.body) throw new Error(`revision failed (${res.status})`);
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = "";
+      let newLetter: AssembledLetter | null = null;
+      let acc = "";
+      const handleLine = (line: string) => {
+        if (!line.trim()) return;
+        const ev = JSON.parse(line);
+        if (ev.type === "revise_delta") { acc += ev.text; onPatch({ reviseText: acc }); }
+        else if (ev.type === "letter") newLetter = ev.data;
+        else if (ev.type === "error") throw new Error(ev.message);
+      };
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const lines = buf.split("\n");
+        buf = lines.pop() ?? "";
+        for (const line of lines) handleLine(line);
+      }
+      handleLine(buf);
+      if (!newLetter) throw new Error("revision stream ended without a letter");
+      const vn = run.versions.length + 1;
+      onPatch({
+        revising: false, reviseText: "",
+        versions: [...run.versions, { n: vn, letter: newLetter, note }],
+        activeVersion: run.versions.length,
+        letter: newLetter,
+        resolutions: idx != null
+          ? { ...run.resolutions, [idx]: { kind: "revised", v: vn } }
+          : run.resolutions,
+      });
+    } catch (err) {
+      onPatch({ revising: false, error: err instanceof Error ? err.message : String(err) });
+    }
+  };
 
   const renderP2p = async () => {
     if (run.p2p) { onPatch({ showBrief: true }); return; }
@@ -386,19 +462,72 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) 
 
         {run.qa && run.qa.needs_human.length > 0 && (
           <div className="card">
-            <h3>Confirmations — needs a human</h3>
-            {run.qa.needs_human.map((h, i) => (
-              <label key={i} className={`human-item actionable${run.handled[i] ? " handled" : ""}`}>
-                <input type="checkbox" checked={!!run.handled[i]}
-                  onChange={() => onPatch({ handled: { ...run.handled, [i]: !run.handled[i] } })} />
-                <span className={`sev ${h.severity}`}>{h.severity}</span>
-                <span>{h.issue}</span>
-              </label>
-            ))}
+            <h3>Confirmations — lead the agent</h3>
+            {run.qa.needs_human.map((h, i) => {
+              const r = run.resolutions[i];
+              return (
+                <div key={i} className={`confirm-item${r ? " resolved" : ""}`}>
+                  <div className="confirm-row">
+                    <span className={`sev ${h.severity}`}>{h.severity}</span>
+                    <span className="confirm-issue">{h.issue}</span>
+                  </div>
+                  {r ? (
+                    <div className="confirm-status">
+                      {r.kind === "revised" ? `✓ resolved — letter revised to v${r.v}` : "dismissed — not applicable"}
+                    </div>
+                  ) : resolvingIdx === i ? (
+                    <div className="confirm-thread">
+                      <textarea
+                        autoFocus rows={2} value={instruction}
+                        placeholder='Answer or instruct the agent — e.g. "Sign as Dana Okafor, MD; direct fax 415-555-0198" or "drop that argument"'
+                        onChange={(e) => setInstruction(e.target.value)}
+                      />
+                      <div className="confirm-actions">
+                        <button className="primary" disabled={run.revising || !instruction.trim()}
+                          onClick={() => void sendRevision(i)}>
+                          Send to agent → revise letter
+                        </button>
+                        <button className="ghost" onClick={() => { setResolvingIdx(null); setInstruction(""); }}>Cancel</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="confirm-actions">
+                      <button className="ghost" disabled={run.revising}
+                        onClick={() => { setResolvingIdx(i); setInstruction(""); }}>
+                        Resolve with agent…
+                      </button>
+                      <button className="ghost" disabled={run.revising}
+                        onClick={() => onPatch({ resolutions: { ...run.resolutions, [i]: { kind: "dismissed" } } })}>
+                        Dismiss
+                      </button>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
 
-        {run.showBrief && run.p2p ? (
+        {run.versions.length > 0 && (
+          <div className="version-bar">
+            <span className="policy-label">LETTER</span>
+            {run.versions.map((v, i) => (
+              <button key={v.n} className={`vpill${i === run.activeVersion ? " on" : ""}`}
+                title={v.note} disabled={run.revising}
+                onClick={() => onPatch({ activeVersion: i, letter: run.versions[i].letter })}>
+                v{v.n}
+              </button>
+            ))}
+            <span className="vnote">{run.versions[run.activeVersion]?.note}</span>
+          </div>
+        )}
+
+        {run.revising ? (
+          <div className="sheet">
+            <div className="revising-note">Agent revising per your instruction — citations re-enforced…</div>
+            {run.reviseText}<span className="caret" />
+          </div>
+        ) : run.showBrief && run.p2p ? (
           <BriefView brief={run.p2p} onBack={() => onPatch({ showBrief: false })} />
         ) : run.letter ? (
           <div className="sheet"><LetterView letter={run.letter} /></div>
