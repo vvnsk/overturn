@@ -10,6 +10,7 @@ import type {
   DenialRecord,
   QaReport,
 } from "@/src/pipeline/types";
+import type { P2pBrief } from "@/src/pipeline/p2p";
 
 type StageId = "intake" | "draft" | "qa";
 type StageState = "pending" | "active" | "done";
@@ -33,12 +34,16 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   const [drag, setDrag] = useState(false);
   const [replayed, setReplayed] = useState(false);
+  const [p2p, setP2p] = useState<P2pBrief | null>(null);
+  const [p2pLoading, setP2pLoading] = useState(false);
+  const [showBrief, setShowBrief] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
 
   const run = useCallback(async (opts: { file?: File; replay?: boolean }) => {
     setPhase("running");
     setError(null);
     setDenial(null); setDraftText(""); setLetter(null); setQa(null);
+    setP2p(null); setShowBrief(false);
     setStages({ intake: "pending", draft: "pending", qa: "pending" });
     setReplayed(!!opts.replay);
 
@@ -95,6 +100,27 @@ export default function Page() {
     },
     [run],
   );
+
+  const renderP2p = useCallback(async () => {
+    if (!denial || !letter || !qa) return;
+    if (p2p) { setShowBrief(true); return; }
+    setP2pLoading(true);
+    try {
+      const res = await fetch("/api/p2p", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ denial, letter, qa, cached: replayed }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "p2p render failed");
+      setP2p(data);
+      setShowBrief(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : String(err));
+    } finally {
+      setP2pLoading(false);
+    }
+  }, [denial, letter, qa, p2p, replayed]);
 
   const downloadLetter = useCallback(() => {
     if (!letter) return;
@@ -183,9 +209,11 @@ export default function Page() {
             )}
           </div>
 
-          {/* center — the letter */}
+          {/* center — the letter (or the P2P brief, third rendering of the bundle) */}
           <div>
-            {letter ? (
+            {showBrief && p2p ? (
+              <BriefView brief={p2p} onBack={() => setShowBrief(false)} />
+            ) : letter ? (
               <div className="sheet"><LetterView letter={letter} /></div>
             ) : draftText ? (
               <div className="sheet">{draftText}<span className="caret" /></div>
@@ -252,11 +280,16 @@ export default function Page() {
                 </div>
                 <div className="sms">
                   <div className="from">SMS → patient (mocked)</div>
-                  Hi {firstName(denial.member.name)} — good news: {denial.provider.facility ?? "your clinic"} appealed
-                  your insurance denial today. Most appeals like yours succeed. We expect the
-                  plan&apos;s answer within 30 days and will text you the moment we hear back.
+                  {`Hi ${firstName(denial.member.name)} — good news: ${denial.provider.facility ?? "your clinic"} appealed your insurance denial today. Most appeals like yours succeed. We expect the plan's answer within 30 days and will text you the moment we hear back.`}
                 </div>
                 <div className="card approve-box">
+                  <div style={{ fontSize: 12.5, color: "var(--ink-soft)" }}>
+                    Payer requested a peer-to-peer? One click renders the physician&apos;s
+                    brief from the same evidence bundle.
+                  </div>
+                  <button className="primary" onClick={() => void renderP2p()} disabled={p2pLoading}>
+                    {p2pLoading ? "Rendering brief…" : showBrief ? "Brief rendered ✓" : "Render P2P brief"}
+                  </button>
                   <button className="ghost" onClick={downloadLetter}>Download letter (.txt)</button>
                 </div>
               </>
@@ -275,6 +308,39 @@ function firstName(name: string): string {
     return part.charAt(0) + part.slice(1).toLowerCase();
   }
   return name.split(" ")[0];
+}
+
+function BriefView({ brief, onBack }: { brief: P2pBrief; onBack: () => void }) {
+  return (
+    <div className="brief">
+      <div className="brief-tag">PEER-TO-PEER BRIEF — for the ordering physician</div>
+      <h2>{brief.headline}</h2>
+      <div className="brief-patient">{brief.patient_line}</div>
+
+      <h4>Key points</h4>
+      {brief.key_points.map((k, i) => (
+        <div key={i} className="brief-point">
+          <span>{k.point}</span>
+          <span className="brief-src">{k.source}</span>
+        </div>
+      ))}
+
+      <h4>If the medical director pushes back</h4>
+      {brief.anticipated_objections.map((o, i) => (
+        <div key={i} className="brief-obj">
+          <div className="obj">“{o.objection}”</div>
+          <div className="resp">→ {o.response}</div>
+        </div>
+      ))}
+
+      <h4>The ask</h4>
+      <div className="brief-ask">{brief.ask}</div>
+
+      <button className="ghost" style={{ marginTop: 18 }} onClick={onBack}>
+        ← Back to the appeal letter
+      </button>
+    </div>
+  );
 }
 
 function LetterView({ letter }: { letter: AssembledLetter }) {

@@ -1,0 +1,45 @@
+{
+  "headline": "The MRI is medically necessary on two independent grounds under the payer's own policy — the six-week conservative therapy trial in §2.1 was completed and failed, and §2.3 is independently satisfied by radicular pain with objective neurologic findings — so the sole cited denial premise is factually wrong.",
+  "patient_line": "RIVERA, Marisol (MHP-4471-88203) — MRI Lumbar Spine w/o contrast (CPT 72148) for lumbar radiculopathy, right (M54.16).",
+  "key_points": [
+    {
+      "point": "GROUND 1 (§2.1): Denial claims no documented 6-week conservative trial — the chart shows the opposite: 13 weeks of low back pain (onset 2026-04-06) with a full 8-week/16-visit PT course, plus 9 weeks of Naproxen 500mg BID and a home exercise program.",
+      "source": "Policy §2.1 [1]; Chart — 07-05 encounter [2]; PT course [3]; medications [5]"
+    },
+    {
+      "point": "GROUND 2 (§2.3): Independently qualifying pathway the denial never evaluated — radicular pain ≥4 weeks (here 13 weeks) with corresponding objective neurologic findings.",
+      "source": "Policy §2.3 [9]; Chart — 07-05 HPI [10]"
+    },
+    {
+      "point": "Objective neurologic findings match the policy's own examples: diminished right ankle DTR (1+ vs 2+, a change from prior symmetric exam), right S1 dermatomal sensory loss, and positive straight leg raise at 30° on the right.",
+      "source": "Chart — 07-05 exam [11][12]"
+    },
+    {
+      "point": "PT is documented as FAILED, not incomplete: 15/16 visit adherence, minimal improvement, persistent right-sided radicular symptoms at discharge.",
+      "source": "Chart — discharge note 07-01 [4]"
+    },
+    {
+      "point": "Policy criteria 2.1–2.4 are disjunctive — ANY ONE met establishes medical necessity — and this member meets two.",
+      "source": "Policy §2.1 header [1]"
+    },
+    {
+      "point": "Treating physician's assessment: lumbar radiculopathy, right (M54.16), with new objective neurologic findings after failure of conservative therapy.",
+      "source": "Chart — 07-05 assessment [13]"
+    }
+  ],
+  "anticipated_objections": [
+    {
+      "objection": "\"The record doesn't show a completed 6-week conservative therapy trial.\"",
+      "response": "The chart documents 13 weeks of pain, a full 8-week/16-visit PT course with 15/16 adherence and documented failure, plus 9 weeks of Naproxen — all three modalities named in §2.1 [2][3][4][5]."
+    },
+    {
+      "objection": "\"There are no objective findings justifying advanced imaging.\"",
+      "response": "The 07-05 exam documents a diminished right ankle reflex (1+ vs 2+, a change from prior symmetric exam), right S1 dermatomal sensory loss, and positive SLR at 30° — the exact examples listed in §2.3 [11][12]."
+    },
+    {
+      "objection": "\"Symptoms haven't persisted long enough / this is premature.\"",
+      "response": "Radicular pain has persisted 13 weeks with new lateral calf-to-foot numbness, far exceeding both the 6-week §2.1 and 4-week §2.3 thresholds [10]."
+    }
+  ],
+  "ask": "Please overturn the MN-02 denial and approve the lumbar spine MRI (CPT 72148) today — the member independently satisfies both §2.1 and §2.3 of MP-RAD-014, and any one criterion is sufficient under the policy."
+}

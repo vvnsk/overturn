@@ -165,6 +165,49 @@ button.ghost {
 }
 .sms .from { font-size: 11px; color: var(--ink-soft); margin-bottom: 4px; }
 
+/* ---------- P2P brief ---------- */
+.brief {
+  background: var(--sheet); border: 1px solid var(--line); border-radius: 4px;
+  box-shadow: 0 2px 14px rgba(30, 30, 25, 0.07);
+  padding: 40px 46px; min-height: 70vh;
+}
+.brief-tag {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.12em; color: var(--amber);
+  margin-bottom: 14px;
+}
+.brief h2 {
+  font-family: Georgia, serif; font-size: 22px; line-height: 1.35;
+  margin-bottom: 8px; font-weight: 650;
+}
+.brief-patient {
+  color: var(--ink-soft); font-size: 13.5px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--line); margin-bottom: 8px;
+}
+.brief h4 {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--ink-soft); margin: 18px 0 8px;
+}
+.brief-point {
+  display: flex; justify-content: space-between; gap: 16px; align-items: baseline;
+  padding: 7px 0; border-top: 1px solid #eeebe2; font-size: 14px;
+}
+.brief-point:first-of-type { border-top: 0; }
+.brief-src {
+  flex: none; font-size: 11px; font-weight: 700; color: var(--accent);
+  background: var(--accent-soft); border-radius: 5px; padding: 2px 8px;
+}
+.brief-obj { padding: 6px 0; font-size: 13.5px; }
+.brief-obj .obj { color: var(--ink-soft); font-style: italic; }
+.brief-obj .resp { font-weight: 550; }
+.brief-ask {
+  background: var(--accent-soft); border-left: 3px solid var(--accent);
+  padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 14px; font-weight: 550;
+}
+
+@media (max-width: 1000px) {
+  .surface { grid-template-columns: 1fr; }
+}
+
 .error-banner {
   background: #fbeae7; border: 1px solid var(--red); color: var(--red);
   border-radius: 8px; padding: 10px 14px; font-size: 13.5px; margin-bottom: 12px;
