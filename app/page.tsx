@@ -40,12 +40,21 @@ export default function Page() {
   const fileInput = useRef<HTMLInputElement>(null);
 
   // Keep the streaming caret in view while the letter is drafting — the typing
-  // effect is the demo; it shouldn't disappear below the fold.
+  // effect is the demo; it shouldn't disappear below the fold. The near-bottom
+  // guard lets the presenter scroll up to point at other panels without the
+  // page yanking back down.
   useEffect(() => {
     if (phase === "running" && draftText && !letter) {
-      window.scrollTo({ top: document.body.scrollHeight });
+      const nearBottom =
+        window.innerHeight + window.scrollY > document.body.scrollHeight - 400;
+      if (nearBottom) window.scrollTo({ top: document.body.scrollHeight });
     }
   }, [phase, draftText, letter]);
+
+  // Jump to the top of the brief when it opens.
+  useEffect(() => {
+    if (showBrief) window.scrollTo({ top: 0 });
+  }, [showBrief]);
 
   // Once the cited letter lands, return to the top of the sheet.
   useEffect(() => {
@@ -121,6 +130,7 @@ export default function Page() {
   const renderP2p = useCallback(async () => {
     if (!denial || !letter || !qa) return;
     if (p2p) { setShowBrief(true); return; }
+    setError(null);
     setP2pLoading(true);
     try {
       const res = await fetch("/api/p2p", {
@@ -162,6 +172,12 @@ export default function Page() {
         {phase === "complete" && <span className="status-pill">awaiting human approval</span>}
         {phase === "approved" && <span className="status-pill">appeal submitted</span>}
       </header>
+
+      {error && phase !== "idle" && (
+        <div className="error-banner" style={{ margin: "12px 22px 0" }}>
+          Error: {error}
+        </div>
+      )}
 
       {phase === "idle" ? (
         <main className="intake-screen">
