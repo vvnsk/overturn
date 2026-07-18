@@ -4,7 +4,7 @@
 // queue. One case at a time: denial in → agent works visibly → letter with an
 // enforced evidence chain → human approves the send.
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type {
   AssembledLetter,
   DenialRecord,
@@ -39,6 +39,19 @@ export default function Page() {
   const [showBrief, setShowBrief] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
 
+  // Keep the streaming caret in view while the letter is drafting — the typing
+  // effect is the demo; it shouldn't disappear below the fold.
+  useEffect(() => {
+    if (phase === "running" && draftText && !letter) {
+      window.scrollTo({ top: document.body.scrollHeight });
+    }
+  }, [phase, draftText, letter]);
+
+  // Once the cited letter lands, return to the top of the sheet.
+  useEffect(() => {
+    if (letter) window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [letter]);
+
   const run = useCallback(async (opts: { file?: File; replay?: boolean }) => {
     setPhase("running");
     setError(null);
@@ -60,31 +73,35 @@ export default function Page() {
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buf = "";
+      let finished = false;
+      const handleLine = (line: string) => {
+        if (!line.trim()) return;
+        const ev = JSON.parse(line);
+        switch (ev.type) {
+          case "stage_start":
+            setStages((s) => ({ ...s, [ev.stage as StageId]: "active" }));
+            break;
+          case "stage_done":
+            setStages((s) => ({ ...s, [ev.stage as StageId]: "done" }));
+            break;
+          case "denial": setDenial(ev.data); break;
+          case "draft_delta": setDraftText((t) => t + ev.text); break;
+          case "letter": setLetter(ev.data); break;
+          case "qa": setQa(ev.data); break;
+          case "error": throw new Error(ev.message);
+          case "done": setPhase("complete"); finished = true; break;
+        }
+      };
       for (;;) {
         const { done, value } = await reader.read();
         if (done) break;
         buf += decoder.decode(value, { stream: true });
         const lines = buf.split("\n");
         buf = lines.pop() ?? "";
-        for (const line of lines) {
-          if (!line.trim()) continue;
-          const ev = JSON.parse(line);
-          switch (ev.type) {
-            case "stage_start":
-              setStages((s) => ({ ...s, [ev.stage as StageId]: "active" }));
-              break;
-            case "stage_done":
-              setStages((s) => ({ ...s, [ev.stage as StageId]: "done" }));
-              break;
-            case "denial": setDenial(ev.data); break;
-            case "draft_delta": setDraftText((t) => t + ev.text); break;
-            case "letter": setLetter(ev.data); break;
-            case "qa": setQa(ev.data); break;
-            case "error": throw new Error(ev.message);
-            case "done": setPhase("complete"); break;
-          }
-        }
+        for (const line of lines) handleLine(line);
       }
+      handleLine(buf); // trailing line if the server closed without a final newline
+      if (!finished) throw new Error("stream ended before the pipeline finished");
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
       setPhase("idle");

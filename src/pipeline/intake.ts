@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { client, MODEL } from "./client";
+import { client, MODEL, parseStructured } from "./client";
 import { DENIAL_SCHEMA, type DenialRecord } from "./types";
 
 const INTAKE_PROMPT = `You are the intake stage of Overturn, an appeals engine for
@@ -23,7 +23,7 @@ export async function runIntake(denialPdfPath: string): Promise<DenialRecord> {
 
   const response = await client.messages.create({
     model: MODEL,
-    max_tokens: 8000,
+    max_tokens: 16000,
     thinking: { type: "adaptive" },
     messages: [
       {
@@ -42,9 +42,5 @@ export async function runIntake(denialPdfPath: string): Promise<DenialRecord> {
     },
   } as never);
 
-  const textBlock = (response as { content: { type: string; text?: string }[] }).content.find(
-    (b) => b.type === "text",
-  );
-  if (!textBlock?.text) throw new Error("intake: no text block in response");
-  return JSON.parse(textBlock.text) as DenialRecord;
+  return parseStructured<DenialRecord>(response, "intake");
 }

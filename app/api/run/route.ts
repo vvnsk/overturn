@@ -82,6 +82,7 @@ export async function POST(req: Request): Promise<Response> {
   const mode = new URL(req.url).searchParams.get("mode");
 
   let denialPdfPath = FIXTURES.denialPdf;
+  let tmpUpload: string | null = null;
   if (mode !== "replay") {
     const contentType = req.headers.get("content-type") ?? "";
     if (contentType.includes("multipart/form-data")) {
@@ -91,6 +92,7 @@ export async function POST(req: Request): Promise<Response> {
         const tmp = path.join(os.tmpdir(), `overturn-denial-${Date.now()}.pdf`);
         fs.writeFileSync(tmp, Buffer.from(await file.arrayBuffer()));
         denialPdfPath = tmp;
+        tmpUpload = tmp;
       }
     }
   }
@@ -98,15 +100,31 @@ export async function POST(req: Request): Promise<Response> {
   const encoder = new TextEncoder();
   const stream = new ReadableStream({
     async start(controller) {
-      const send: Send = (event) =>
-        controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
+      // The client can disconnect mid-run (refresh); enqueue on a closed
+      // controller throws, so make send a no-op from then on.
+      let closed = false;
+      const send: Send = (event) => {
+        if (closed) return;
+        try {
+          controller.enqueue(encoder.encode(JSON.stringify(event) + "\n"));
+        } catch {
+          closed = true;
+        }
+      };
       try {
         if (mode === "replay") await replayRun(send);
         else await liveRun(send, denialPdfPath);
       } catch (err) {
         send({ type: "error", message: err instanceof Error ? err.message : String(err) });
       } finally {
-        controller.close();
+        if (tmpUpload) fs.rmSync(tmpUpload, { force: true });
+        if (!closed) {
+          try {
+            controller.close();
+          } catch {
+            /* already closed by the client */
+          }
+        }
       }
     },
   });

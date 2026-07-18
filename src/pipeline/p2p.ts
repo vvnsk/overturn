@@ -1,4 +1,4 @@
-import { client, MODEL } from "./client";
+import { client, MODEL, parseStructured } from "./client";
 import type { AssembledLetter, DenialRecord, QaReport } from "./types";
 
 // Third rendering of the same evidence bundle: a one-page peer-to-peer brief
@@ -80,15 +80,11 @@ Write for a physician with 90 seconds before the call:
 
   const response = await client.messages.create({
     model: MODEL,
-    max_tokens: 4000,
+    max_tokens: 8000,
     thinking: { type: "adaptive" },
     messages: [{ role: "user", content: prompt }],
     output_config: { format: { type: "json_schema", schema: P2P_SCHEMA } },
   } as never);
 
-  const textBlock = (response as { content: { type: string; text?: string }[] }).content.find(
-    (b) => b.type === "text",
-  );
-  if (!textBlock?.text) throw new Error("p2p: no text block in response");
-  return JSON.parse(textBlock.text) as P2pBrief;
+  return parseStructured<P2pBrief>(response, "p2p");
 }
