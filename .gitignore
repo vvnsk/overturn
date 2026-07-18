@@ -1,0 +1,8 @@
+.env
+.env.*
+node_modules/
+notes/
+.DS_Store
+.next/
+dist/
+*.log

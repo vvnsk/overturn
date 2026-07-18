@@ -1,0 +1,48 @@
+SYNTHETIC PATIENT CHART — Marisol Rivera (MHP-4471-88203)
+Cedar Grove Family Medicine | Extracted encounter notes
+(Stand-in for a Synthea FHIR bundle. No real patient data.)
+
+=== ENCOUNTER 2026-05-04 — Okafor, Dana MD — Office Visit ===
+CHIEF COMPLAINT: Low back pain, 4 weeks.
+HPI: 47F reports aching low back pain onset approximately 2026-04-06 after moving boxes.
+Pain radiates into the right posterior thigh and calf. Denies bowel/bladder dysfunction,
+denies fever, denies unexplained weight loss, no history of malignancy.
+EXAM: Lumbar paraspinal tenderness. Straight leg raise positive on the right at 45 degrees.
+Deep tendon reflexes 2+ and symmetric. Strength 5/5 bilaterally. Sensation intact.
+ASSESSMENT: Lumbar radiculopathy, right (M54.16).
+PLAN: Begin physical therapy. Naproxen 500mg BID. Home exercise program provided.
+Return in 6 weeks if not improved.
+
+=== ENCOUNTER 2026-05-06 through 2026-07-01 — Physical Therapy, Cedar Grove Rehab ===
+Course: 16 visits over 8 weeks (2026-05-06 through 2026-07-01). Modalities: lumbar
+stabilization, McKenzie extension protocol, manual therapy, supervised home exercise
+program. DISCHARGE NOTE 2026-07-01: Patient completed the full 8-week course with
+adherence documented at 15/16 visits. Minimal symptomatic improvement. Persistent
+right-sided radicular symptoms. Referred back to ordering physician.
+
+=== MEDICATION HISTORY ===
+Naproxen 500mg BID — start 2026-05-04, ongoing (9 weeks as of 2026-07-06). Adherent.
+Cyclobenzaprine 10mg QHS — 2026-05-18 to 2026-06-15 (4 weeks). Discontinued, sedation.
+
+=== ENCOUNTER 2026-07-05 — Okafor, Dana MD — Office Visit ===
+HPI: 47F returns after completing 8 weeks of physical therapy without meaningful relief.
+Low back pain now persistent for 13 weeks (onset 2026-04-06). Right radicular symptoms
+now with new numbness along the lateral calf into the foot.
+EXAM: Right ankle deep tendon reflex diminished (1+) compared to left (2+) — this is a
+CHANGE from the 2026-05-04 exam, where reflexes were symmetric. Dermatomal sensory loss
+in the right S1 distribution. Straight leg raise positive on the right at 30 degrees.
+Strength 5/5, no motor deficit. No saddle anesthesia, no bowel/bladder dysfunction.
+ASSESSMENT: Lumbar radiculopathy, right (M54.16), with new objective neurologic findings
+after failure of conservative therapy.
+PLAN: MRI lumbar spine without contrast (CPT 72148) to evaluate for nerve root compression
+and guide further management. Prior authorization submitted 2026-07-06.
+
+=== CLINICAL FACTS RELEVANT TO MP-RAD-014 (demo scoring notes) ===
+- Symptom duration at request: 13 weeks (policy 2.1 threshold: 6 weeks) -> MET
+- Conservative therapy: 8 weeks PT (16 visits) + 9 weeks NSAID + HEP -> MET
+  (The denial claims this was not documented. It was. Ground #1 to overturn.)
+- Radicular pain persisting 13 weeks (>4-week threshold) WITH corresponding objective
+  neuro findings at evaluation (diminished right ankle DTR, S1 sensory loss)
+  -> policy 2.3 INDEPENDENTLY MET
+  (The payer denied under 2.1 only and never evaluated 2.3. Ground #2 to overturn.)
+- Red flags (2.2): none present. Correctly not asserted.
