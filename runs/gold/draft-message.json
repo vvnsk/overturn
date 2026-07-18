@@ -1,0 +1,311 @@
+{
+  "model": "claude-opus-4-8",
+  "id": "msg_011CdA2LX3NxvB5v6i9ymGNP",
+  "type": "message",
+  "role": "assistant",
+  "content": [
+    {
+      "type": "thinking",
+      "thinking": "",
+      "signature": "Ep8CCokBCA8YAipAbCR63W3/3nDwIiRvjdnP2VXypJ5HrYCpS+QZuMjzUM+kzC9y9OFBOSehpO/Zn4oqTxlG5QGsYdsTWe5GviKVVDIPY2xhdWRlLW9wdXMtNC04OABCCHRoaW5raW5nWiRjODhmZDNmNy1hYTA5LTRhOTktODZjMi02ZWQ0NWEzODIwZGUSDGEf4IOIgm8S2nqp7hoMHq6PYMiydRPxJGYaIjDw0sbabXzFrHIss/9UBGF+KTzuuwCwJgrPNrzU4Yaz/oikhJcIsQMAVtAKFIt+Yo8qQ/CRIN+Vvemm3sGRkd9LQPDdIvWb8UkS/yQCecwyyG/Qv72JnPzvaHWkwBwNi57eB0atVsDgABfa9HX4yGiFqxsZiT4YAQ=="
+    },
+    {
+      "type": "text",
+      "text": "July 18, 2026\n\nMeridian Health Plan\nAppeals Department\nPrior Authorization Review Unit\n\nRE: First-Level Appeal of Prior Authorization Denial\nMember Name: RIVERA, MARISOL\nMember ID: MHP-4471-88203\nAuthorization Reference: PA-2026-0706-88412\nService: MRI Lumbar Spine without contrast (CPT 72148)\nDiagnosis: M54.16 (Lumbar radiculopathy, right)\nOrdering Physician: Dana Okafor, MD — Cedar Grove Family Medicine\nDenial Date: 2026-07-06 | Reason Code: MN-02\n\nDear Appeals Reviewer:\n\nOn behalf of the ordering physician, Dana Okafor, MD, and the above-named member, we respectfully request that Meridian Health Plan overturn its denial of the requested lumbar spine MRI (CPT 72148) and approve the service. The denial, issued under reason code MN-02 and citing section 2.1 of policy MP-RAD-014, is factually incorrect on its own cited criterion, and it additionally failed to evaluate a separate, independently qualifying criterion within the same policy. Both grounds are set out below and are fully supported by the enclosed chart and by the payer's own published policy.\n\nGROUND 1 — THE DENIAL IS FACTUALLY INCORRECT ON ITS OWN CITED CRITERION (POLICY 2.1)\n\nThe denial states that the documentation \"does not establish that the member has completed a documented six (6) week trial of conservative therapy.\" The medical record establishes precisely the opposite, and in substantially greater measure than the policy requires.\n\nPolicy 2.1 provides that lumbar spine MRI is medically necessary for "
+    },
+    {
+      "citations": [
+        {
+          "type": "page_location",
+          "cited_text": "Criteria — Medically Necessary\r\nLumbar spine MRI is considered medically necessary when ANY ONE of the following criteria\r\n(2.1 through 2.4) is met and documented in the medical record:\r\n2.1 Low back pain persisting six (6) weeks or longer that has failed a documented trial of\r\nconservative therapy, where conservative therapy includes at least one of: physical therapy,\r\nNSAID or analgesic pharmacotherapy, or a supervised home exercise program.\r\n",
+          "document_index": 0,
+          "document_title": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+          "start_page_number": 1,
+          "end_page_number": 2
+        }
+      ],
+      "type": "text",
+      "text": "low back pain persisting six (6) weeks or longer that has failed a documented trial of conservative therapy, where conservative therapy includes at least one of: physical therapy, NSAID or analgesic pharmacotherapy, or a supervised home exercise program."
+    },
+    {
+      "type": "text",
+      "text": "\n\nThe chart documents each element:\n\nDuration of symptoms. At the time of the request, the member's low back pain had persisted well beyond the six-week threshold. "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "=== ENCOUNTER 2026-07-05 — Okafor, Dana MD — Office Visit ===\nHPI: 47F returns after completing 8 weeks of physical therapy without meaningful relief.\nLow back pain now persistent for 13 weeks (onset 2026-04-06). ",
+          "document_index": 1,
+          "document_title": "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+          "start_char_index": 1559,
+          "end_char_index": 1772
+        }
+      ],
+      "type": "text",
+      "text": "The member returned on 2026-07-05 after completing 8 weeks of physical therapy without meaningful relief, with low back pain now persistent for 13 weeks (onset 2026-04-06)."
+    },
+    {
+      "type": "text",
+      "text": " Thirteen weeks exceeds the six-week threshold in 2.1.\n\nDocumented conservative therapy — physical therapy. The member completed a full, supervised course of physical therapy. "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "=== ENCOUNTER 2026-05-06 through 2026-07-01 — Physical Therapy, Cedar Grove Rehab ===\nCourse: 16 visits over 8 weeks (2026-05-06 through 2026-07-01). Modalities: lumbar\nstabilization, McKenzie extension protocol, manual therapy, supervised home exercise\nprogram. ",
+          "document_index": 1,
+          "document_title": "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+          "start_char_index": 871,
+          "end_char_index": 1134
+        }
+      ],
+      "type": "text",
+      "text": "The course consisted of 16 visits over 8 weeks (2026-05-06 through 2026-07-01), with modalities including lumbar stabilization, McKenzie extension protocol, manual therapy, and a supervised home exercise program."
+    },
+    {
+      "type": "text",
+      "text": " The discharge documentation confirms both adherence and failure: "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "DISCHARGE NOTE 2026-07-01: Patient completed the full 8-week course with\nadherence documented at 15/16 visits. Minimal symptomatic improvement. Persistent\nright-sided radicular symptoms. ",
+          "document_index": 1,
+          "document_title": "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+          "start_char_index": 1134,
+          "end_char_index": 1321
+        }
+      ],
+      "type": "text",
+      "text": "the patient completed the full 8-week course with adherence documented at 15/16 visits, with minimal symptomatic improvement and persistent right-sided radicular symptoms."
+    },
+    {
+      "type": "text",
+      "text": "\n\nDocumented conservative therapy — pharmacotherapy. "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "=== MEDICATION HISTORY ===\nNaproxen 500mg BID — start 2026-05-04, ongoing (9 weeks as of 2026-07-06). Adherent.\n",
+          "document_index": 1,
+          "document_title": "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+          "start_char_index": 1359,
+          "end_char_index": 1471
+        }
+      ],
+      "type": "text",
+      "text": "Naproxen 500mg BID was started 2026-05-04 and continued for 9 weeks as of 2026-07-06, with documented adherence."
+    },
+    {
+      "type": "text",
+      "text": " A muscle relaxant was also trialed: "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "Cyclobenzaprine 10mg QHS — 2026-05-18 to 2026-06-15 (4 weeks). Discontinued, sedation.\n\n",
+          "document_index": 1,
+          "document_title": "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+          "start_char_index": 1471,
+          "end_char_index": 1559
+        }
+      ],
+      "type": "text",
+      "text": "Cyclobenzaprine 10mg QHS was taken from 2026-05-18 to 2026-06-15 (4 weeks) and discontinued due to sedation."
+    },
+    {
+      "type": "text",
+      "text": "\n\nDocumented conservative therapy — home exercise program. At the initial visit, "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "PLAN: Begin physical therapy. ",
+          "document_index": 1,
+          "document_title": "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+          "start_char_index": 753,
+          "end_char_index": 783
+        },
+        {
+          "type": "char_location",
+          "cited_text": "Home exercise program provided.\n",
+          "document_index": 1,
+          "document_title": "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+          "start_char_index": 803,
+          "end_char_index": 835
+        }
+      ],
+      "type": "text",
+      "text": "physical therapy was begun and a home exercise program was provided."
+    },
+    {
+      "type": "text",
+      "text": "\n\nThe record therefore documents not merely one qualifying modality but all three named in 2.1 — physical therapy, NSAID pharmacotherapy, and a supervised home exercise program — sustained well beyond six weeks and documented as failed. The single factual premise of the denial is contradicted by the chart. Ground 1 alone requires that the denial be overturned.\n\nGROUND 2 — THE PATIENT INDEPENDENTLY SATISFIES POLICY 2.3, WHICH THE DENIAL NEVER EVALUATED\n\nEven setting Ground 1 aside, the denial evaluated only section 2.1 and failed to consider that the request independently qualifies under section 2.3 of the same policy. Under MP-RAD-014, the criteria are disjunctive: "
+    },
+    {
+      "citations": [
+        {
+          "type": "page_location",
+          "cited_text": "Criteria — Medically Necessary\r\nLumbar spine MRI is considered medically necessary when ANY ONE of the following criteria\r\n(2.1 through 2.4) is met and documented in the medical record:\r\n2.1 Low back pain persisting six (6) weeks or longer that has failed a documented trial of\r\nconservative therapy, where conservative therapy includes at least one of: physical therapy,\r\nNSAID or analgesic pharmacotherapy, or a supervised home exercise program.\r\n",
+          "document_index": 0,
+          "document_title": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+          "start_page_number": 1,
+          "end_page_number": 2
+        }
+      ],
+      "type": "text",
+      "text": "lumbar spine MRI is considered medically necessary when ANY ONE of the following criteria (2.1 through 2.4) is met."
+    },
+    {
+      "type": "text",
+      "text": "\n\nSection 2.3 provides an independent pathway to medical necessity: "
+    },
+    {
+      "citations": [
+        {
+          "type": "page_location",
+          "cited_text": "2.3 Radicular pain persisting four (4) weeks or longer, with corresponding objective\r\nneurologic findings on physical examination (for example, diminished deep tendon reflex,\r\ndermatomal sensory loss, or motor weakness).\r\n",
+          "document_index": 0,
+          "document_title": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+          "start_page_number": 1,
+          "end_page_number": 2
+        }
+      ],
+      "type": "text",
+      "text": "radicular pain persisting four (4) weeks or longer, with corresponding objective neurologic findings on physical examination (for example, diminished deep tendon reflex, dermatomal sensory loss, or motor weakness)."
+    },
+    {
+      "type": "text",
+      "text": "\n\nThe chart satisfies both elements of 2.3:\n\nRadicular pain persisting four weeks or longer. The member's radicular symptoms date to the original presentation and have persisted and worsened. "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "=== ENCOUNTER 2026-07-05 — Okafor, Dana MD — Office Visit ===\nHPI: 47F returns after completing 8 weeks of physical therapy without meaningful relief.\nLow back pain now persistent for 13 weeks (onset 2026-04-06). Right radicular symptoms\nnow with new numbness along the lateral calf into the foot.\n",
+          "document_index": 1,
+          "document_title": "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+          "start_char_index": 1559,
+          "end_char_index": 1857
+        }
+      ],
+      "type": "text",
+      "text": "By the 2026-07-05 encounter, the low back pain had been persistent for 13 weeks (onset 2026-04-06), with right radicular symptoms now accompanied by new numbness along the lateral calf into the foot."
+    },
+    {
+      "type": "text",
+      "text": " This far exceeds the four-week threshold in 2.3.\n\nCorresponding objective neurologic findings on physical examination. The 2026-07-05 examination documented objective findings matching the examples enumerated in the policy: "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "EXAM: Right ankle deep tendon reflex diminished (1+) compared to left (2+) — this is a\nCHANGE from the 2026-05-04 exam, where reflexes were symmetric. ",
+          "document_index": 1,
+          "document_title": "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+          "start_char_index": 1857,
+          "end_char_index": 2008
+        }
+      ],
+      "type": "text",
+      "text": "a diminished right ankle deep tendon reflex (1+) compared to left (2+) — a change from the 2026-05-04 exam, where reflexes were symmetric,"
+    },
+    {
+      "type": "text",
+      "text": " together with "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "Dermatomal sensory loss\nin the right S1 distribution. Straight leg raise positive on the right at 30 degrees.\n",
+          "document_index": 1,
+          "document_title": "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+          "start_char_index": 2008,
+          "end_char_index": 2118
+        }
+      ],
+      "type": "text",
+      "text": "dermatomal sensory loss in the right S1 distribution and a straight leg raise positive on the right at 30 degrees."
+    },
+    {
+      "type": "text",
+      "text": " The treating physician's assessment reflects these findings: "
+    },
+    {
+      "citations": [
+        {
+          "type": "char_location",
+          "cited_text": "ASSESSMENT: Lumbar radiculopathy, right (M54.16), with new objective neurologic findings\nafter failure of conservative therapy.\n",
+          "document_index": 1,
+          "document_title": "Patient Chart — Marisol Rivera, Cedar Grove Family Medicine",
+          "start_char_index": 2202,
+          "end_char_index": 2330
+        }
+      ],
+      "type": "text",
+      "text": "lumbar radiculopathy, right (M54.16), with new objective neurologic findings after failure of conservative therapy."
+    },
+    {
+      "type": "text",
+      "text": "\n\nA diminished deep tendon reflex and dermatomal sensory loss are the very examples the policy text lists under 2.3. Because the member satisfies 2.3 independently — and because the policy requires only that any one criterion be met — the service is medically necessary on this ground regardless of the analysis under 2.1. The denial's failure to evaluate 2.3 is a material omission.\n\nTIMELINESS\n\nThis appeal is timely. The denial was issued 2026-07-06, and the notice sets an appeal deadline of 2027-01-02. This submission on 2026-07-18 is well within that window and within the policy's provision that "
+    },
+    {
+      "citations": [
+        {
+          "type": "page_location",
+          "cited_text": "Appeals\r\nA denial under this policy may be appealed in writing within one hundred eighty (180) days of the\r\ndenial notice. ",
+          "document_index": 0,
+          "document_title": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+          "start_page_number": 1,
+          "end_page_number": 2
+        }
+      ],
+      "type": "text",
+      "text": "a denial may be appealed in writing within one hundred eighty (180) days of the denial notice."
+    },
+    {
+      "type": "text",
+      "text": "\n\nCONCLUSION\n\nFor the reasons above, the requested MRI of the lumbar spine without contrast (CPT 72148) meets the medical necessity criteria of MP-RAD-014 under section 2.1 and, independently, under section 2.3. We respectfully request that Meridian Health Plan overturn the denial and approve the authorization. Should the reviewer wish to discuss the clinical findings directly, the ordering physician, Dr. Dana Okafor, is available for a peer-to-peer review, which we note the plan has offered and which "
+    },
+    {
+      "citations": [
+        {
+          "type": "page_location",
+          "cited_text": "A peer-to-peer review with a plan medical director may be requested within fourteen\r\n(14) days.",
+          "document_index": 0,
+          "document_title": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+          "start_page_number": 1,
+          "end_page_number": 2
+        }
+      ],
+      "type": "text",
+      "text": "may be requested with a plan medical director within fourteen (14) days."
+    },
+    {
+      "type": "text",
+      "text": " Please contact our office to schedule.\n\nThank you for your prompt reconsideration.\n\nRespectfully submitted,\n\nPatient Access Team\nCedar Grove Family Medicine\nOn behalf of Dana Okafor, MD, Ordering Physician\nMember: RIVERA, MARISOL | Member ID: MHP-4471-88203\nAuthorization Reference: PA-2026-0706-88412"
+    }
+  ],
+  "stop_reason": "end_turn",
+  "stop_sequence": null,
+  "stop_details": null,
+  "usage": {
+    "input_tokens": 6585,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation": {
+      "ephemeral_5m_input_tokens": 0,
+      "ephemeral_1h_input_tokens": 0
+    },
+    "output_tokens": 2836,
+    "service_tier": "standard",
+    "inference_geo": "global"
+  },
+  "parsed_output": null
+}

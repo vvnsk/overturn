@@ -1,0 +1,35 @@
+{
+  "payer_name": "Meridian Health Plan",
+  "member": {
+    "name": "RIVERA, MARISOL",
+    "member_id": "MHP-4471-88203",
+    "dob": null
+  },
+  "provider": {
+    "ordering_physician": "Dana Okafor, MD",
+    "facility": "Cedar Grove Family Medicine"
+  },
+  "service": {
+    "description": "MRI Lumbar Spine without contrast",
+    "cpt_codes": [
+      "72148"
+    ],
+    "icd10_codes": [
+      "M54.16"
+    ]
+  },
+  "denial": {
+    "denial_date": "2026-07-06",
+    "auth_reference": "PA-2026-0706-88412",
+    "reason_code": "MN-02",
+    "reason_text": "Medical Necessity Not Established",
+    "cited_policy_id": "MP-RAD-014",
+    "cited_policy_section": "2.1",
+    "appeal_deadline": "2027-01-02",
+    "appeal_level": null,
+    "peer_to_peer_offered": true
+  },
+  "root_cause": "medical_necessity",
+  "root_cause_rationale": "The notice states the documentation \"does not establish that the member has completed a documented six (6) week trial of conservative therapy\" and denies the request \"as not medically necessary\" under reason code MN-02.",
+  "confidence": 0.95
+}

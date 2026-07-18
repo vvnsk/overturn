@@ -1,0 +1,165 @@
+{
+  "timeliness": {
+    "denial_date": "2026-07-06",
+    "appeal_deadline": "2027-01-02",
+    "filed_date": "2026-07-18",
+    "within_deadline": true,
+    "days_remaining": 168
+  },
+  "claims": [
+    {
+      "claim": "Policy MP-RAD-014 makes criteria 2.1-2.4 disjunctive; MRI is medically necessary if ANY ONE is met.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[1]"
+      ]
+    },
+    {
+      "claim": "Member's low back pain persisted 13 weeks (onset 2026-04-06), exceeding the 6-week threshold in 2.1.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[2]"
+      ]
+    },
+    {
+      "claim": "Member completed a full supervised PT course (16 visits over 8 weeks) with documented modalities.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[3]"
+      ]
+    },
+    {
+      "claim": "PT was documented as failed: 15/16 visit adherence, minimal improvement, persistent right radicular symptoms.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[4]"
+      ]
+    },
+    {
+      "claim": "NSAID pharmacotherapy (Naproxen 500mg BID) trialed for 9 weeks with adherence.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[5]"
+      ]
+    },
+    {
+      "claim": "A muscle relaxant (Cyclobenzaprine) was also trialed and discontinued for sedation.",
+      "evidence_strength": "moderate",
+      "sources": [
+        "[6]"
+      ]
+    },
+    {
+      "claim": "A supervised home exercise program was provided as part of conservative therapy.",
+      "evidence_strength": "moderate",
+      "sources": [
+        "[3]",
+        "[7]",
+        "[8]"
+      ]
+    },
+    {
+      "claim": "Therefore the denial's sole factual premise (no documented 6-week conservative therapy trial) is contradicted by the chart, satisfying 2.1.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[1]",
+        "[2]",
+        "[3]",
+        "[4]",
+        "[5]"
+      ]
+    },
+    {
+      "claim": "Section 2.3 provides an independent pathway: radicular pain ≥4 weeks with corresponding objective neurologic findings.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[9]"
+      ]
+    },
+    {
+      "claim": "Radicular pain persisted 13 weeks with new lateral calf/foot numbness, exceeding the 4-week threshold.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[10]"
+      ]
+    },
+    {
+      "claim": "Objective neurologic findings present: diminished right ankle DTR (1+ vs 2+, a change from prior symmetric exam).",
+      "evidence_strength": "strong",
+      "sources": [
+        "[11]"
+      ]
+    },
+    {
+      "claim": "Additional objective findings: right S1 dermatomal sensory loss and positive straight leg raise at 30 degrees on the right.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[12]"
+      ]
+    },
+    {
+      "claim": "Treating physician's assessment: lumbar radiculopathy, right (M54.16), with new objective neurologic findings after failed conservative therapy.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[13]"
+      ]
+    },
+    {
+      "claim": "The denial evaluated only 2.1 and failed to consider 2.3, a material omission.",
+      "evidence_strength": "moderate",
+      "sources": [
+        "[9]"
+      ]
+    },
+    {
+      "claim": "The appeal is timely, filed within the 180-day written appeal window.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[14]"
+      ]
+    },
+    {
+      "claim": "A peer-to-peer review with a plan medical director may be requested within 14 days.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[15]"
+      ]
+    }
+  ],
+  "missing_elements": [
+    "Member date of birth is null/absent — payers routinely require DOB to validate the member; its omission could be used to reject or delay the appeal.",
+    "No physician wet/electronic signature or attestation — letter is signed by 'Patient Access Team' on behalf of Dr. Okafor rather than by the ordering physician.",
+    "No callback phone number, fax, or return address provided despite 'Please contact our office' request.",
+    "No provider NPI or facility identifiers (TIN/address) included.",
+    "Appeal level ('First-Level Appeal') is asserted although denial's appeal_level field was null — should be confirmed against payer rules."
+  ],
+  "needs_human": [
+    {
+      "issue": "Peer-to-peer 14-day window: the policy allows a P2P request within 14 days of the denial (denial 2026-07-06, so ~2026-07-20). Filing on 2026-07-18 leaves almost no margin — decide immediately whether to request P2P and confirm the offer is still open.",
+      "severity": "high"
+    },
+    {
+      "issue": "Member DOB is missing from the denial and letter — obtain and insert to avoid a procedural rejection for identity mismatch.",
+      "severity": "medium"
+    },
+    {
+      "issue": "Confirm the letter should be signed/attested by Dr. Okafor rather than only the Patient Access Team; add signature block and date.",
+      "severity": "medium"
+    },
+    {
+      "issue": "Add contact phone/fax and return address so the plan can schedule the P2P or respond.",
+      "severity": "medium"
+    },
+    {
+      "issue": "Verify this is correctly the first-level appeal (denial appeal_level was null).",
+      "severity": "low"
+    },
+    {
+      "issue": "Cyclobenzaprine is characterized as a qualifying modality, but the policy names PT, NSAID/analgesic, or supervised HEP — muscle relaxant is not explicitly listed; keep as supporting color only, not as a standalone qualifier.",
+      "severity": "low"
+    }
+  ],
+  "overall_confidence": 0.82,
+  "recommendation": "review_recommended",
+  "summary": "This is a strong, well-cited appeal with two independent grounds: it directly rebuts the denial's factual premise under policy 2.1 (documented failed 6-week conservative therapy across all three named modalities) and raises an unevaluated independent pathway under 2.3 (radicular pain >4 weeks with objective neuro findings), both supported by verbatim chart and policy citations. It is timely (168 days to deadline). Before sending, a human should insert the member DOB, add the physician signature and a contact number, and urgently decide on the peer-to-peer request since the 14-day P2P window closes around 2026-07-20."
+}
