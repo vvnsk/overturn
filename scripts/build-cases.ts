@@ -131,6 +131,16 @@ interface CaseDef {
     icd: string;
     service: string;
   };
+  era?: {
+    paidDate: string;
+    carc: string;
+    cpt: string;
+    billed: number;
+    allowed: number;
+    paid: number;
+    patientResponsibility: number;
+    service: string;
+  };
 }
 
 const DEFS: CaseDef[] = [
@@ -181,6 +191,25 @@ const DEFS: CaseDef[] = [
       service: "MRI Lumbar Spine without contrast",
     },
   },
+  {
+    id: "buckridge-era",
+    bundle: "Lincoln623_Buckridge80_91be1bd7-1e12-99a1-d3fd-6eea14e5d70f.json",
+    addendum: `=== POST-SERVICE APPEAL CONTEXT ===
+MRI lumbar spine without contrast (CPT 72148) was performed and billed, then denied
+after service on the remittance under CARC CO-50 ("not deemed medically necessary").
+This is a post-service claim denial (835 ERA), not a pre-service prior-authorization
+denial — there is no prior-auth reference on file.`,
+    era: {
+      paidDate: "2026-07-18",
+      carc: "50",
+      cpt: "72148",
+      billed: 500,
+      allowed: 75,
+      paid: 0,
+      patientResponsibility: 0,
+      service: "MRI Lumbar Spine without contrast",
+    },
+  },
 ];
 
 // ---------- denial PDF ----------
@@ -212,6 +241,74 @@ peer-to-peer review with a plan medical director may be requested within 14 days
 Submit appeals to: Meridian Health Plan, Attn: Appeals Unit, PO Box 22140.</p>`;
 }
 
+interface ClaimResponseFixture {
+  resourceType: "ClaimResponse";
+  id: string;
+  status: "active";
+  outcome: "error";
+  created: string;
+  patient: { display: string };
+  item: {
+    itemSequence: number;
+    productOrService: { coding: { system: string; code: string }[] };
+    adjudication: { category: { coding: { code: string }[] }; amount: { value: number; currency: string } }[];
+    processNote: { text: string }[];
+  }[];
+}
+
+function deniedClaimResponse(name: string, memberId: string, era: NonNullable<CaseDef["era"]>): ClaimResponseFixture {
+  return {
+    resourceType: "ClaimResponse",
+    id: `synthetic-${memberId.toLowerCase()}`,
+    status: "active",
+    outcome: "error",
+    created: era.paidDate,
+    patient: { display: name },
+    item: [{
+      itemSequence: 1,
+      productOrService: { coding: [{ system: "http://www.ama-assn.org/go/cpt", code: era.cpt }] },
+      adjudication: [
+        { category: { coding: [{ code: "submitted" }] }, amount: { value: era.billed, currency: "USD" } },
+        { category: { coding: [{ code: "eligible" }] }, amount: { value: era.allowed, currency: "USD" } },
+        { category: { coding: [{ code: "benefit" }] }, amount: { value: era.paid, currency: "USD" } },
+      ],
+      processNote: [{ text: `CARC ${era.carc}` }],
+    }],
+  };
+}
+
+function claimResponseTo835(name: string, memberId: string, response: ClaimResponseFixture): string {
+  const item = response.item[0];
+  const findAmount = (category: string) => item.adjudication.find((a) => a.category.coding[0]?.code === category)?.amount.value ?? 0;
+  const billed = findAmount("submitted");
+  const allowed = findAmount("eligible");
+  const paid = findAmount("benefit");
+  const cpt = item.productOrService.coding[0]?.code ?? "";
+  const carc = item.processNote[0]?.text.match(/CARC\s+(\d+)/)?.[1] ?? "";
+  const ymd = response.created.replaceAll("-", "");
+  const display = name.split(" ");
+  const family = display.pop() ?? "Member";
+  const given = display.join(" ") || "Synthetic";
+  return [
+    "ISA*00*          *00*          *ZZ*CEDARGROVE     *ZZ*CEDARHORIZON  *260718*1200*^*00501*000000001*0*P*:~",
+    "GS*HP*CEDARGROVE*CEDARHORIZON*20260718*1200*1*X*005010X221A1~",
+    "ST*835*0001~",
+    `CLP*${memberId}*4*${billed.toFixed(2)}*${paid.toFixed(2)}*0.00*MC*ERA-20260718-001~`,
+    "NM1*PR*2*Cedar Horizon Health Plan*****PI*CHP001~",
+    `NM1*QC*1*${family}*${given}****MI*${memberId}~`,
+    "NM1*82*1*Natarajan*Priya****XX*1999999999~",
+    "NM1*1P*2*Cedar Grove Family Medicine*****XX*1888888888~",
+    `DTM*405*${ymd}~`,
+    `AMT*B6*${allowed.toFixed(2)}~`,
+    `SVC*HC:${cpt}:26*${billed.toFixed(2)}*${paid.toFixed(2)}**1~`,
+    `CAS*CO*${carc}*${(billed - paid).toFixed(2)}*1~`,
+    "LQ*HE*M50~",
+    "SE*12*0001~",
+    "GE*1*1~",
+    "IEA*1*000000001~",
+  ].join("\n");
+}
+
 // ---------- build ----------
 
 interface CaseEntry {
@@ -219,7 +316,9 @@ interface CaseEntry {
   patient: string;
   service: string;
   cpt: string;
-  denialPdf: string;
+  channel?: "fax_pdf" | "era_835";
+  denialPdf?: string;
+  denialEdi?: string;
   chart: string;
   policyPdf: string;
   policyTitle: string;
@@ -251,6 +350,28 @@ for (const def of DEFS) {
 
   const { chart, name, memberId } = flattenChart(path.join(SYNTHEA, def.bundle!), def.addendum);
   fs.writeFileSync(path.join(dir, "chart.txt"), chart);
+
+  if (def.era) {
+    const claimResponse = deniedClaimResponse(name, memberId, def.era);
+    const claimResponsePath = path.join(dir, "claim-response.json");
+    const ediPath = path.join(dir, "denial.835");
+    fs.writeFileSync(claimResponsePath, JSON.stringify(claimResponse, null, 2));
+    fs.writeFileSync(ediPath, claimResponseTo835(name, memberId, claimResponse));
+    registry.push({
+      id: def.id,
+      patient: name,
+      service: def.era.service,
+      cpt: def.era.cpt,
+      channel: "era_835",
+      denialEdi: ediPath,
+      chart: path.join(dir, "chart.txt"),
+      policyPdf: "fixtures/policy-mp-rad-014.pdf",
+      policyTitle: "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+      chartTitle: `Patient Chart — ${name}, Cedar Grove Family Medicine`,
+    });
+    console.log(`built 835 case ${def.id}: ${name} (${memberId})`);
+    continue;
+  }
 
   const html = denialHtml(name, memberId, def.denial!);
   const htmlPath = path.join(dir, "denial.html");

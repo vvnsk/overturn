@@ -43,5 +43,17 @@
     "policyPdf": "fixtures/policy-mp-rad-014.pdf",
     "policyTitle": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
     "chartTitle": "Patient Chart — Darron Johnston, Cedar Grove Family Medicine"
+  },
+  {
+    "id": "buckridge-era",
+    "patient": "Lincoln Buckridge",
+    "service": "MRI Lumbar Spine without contrast",
+    "cpt": "72148",
+    "channel": "era_835",
+    "denialEdi": "cases/buckridge-era/denial.835",
+    "chart": "cases/buckridge-era/chart.txt",
+    "policyPdf": "fixtures/policy-mp-rad-014.pdf",
+    "policyTitle": "Payer Medical Policy MP-RAD-014 (Advanced Imaging of the Spine)",
+    "chartTitle": "Patient Chart — Lincoln Buckridge, Cedar Grove Family Medicine"
   }
 ]

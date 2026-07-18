@@ -1,0 +1,54 @@
+{
+  "channel": "era_835",
+  "payer_name": "Cedar Horizon Health Plan",
+  "member": {
+    "name": "Lincoln Buckridge",
+    "member_id": "MHP-91BE1BD7",
+    "dob": null
+  },
+  "provider": {
+    "ordering_physician": "Priya Natarajan",
+    "facility": "Cedar Grove Family Medicine"
+  },
+  "service": {
+    "description": "Post-service claim services",
+    "cpt_codes": [
+      "72148"
+    ],
+    "icd10_codes": []
+  },
+  "service_lines": [
+    {
+      "cpt": "72148",
+      "modifiers": [
+        "26"
+      ],
+      "carc": "CO-50",
+      "rarc": [
+        "M50"
+      ],
+      "denied_reason": "Not deemed medically necessary"
+    }
+  ],
+  "amounts": {
+    "billed": 500,
+    "allowed": 75,
+    "paid": 0,
+    "patient_responsibility": 0
+  },
+  "denial": {
+    "denial_date": "2026-07-18",
+    "paid_date": "2026-07-18",
+    "auth_reference": null,
+    "reason_code": "CO-50",
+    "reason_text": "Not deemed medically necessary",
+    "cited_policy_id": null,
+    "cited_policy_section": null,
+    "appeal_deadline": "2026-10-16",
+    "appeal_level": null,
+    "peer_to_peer_offered": null
+  },
+  "root_cause": "medical_necessity",
+  "root_cause_rationale": "CARC CO-50: Not deemed medically necessary.",
+  "confidence": 1
+}

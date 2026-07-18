@@ -7,6 +7,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { runIntake } from "./pipeline/intake";
+import { runIntake835 } from "./pipeline/intake-era";
 import { runDraft } from "./pipeline/draft";
 import { runQa } from "./pipeline/qa";
 import { assembleLetter, letterWithSources } from "./pipeline/render";
@@ -15,11 +16,14 @@ import type { DenialRecord } from "./pipeline/types";
 
 const caseArg = process.argv.find((a) => a.startsWith("--case="))?.split("=")[1] ?? "rivera";
 const entry = getCase(caseArg);
+const channel = entry.channel ?? "fax_pdf";
+const policyArg = process.argv.find((a) => a.startsWith("--policy="))?.split("=")[1];
+const deadlineArg = process.argv.find((a) => a.startsWith("--deadline="))?.split("=")[1];
 const CASE = {
   // "rivera" keeps its historical runs/gold cache dir; new cases use runs/<id>
   name: caseArg === "rivera" ? "gold" : caseArg,
-  denialPdf: entry.denialPdf,
-  policyPdf: entry.policyPdf,
+  denialPath: channel === "era_835" ? entry.denialEdi : entry.denialPdf,
+  policyPdf: channel === "era_835" ? policyArg : entry.policyPdf,
   chart: entry.chart,
 };
 
@@ -48,17 +52,24 @@ async function timed<T>(label: string, fn: () => Promise<T>): Promise<T> {
 }
 
 async function main(): Promise<void> {
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!process.env.ANTHROPIC_API_KEY && !(channel === "era_835" && stageArg === "intake")) {
     console.error("ANTHROPIC_API_KEY is not set. Copy .env.example to .env and add the key.");
     process.exit(1);
+  }
+  if (channel === "era_835" && stageArg !== "intake" && (!CASE.policyPdf || !deadlineArg)) {
+    throw new Error("835 cases require coordinator confirmation: pass --policy=<policy.pdf> --deadline=YYYY-MM-DD");
   }
 
   console.log(`Overturn pipeline — case "${CASE.name}" — ${TODAY}\n`);
 
-  // Stage 1+2: intake (vision parse + root-cause classification, one schema)
+  // Stage 1+2: intake (vision parse or deterministic ERA parse, one schema)
   let denial: DenialRecord;
   if (!stageArg || stageArg === "intake") {
-    denial = await timed("Intake: parsing denial notice", () => runIntake(CASE.denialPdf));
+    if (!CASE.denialPath) throw new Error(`case ${caseArg} is missing its ${channel} denial source`);
+    denial = await timed(
+      channel === "era_835" ? "Intake: parsing 835 ERA" : "Intake: parsing denial notice",
+      () => channel === "era_835" ? runIntake835(CASE.denialPath!) : runIntake(CASE.denialPath!),
+    );
     save("denial.json", denial);
     console.log(
       `   payer=${denial.payer_name} | cpt=${denial.service.cpt_codes.join(",")} | ` +
@@ -68,12 +79,16 @@ async function main(): Promise<void> {
   } else {
     denial = load<DenialRecord>("denial.json");
   }
+  if (channel === "era_835" && deadlineArg) {
+    denial = { ...denial, denial: { ...denial.denial, appeal_deadline: deadlineArg } };
+    save("denial.json", denial);
+  }
 
   // Stage 3: drafter with enforced citations (policy + chart attached)
   let letter;
   if (!stageArg || stageArg === "draft") {
     const message = await timed("Draft: writing appeal against the payer's own policy", () =>
-      runDraft(denial, CASE.policyPdf, CASE.chart, TODAY, undefined, {
+      runDraft(denial, CASE.policyPdf!, CASE.chart, TODAY, undefined, {
         policyTitle: entry.policyTitle,
         chartTitle: entry.chartTitle,
       }),

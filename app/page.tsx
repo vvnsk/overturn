@@ -26,7 +26,7 @@ interface LetterVersion {
 type Resolution = { kind: "revised"; v: number } | { kind: "dismissed" };
 
 interface CaseRun {
-  phase: "arriving" | "running" | "complete" | "error";
+  phase: "arriving" | "running" | "waiting_policy" | "waiting_deadline" | "complete" | "error";
   stages: Record<StageId, StageState>;
   denial: DenialRecord | null;
   draftText: string;
@@ -44,6 +44,7 @@ interface CaseRun {
   p2p: P2pBrief | null;
   showBrief: boolean;
   p2pLoading: boolean;
+  gate: "policy" | "deadline" | null;
 }
 
 const freshRun = (): CaseRun => ({
@@ -52,7 +53,7 @@ const freshRun = (): CaseRun => ({
   denial: null, draftText: "", letter: null,
   versions: [], activeVersion: 0, resolutions: {}, revising: false, revisingIdx: null, reviseText: "",
   qa: null, error: null,
-  submitted: null, held: false, p2p: null, showBrief: false, p2pLoading: false,
+  submitted: null, held: false, p2p: null, showBrief: false, p2pLoading: false, gate: null,
 });
 
 type Mode = "human" | "confident" | "auto";
@@ -77,7 +78,7 @@ function decide(qa: QaReport, s: Settings): Decision {
   return { action: "human", reason: `confidence ${conf}% below the ${bar}% bar — routed to coordinator` };
 }
 
-const CASE_ORDER = ["rivera", "dara", "haag", "johnston"];
+const CASE_ORDER = ["rivera", "dara", "haag", "johnston", "buckridge-era"];
 
 const MODES: [Mode, string][] = [
   ["human", "Human approves all"],
@@ -105,10 +106,24 @@ export default function Page() {
     });
   }, []);
 
-  const runCase = useCallback(async (id: string) => {
-    patch(id, { ...freshRun(), phase: "running" });
+  const runCase = useCallback(async (
+    id: string,
+    stage?: "intake" | "draft" | "qa",
+    policy?: File,
+    suppliedDenial?: DenialRecord,
+  ) => {
+    const meta = CASES.find((c) => c.id === id);
+    const eraStage = stage ?? (meta?.channel === "era_835" ? "intake" : undefined);
+    if (!eraStage || eraStage === "intake") patch(id, { ...freshRun(), phase: "running" });
+    else patch(id, { phase: "running", gate: null, error: null });
     try {
-      const res = await fetch(`/api/run?case=${id}${replay ? "&mode=replay" : ""}`, { method: "POST" });
+      const form = eraStage ? new FormData() : null;
+      if (form && eraStage) form.set("stage", eraStage);
+      if (form && policy) form.set("policy", policy);
+      if (form && suppliedDenial) form.set("denialRecord", JSON.stringify(suppliedDenial));
+      const res = await fetch(`/api/run?case=${id}${replay ? "&mode=replay" : ""}`, {
+        method: "POST", body: form ?? undefined,
+      });
       if (!res.ok || !res.body) throw new Error(`pipeline request failed (${res.status})`);
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -136,6 +151,11 @@ export default function Page() {
             });
             break;
           case "qa": patch(id, { qa: ev.data }); break;
+          case "gate":
+            patch(id, { gate: ev.gate, phase: ev.gate === "policy" ? "waiting_policy" : "waiting_deadline" });
+            setDrawer(id);
+            finished = true; // the backend intentionally ends the stream here to await coordinator input
+            break;
           case "error": throw new Error(ev.message);
           case "done": patch(id, { phase: "complete" }); finished = true; break;
         }
@@ -161,7 +181,8 @@ export default function Page() {
     batch.forEach((id, i) => {
       setTimeout(() => {
         const label = CASES.find((c) => c.id === id)?.patient ?? id;
-        setFaxToast(`Incoming fax — Notice of Adverse Benefit Determination re: ${label}…`);
+        const era = CASES.find((c) => c.id === id)?.channel === "era_835";
+        setFaxToast(`${era ? "Incoming 835 ERA" : "Incoming fax"} — Notice of Adverse Benefit Determination re: ${label}…`);
         setTimeout(() => {
           setFaxToast(null);
           setArrived((a) => (a.includes(id) ? a : [...a, id]));
@@ -269,7 +290,7 @@ export default function Page() {
               <div className="case-head">
                 <span className="pt-name">{meta.star ? "★ " : ""}{meta.patient}</span>
                 <span className="pt-svc">{meta.service} · CPT {meta.cpt}</span>
-                <span className="pt-src">📠 fax intake</span>
+                <span className="pt-src">{meta.channel === "era_835" ? "🧾 835 ERA intake" : "📠 fax intake"}</span>
                 <span className="spacer" />
                 {r.qa && <span className="conf-badge">{Math.round(r.qa.overall_confidence * 100)}%</span>}
                 <DecisionChip run={r} decision={d} />
@@ -280,7 +301,9 @@ export default function Page() {
                  r.stages.qa === "done" && d ? d.reason :
                  r.stages.qa === "active" ? "adversarial payer-side review…" :
                  r.stages.draft === "active" ? `drafting against the payer's own policy — ${r.draftText.length.toLocaleString()} chars, citations enforced…` :
-                 r.stages.intake === "active" ? "vision-parsing the scanned denial…" :
+                 r.phase === "waiting_policy" ? "coordinator action required — attach the applicable policy PDF before drafting" :
+                 r.phase === "waiting_deadline" ? "coordinator action required — confirm the payer appeal deadline before QA" :
+                 r.stages.intake === "active" ? (meta.channel === "era_835" ? "deterministically parsing the 835 ERA…" : "vision-parsing the scanned denial…") :
                  r.phase === "arriving" ? "received — queued" : ""}
               </div>
             </div>
@@ -293,6 +316,16 @@ export default function Page() {
           meta={drawerCase} run={drawerRun} settings={settings} replay={replay}
           onClose={() => setDrawer(null)}
           onPatch={(p) => patch(drawerCase.id, p)}
+          onAttachPolicy={(file) => void runCase(drawerCase.id, "draft", file, drawerRun.denial ?? undefined)}
+          onConfirmDeadline={(deadline) => {
+            if (!drawerRun.denial) return;
+            const confirmed = {
+              ...drawerRun.denial,
+              denial: { ...drawerRun.denial.denial, appeal_deadline: deadline },
+            };
+            patch(drawerCase.id, { denial: confirmed });
+            void runCase(drawerCase.id, "qa", undefined, confirmed);
+          }}
         />
       )}
     </>
@@ -347,17 +380,21 @@ interface DrawerProps {
   replay: boolean;
   onClose: () => void;
   onPatch: (p: Partial<CaseRun>) => void;
+  onAttachPolicy: (file: File) => void;
+  onConfirmDeadline: (deadline: string) => void;
 }
 
 // What "Let the agent fix it" sends: resolve from the record, never invent.
 const AUTO_FIX =
   "Resolve the flagged item(s) as you judge best, using ONLY information already documented in the attached record. Where required information is genuinely missing (phone/fax numbers, DOB, signature details), insert a clearly marked [CONFIRM: what is needed] placeholder so clinic staff can fill it before transmission. Do not weaken any ground of the appeal.";
 
-function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) {
+function Drawer({ meta, run, settings, replay, onClose, onPatch, onAttachPolicy, onConfirmDeadline }: DrawerProps) {
   const d = run.qa && run.phase === "complete" ? decide(run.qa, settings) : null;
   // resolvingIdx: which composer is open; -1 = the resolve-all composer
   const [resolvingIdx, setResolvingIdx] = useState<number | null>(null);
   const [instruction, setInstruction] = useState("");
+  const [policyFile, setPolicyFile] = useState<File | null>(null);
+  const [deadline, setDeadline] = useState("");
 
   const unresolved = run.qa
     ? run.qa.needs_human.map((_, i) => i).filter((i) => !run.resolutions[i])
@@ -465,6 +502,28 @@ function Drawer({ meta, run, settings, replay, onClose, onPatch }: DrawerProps) 
         </div>
 
         {run.error && <div className="error-banner">Error: {run.error}</div>}
+
+        {meta.channel === "era_835" && run.gate === "policy" && (
+          <div className="card coordinator-gate">
+            <h3>Coordinator gate — policy required</h3>
+            <p>835 remittances do not cite a policy. Attach the payer policy that applies to this case before the draft can run.</p>
+            <input type="file" accept="application/pdf,.pdf" onChange={(e) => setPolicyFile(e.target.files?.[0] ?? null)} />
+            <button className="primary" disabled={!policyFile} onClick={() => policyFile && onAttachPolicy(policyFile)}>
+              Attach policy &amp; draft
+            </button>
+          </div>
+        )}
+
+        {meta.channel === "era_835" && run.gate === "deadline" && (
+          <div className="card coordinator-gate">
+            <h3>Coordinator gate — appeal deadline required</h3>
+            <p>835 paid date: {run.denial?.denial.paid_date ?? "not supplied"}. Confirm the payer-specific appeal deadline before QA.</p>
+            <input type="date" value={deadline} onChange={(e) => setDeadline(e.target.value)} />
+            <button className="primary" disabled={!deadline} onClick={() => onConfirmDeadline(deadline)}>
+              Confirm deadline &amp; run QA
+            </button>
+          </div>
+        )}
 
         {d && !run.submitted && (
           <div className="decision-banner">

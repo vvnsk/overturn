@@ -1,0 +1,64 @@
+SYNTHETIC PATIENT CHART — Lincoln Buckridge (MHP-91BE1BD7)
+Source: Synthea synthetic FHIR bundle, flattened for review. No real patient depicted.
+DOB: 1997-11-26 | Sex: male
+
+=== ACTIVE PROBLEM LIST ===
+- Chronic pain (finding) (onset 2016-01-01)
+- Chronic low back pain (finding) (onset 2016-01-01)
+- Chronic neck pain (finding) (onset 2016-01-01)
+- Prediabetes (finding) (onset 2022-02-23)
+- Body mass index 30+ - obesity (finding) (onset 2022-02-23)
+- Anemia (disorder) (onset 2024-03-06)
+- Not in labor force (finding) (onset 2025-03-12)
+- Social isolation (finding) (onset 2026-03-18)
+
+=== RESOLVED / RECENT CONDITIONS ===
+- Concussion with no loss of consciousness (disorder) (onset 2021-02-24)
+- Viral sinusitis (disorder) (onset 2021-12-01)
+- Viral sinusitis (disorder) (onset 2023-05-20)
+- Gingivitis (disorder) (onset 2024-03-06)
+- Gingival disease (disorder) (onset 2024-03-27)
+- Viral sinusitis (disorder) (onset 2024-08-16)
+- Gingival disease (disorder) (onset 2025-03-26)
+- Viral sinusitis (disorder) (onset 2026-04-26)
+
+=== MEDICATIONS (most recent order per drug) ===
+- Ibuprofen 400 MG Oral Tablet [Ibu] (2026-03-18) [active]
+- Acetaminophen 325 MG Oral Tablet (2016-09-19) [completed]
+
+=== THERAPY-RELATED PROCEDURES ===
+- Dental care (regime/therapy) (2019-02-20)
+- Postoperative care for dental procedure (regime/therapy) (2019-02-20)
+- Dental care (regime/therapy) (2024-03-27)
+- Postoperative care for dental procedure (regime/therapy) (2024-03-27)
+- Dental care (regime/therapy) (2025-03-26)
+- Postoperative care for dental procedure (regime/therapy) (2025-03-26)
+- Dental care (regime/therapy) (2026-04-01)
+
+=== RECENT PROCEDURES ===
+- Assessment of substance use (procedure) (2026-03-18)
+- Assessment using Alcohol Use Disorders Identification Test - Consumption (procedure) (2026-03-18)
+- Dental consultation and report (procedure) (2026-04-01)
+- Dental care (regime/therapy) (2026-04-01)
+- Removal of supragingival plaque and calculus from all teeth using dental instrument (procedure) (2026-04-01)
+- Removal of subgingival plaque and calculus from all teeth using dental instrument (procedure) (2026-04-01)
+- Dental plain X-ray bitewing (procedure) (2026-04-01)
+- Examination of gingivae (procedure) (2026-04-01)
+- Dental fluoride treatment (procedure) (2026-04-01)
+- Oral health education (procedure) (2026-04-01)
+
+=== RECENT ENCOUNTERS ===
+- Encounter for problem (procedure) (2024-03-13)
+- Encounter for check up (procedure) (2024-03-27)
+- Encounter for symptom (procedure) (2024-08-16)
+- General examination of patient (procedure) (2025-03-12)
+- Encounter for check up (procedure) (2025-03-26)
+- General examination of patient (procedure) (2026-03-18)
+- Encounter for check up (procedure) (2026-04-01)
+- Encounter for symptom (procedure) (2026-04-26)
+
+=== POST-SERVICE APPEAL CONTEXT ===
+MRI lumbar spine without contrast (CPT 72148) was performed and billed, then denied
+after service on the remittance under CARC CO-50 ("not deemed medically necessary").
+This is a post-service claim denial (835 ERA), not a pre-service prior-authorization
+denial — there is no prior-auth reference on file.

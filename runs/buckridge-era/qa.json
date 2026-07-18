@@ -1,0 +1,96 @@
+{
+  "timeliness": {
+    "denial_date": "2026-07-18",
+    "appeal_deadline": "2026-10-16",
+    "filed_date": "2026-07-18",
+    "within_deadline": true,
+    "days_remaining": 90
+  },
+  "claims": [
+    {
+      "claim": "The policy's sole 'not medically necessary' provision applies only to acute low back pain under six weeks without red flags.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[1]"
+      ]
+    },
+    {
+      "claim": "The member has chronic low back pain with onset January 1, 2016, and therefore falls outside the acute-pain exclusion.",
+      "evidence_strength": "uncited",
+      "sources": []
+    },
+    {
+      "claim": "Policy Criterion 2.1 deems lumbar MRI medically necessary for pain ≥6 weeks that failed a conservative therapy trial (PT, NSAID/analgesic, or supervised home exercise).",
+      "evidence_strength": "strong",
+      "sources": [
+        "[2]"
+      ]
+    },
+    {
+      "claim": "The member's pain has persisted since 2016, far exceeding the six-week duration element of Criterion 2.1.",
+      "evidence_strength": "uncited",
+      "sources": []
+    },
+    {
+      "claim": "The member has documented failed conservative therapy via NSAID (Ibuprofen 400 MG, ordered 3/18/2026, active) and prior Acetaminophen 325 MG.",
+      "evidence_strength": "uncited",
+      "sources": []
+    },
+    {
+      "claim": "Persistence of pain since 2016 despite analgesic/NSAID management demonstrates the conservative trial failed.",
+      "evidence_strength": "weak",
+      "sources": []
+    },
+    {
+      "claim": "The record does not document red-flags (2.2), radicular neurologic findings (2.3), or surgical planning (2.4); those grounds are not asserted.",
+      "evidence_strength": "uncited",
+      "sources": []
+    },
+    {
+      "claim": "The appeal may be filed in writing within 180 days of the denial notice and is timely.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[3]"
+      ]
+    },
+    {
+      "claim": "A peer-to-peer review with a plan medical director may be requested within 14 days.",
+      "evidence_strength": "strong",
+      "sources": [
+        "[4]"
+      ]
+    }
+  ],
+  "missing_elements": [
+    "Member date of birth is null and absent from the letter — a common payer identity-match field.",
+    "No actual date of service is stated; the letter only lists 'Service Date CPT: 72148' with no service date, and denial parse lacks it.",
+    "No ICD-10 diagnosis codes are present (icd10_codes empty), which typically supports a medical-necessity argument tying the chronic LBP diagnosis to imaging.",
+    "No individualized wet/typed signature or credential/contact block; letter is signed only 'Patient Access Team' rather than by/attested by the ordering physician.",
+    "Auth reference is null (acceptable for a post-service claim, but note explicitly)."
+  ],
+  "needs_human": [
+    {
+      "issue": "All clinical facts driving Grounds 1 and 2 (2016 onset/chronicity, Ibuprofen order, Acetaminophen use) are NOT in the enforced-citation evidence list — only the policy is cited. These clinical assertions must be verified against and cited to the actual medical record before sending, or the payer can dismiss them as unsupported.",
+      "severity": "high"
+    },
+    {
+      "issue": "The 'failed conservative therapy' argument is weak: a still-active Ibuprofen order dated 3/18/2026 reads as an ongoing/recent trial, not a documented failed trial. Confirm the chart actually documents a completed conservative trial with an inadequate response before relying on Criterion 2.1.",
+      "severity": "high"
+    },
+    {
+      "issue": "Denial date (2026-07-18), paid date (2026-07-18), and intended filing date (2026-07-18) are all identical — verify the denial was actually received/finalized and the filing date is correct; the same-day pattern is anomalous.",
+      "severity": "medium"
+    },
+    {
+      "issue": "Add member DOB, actual date of service, and ICD-10 diagnosis code(s) to strengthen identity match and the medical-necessity linkage.",
+      "severity": "medium"
+    },
+    {
+      "issue": "Obtain a proper physician attestation/signature; a self-styled 'Patient Access Team' signature may be insufficient for a physician medical-necessity appeal.",
+      "severity": "medium"
+    }
+  ],
+  "overall_confidence": 0.5,
+  "recommendation": "review_recommended",
+  "summary": "The appeal is timely (90 days remaining before the 10/16/2026 deadline) and its policy-based framing is strong — the acute-pain exclusion clearly doesn't apply and Criterion 2.1's duration element is well-argued. However, every clinical fact underpinning the argument (2016 onset, NSAID/acetaminophen use) is uncited to the medical record, and the 'failed conservative therapy' claim is weak because an active, recent Ibuprofen order does not by itself document a failed trial. A human must verify and cite the clinical record, shore up the conservative-therapy failure, and add missing identifiers/signature before submission."
+}

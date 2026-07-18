@@ -6,7 +6,9 @@ export interface CaseEntry {
   patient: string;
   service: string;
   cpt: string;
-  denialPdf: string;
+  channel?: "fax_pdf" | "era_835";
+  denialPdf?: string;
+  denialEdi?: string;
   chart: string;
   policyPdf: string;
   policyTitle: string;
